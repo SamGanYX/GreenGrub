@@ -13,6 +13,7 @@
 ## 🆕 Novelty
 
 - Most apps focus on either health or climate—**GreenGrub does both**.
+- Goes beyond saying healthy or not healthy to give a more well-rounded analysis.
 - Uses **ingredient order** to estimate **relative environmental impact**.
 
 ## 🛠️ Tech Stack
@@ -24,4 +25,4 @@
 ## ⚠️ Risks
 
 - Emissions data for processed foods is hard to calculate.
-- Solution: Use **relative scoring** based on key ingredients instead of exact carbon values.
+- Solution: Use **relative scoring** based on key ingredients instead of exact carbon values. Over time we can modify the algorithm to be more accurate.
