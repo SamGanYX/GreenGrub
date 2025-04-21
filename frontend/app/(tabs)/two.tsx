@@ -1,54 +1,39 @@
-import { StyleSheet } from 'react-native';
-import {useEffect, useState} from "react";
-import axios from "axios";
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useState } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+export default function App() {
+  const [facing, setFacing] = useState<CameraType>('back');
+  const [permission, requestPermission] = useCameraPermissions();
 
-export default function TabTwoScreen() {
-  interface User {
-    id: number;
-    username: string;
-    name: string;
-    email: string;
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
   }
 
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
 
-  const [users,setUsers] = useState<User[]>([]);
-  const [message,setMessage] = useState("starter");
-  // const axios = require('axios');
-
-  useEffect(() => {
-
-    const loadUsers= async () => {
-      console.log('axios:', axios);
-      const result = await axios.get("http://localhost:8080/users");
-      setUsers(result.data);
-    }
-    loadUsers();
-  })
+  function toggleCameraFacing() {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.table}>
-        <View style={styles.tableHeader}>
-          <Text style={styles.tableHeaderText}>ID</Text>
-          <Text style={styles.tableHeaderText}>Name</Text>
-          <Text style={styles.tableHeaderText}>Email</Text>
-          <Text style={styles.tableHeaderText}>Username</Text>
+      <CameraView style={styles.camera} facing={facing}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
         </View>
-        {users.map((user, index) => (
-          <View key={index} style={styles.tableRow}>
-            <Text style={styles.tableCell}>{user.id}</Text>
-            <Text style={styles.tableCell}>{user.name}</Text>
-            <Text style={styles.tableCell}>{user.email}</Text>
-            <Text style={styles.tableCell}>{user.username}</Text>
-          </View>
-        ))}
-      </View>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+      </CameraView>
     </View>
   );
 }
@@ -56,42 +41,29 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-  table: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 20,
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#f2f2f2',
-  },
-  tableHeaderText: {
-    flex: 1,
-    fontWeight: 'bold',
-    padding: 10,
+  message: {
     textAlign: 'center',
+    paddingBottom: 10,
   },
-  tableRow: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  tableCell: {
+  camera: {
     flex: 1,
-    padding: 10,
-    textAlign: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
