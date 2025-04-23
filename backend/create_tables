@@ -1,0 +1,16 @@
+create database GreenGrub;
+
+use GreenGrub;
+
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    full_name VARCHAR(100) NOT NULL
+);
+
+INSERT INTO users (username, email, full_name)
+VALUES 
+('Samganyx', 'samganyx@gmail.com', 'Sam Gan'),
+('kimsterboi', 'freexhappy3@gmail.com', 'Bijou Kim'),
+('Bozo', 'bozo@gmail.com', 'Julie Yu');

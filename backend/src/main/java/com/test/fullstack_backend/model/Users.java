@@ -5,12 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-public class User {
+public class Users {
     @Id
     @GeneratedValue
     private Long id;
     private String username;
-    private String name;
+    private String full_name;
     private String email;
 
     public Long getId() {
@@ -22,7 +22,7 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return full_name;
     }
 
     public String getEmail() {
@@ -34,7 +34,7 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.full_name = name;
     }
 
     public void setEmail(String email) {

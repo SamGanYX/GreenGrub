@@ -2,7 +2,7 @@ package com.test.fullstack_backend.controller;
 
 import java.util.*;
 
-import com.test.fullstack_backend.model.User;
+import com.test.fullstack_backend.model.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,12 +21,12 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/user")
-    User newUser(@RequestBody User newUser) {
+    Users newUser(@RequestBody Users newUser) {
         return userRepository.save(newUser);
     }
 
     @GetMapping("/users")
-    List<User> getAllUsers() {
+    List<Users> getAllUsers() {
         return userRepository.findAll();
     }
 
