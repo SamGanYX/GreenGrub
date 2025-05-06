@@ -41,7 +41,9 @@ jobs:
     
     - name: Run tests
       run: mvn -f backend/pom.xml test
-      
+
+    - name: Run specific test
+      run: mvn -f backend/pom.xml test -Dtest=FullstackBackendApplicationTests
     # Try with a direct maven command instead of using the action
     - name: Generate dependency graph manually
       continue-on-error: true
