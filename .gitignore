@@ -1,3 +1,5 @@
 *.class
 backend/src/main/resources/application.properties
 backend/target/classes/application.properties
+.vscode/settings.json
+/.vscode
