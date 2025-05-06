@@ -2,15 +2,27 @@ create database GreenGrub;
 
 use GreenGrub;
 
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    full_name VARCHAR(100) NOT NULL
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (username, email, full_name)
-VALUES 
-('Samganyx', 'samganyx@gmail.com', 'Sam Gan'),
-('kimsterboi', 'freexhappy3@gmail.com', 'Bijou Kim'),
-('Bozo', 'bozo@gmail.com', 'Julie Yu');
+CREATE TABLE UserPreferences (
+    preference_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    preferred_diet VARCHAR(100),  -- e.g., vegetarian, vegan, keto
+    avoids_ingredients TEXT,      -- comma-separated (e.g., "peanuts,gluten")
+    health_goal VARCHAR(100),     -- e.g., "high protein", "low sugar"
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE UserCarbonFootprint (
+    footprint_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    total_emissions_kg DECIMAL(10,2) DEFAULT 0,  -- lifetime or rolling total
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
