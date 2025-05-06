@@ -1,5 +1,8 @@
 package com.test.fullstack_backend;
 
+import java.nio.file.Files; // Add this import
+import java.nio.file.Paths;
+
 import com.test.fullstack_backend.controller.UserController;
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
@@ -10,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,7 +44,7 @@ class FullstackBackendApplicationTests {
 	@Test
 	void testUsersNotEmpty() throws Exception {
 		// Create a new user JSON object
-		String newUserJson = "{\"name\":\"John Doe\"}";
+		String newUserJson = "{\"username\":\"JohnDoe\",\"email\":\"johndoe@uw.edu\",\"name\":\"John Doe\"}";
 
 		// Call the newUser endpoint to add the user
 		mockMvc.perform(post("/user")
@@ -47,7 +52,16 @@ class FullstackBackendApplicationTests {
 				.content(newUserJson))
 				.andExpect(status().isOk());
 
-		// Call the getAllUsers endpoint and check that the list is not empty
+		// Call the getAllUsers endpoint and capture the response
+		MvcResult result = mockMvc.perform(get("/users"))
+				.andExpect(status().isOk())
+				.andReturn(); // Capture the result
+
+		// Write the result to a .txt file instead of printing
+		String responseContent = result.getResponse().getContentAsString();
+		Files.write(Paths.get("response.txt"), responseContent.getBytes()); // Write to file
+
+		// Check that the response is not empty
 		mockMvc.perform(get("/users"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isNotEmpty()); // Check that the response is not empty
