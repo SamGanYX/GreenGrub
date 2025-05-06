@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Required for the dependency graph submission
+    # Required permissions for the dependency graph submission
     permissions:
       contents: write
       security-events: write
@@ -42,10 +42,12 @@ jobs:
     - name: Run tests
       run: mvn -f backend/pom.xml test
       
-    # Using @v4.0.0 specifically to avoid issues with later versions
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@v4.0.0
-      with:
-        directory: './backend'
-        # Optional: provide a specific token if the default doesn't work
-        token: ${{ github.token }}
+    # Try with a direct maven command instead of using the action
+    - name: Generate dependency graph manually
+      continue-on-error: true
+      run: |
+        cd backend
+        mvn com.github.ferstl:depgraph-maven-plugin:4.0.2:aggregate -DgraphFormat=json -DoutputFileName=dependency-graph.json
+        
+    # Enable automatic dependency submission in GitHub repository settings instead
+    # See: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/configuring-automatic-dependency-submission-for-your-repository
