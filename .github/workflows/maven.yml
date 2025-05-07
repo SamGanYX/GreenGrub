@@ -1,11 +1,9 @@
 name: Java CI with Maven
-
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,18 +12,20 @@ jobs:
       contents: write
       security-events: write
       id-token: write
-
     services:
       # MySQL service container for testing
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD || 'password' }}
           MYSQL_DATABASE: GreenGrub
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -p${{ secrets.DB_PASSWORD || 'password' }}"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     steps:
     - uses: actions/checkout@v4
     
@@ -36,20 +36,36 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
-    - name: Build with Maven
+    # Wait for MySQL to be ready
+    - name: Verify MySQL connection
+      run: |
+        sudo apt-get install -y mysql-client
+        mysql --host=127.0.0.1 --port=3306 -uroot -p${{ secrets.DB_PASSWORD || 'password' }} -e "SHOW DATABASES;"
+    
+    # Create test-specific application properties if needed
+    - name: Set up test application.properties
+      run: |
+        cat > backend/src/test/resources/application.properties << EOF
+        # Test Database Configuration
+        spring.datasource.url=jdbc:mysql://localhost:3306/GreenGrub
+        spring.datasource.username=root
+        spring.datasource.password=${{ secrets.DB_PASSWORD || 'password' }}
+        spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+        
+        # JPA/Hibernate
+        spring.jpa.hibernate.ddl-auto=update
+        spring.jpa.show-sql=true
+        spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+        spring.jpa.properties.hibernate.format_sql=true
+        EOF
+    
+    # Run Maven build and tests with proper configuration
+    - name: Build and test with Maven
       run: mvn -B package --file backend/pom.xml
     
-    - name: Run tests
-      run: mvn -f backend/pom.xml test
-
-    - name: Run specific test
-      run: mvn -f backend/pom.xml test -Dtest=FullstackBackendApplicationTests
-    # Try with a direct maven command instead of using the action
-    - name: Generate dependency graph manually
+    # Generate dependency graph
+    - name: Generate dependency graph
       continue-on-error: true
       run: |
         cd backend
         mvn com.github.ferstl:depgraph-maven-plugin:4.0.2:aggregate -DgraphFormat=json -DoutputFileName=dependency-graph.json
-        
-    # Enable automatic dependency submission in GitHub repository settings instead
-    # See: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/configuring-automatic-dependency-submission-for-your-repository
