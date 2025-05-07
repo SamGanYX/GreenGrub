@@ -1,11 +1,9 @@
 name: Java CI with Maven
-
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,7 +12,6 @@ jobs:
       contents: write
       security-events: write
       id-token: write
-
     services:
       # MySQL service container for testing
       mysql:
@@ -22,10 +19,15 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: GreenGrub
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -ppassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     steps:
     - uses: actions/checkout@v4
     
@@ -36,20 +38,28 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
-    - name: Build with Maven
-      run: mvn -B package --file backend/pom.xml
+    # Wait for MySQL to be ready
+    - name: Verify MySQL connection
+      run: |
+        sudo apt-get install -y mysql-client
+        mysql --host=127.0.0.1 --port=3306 -uroot -ppassword -e "SHOW DATABASES;"
     
+    # Skip tests during package to avoid running them twice
+    - name: Build with Maven
+      run: mvn -B package --file backend/pom.xml -DskipTests
+    
+    # Run tests with MySQL configuration passed as system properties
     - name: Run tests
-      run: mvn -f backend/pom.xml test
-
-    - name: Run specific test
-      run: mvn -f backend/pom.xml test -Dtest=FullstackBackendApplicationTests
-    # Try with a direct maven command instead of using the action
-    - name: Generate dependency graph manually
+      run: |
+        mvn -f backend/pom.xml test \
+        -Dspring.datasource.url=jdbc:mysql://localhost:3306/GreenGrub \
+        -Dspring.datasource.username=root \
+        -Dspring.datasource.password=password \
+        -Dspring.jpa.hibernate.ddl-auto=update
+    
+    # Generate dependency graph
+    - name: Generate dependency graph
       continue-on-error: true
       run: |
         cd backend
         mvn com.github.ferstl:depgraph-maven-plugin:4.0.2:aggregate -DgraphFormat=json -DoutputFileName=dependency-graph.json
-        
-    # Enable automatic dependency submission in GitHub repository settings instead
-    # See: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/configuring-automatic-dependency-submission-for-your-repository
