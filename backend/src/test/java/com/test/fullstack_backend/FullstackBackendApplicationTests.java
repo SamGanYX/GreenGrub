@@ -66,7 +66,13 @@ class FullstackBackendApplicationTests {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isNotEmpty()); // Check that the response is not empty
 	}
-
+	@Test
+	void fullNameTest() {
+		Users newUser = new Users();
+		String name = "Barny";
+		newUser.setName(name);
+		assertEquals(name, newUser.getName());
+	}
 }
 
 // ... existing code ...
