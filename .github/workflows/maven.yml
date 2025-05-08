@@ -81,7 +81,7 @@ jobs:
       - name: Install matching React Test Renderer
         run: |
           cd frontend
-          npm install --save-dev react-test-renderer@18.2.0
+          npm install --save-dev react-test-renderer@19.0.0 --legacy-peer-deps
 
       - name: Run frontend tests
         run: |
