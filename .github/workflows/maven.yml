@@ -76,14 +76,14 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend
-          npm ci --legacy-peer-deps
+          npm install --legacy-peer-deps
 
       - name: Install matching React Test Renderer
         run: |
           cd frontend
           npm install --save-dev react-test-renderer@19.0.0 --legacy-peer-deps
 
-      - name: Run tests
+      - name: Run frontend tests
         run: |
           cd frontend
           npm test -- --no-watch
