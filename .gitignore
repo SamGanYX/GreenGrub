@@ -3,5 +3,4 @@
 /.vscode
 .env
 *.class
-.vscode/settings.json
-/.vscode
+.bashrc
