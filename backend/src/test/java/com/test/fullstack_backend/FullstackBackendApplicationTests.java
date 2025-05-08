@@ -66,7 +66,6 @@ class FullstackBackendApplicationTests {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isNotEmpty()); // Check that the response is not empty
 	}
-
 }
 
 // ... existing code ...
