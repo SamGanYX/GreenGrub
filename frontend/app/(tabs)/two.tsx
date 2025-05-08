@@ -18,7 +18,7 @@ export default function App() {
   }
   const credentials = `${fatsecretClientId}:${fatsecretClientSecret}`;
   const encodedCredentials = btoa(credentials);
-  
+
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
@@ -36,7 +36,7 @@ export default function App() {
   async function fetchAccessToken() {
     const credentials = `${fatsecretClientId}:${fatsecretClientSecret}`;
     const encodedCredentials = btoa(credentials);
-  
+
     const res = await fetch('https://oauth.fatsecret.com/connect/token', {
       method: 'POST',
       headers: {
@@ -45,21 +45,21 @@ export default function App() {
       },
       body: 'grant_type=client_credentials&scope=basic',
     });
-  
+
     if (!res.ok) {
       throw new Error('Failed to fetch access token');
     }
-  
+
     const json = await res.json();
     return json.access_token;
   }
 
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
     const gtin13 = data.padStart(13, '0'); // Ensure GTIN-13 format
-  
+
     setScannedData(data);
     console.log(`Scanned GTIN-13 barcode: ${gtin13}`);
-  
+
     try {
       const token = await fetchAccessToken();
       const res = await fetch(
@@ -71,21 +71,21 @@ export default function App() {
           },
         }
       );
-  
+
       if (!res.ok) throw new Error('Failed to fetch food data');
-  
+
       const json = await res.json();
       console.log(json);
-  
+
       const foodName = json?.food?.food_id || 'Unknown';
-      Alert.alert('Food Found', `ID: ${foodName}`);
+      // Alert.alert('Food Found', `ID: ${foodName}`);
     } catch (err) {
       console.error(err);
-      Alert.alert('Error', 'Unable to retrieve food information.');
+      // Alert.alert('Error', 'Unable to retrieve food information.');
     }
   };
-  
-  
+
+
 
   return (
     <View style={styles.container}>
