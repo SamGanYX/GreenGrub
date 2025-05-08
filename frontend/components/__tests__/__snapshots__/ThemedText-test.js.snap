@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Themed.Text applies custom light and dark colors when provided 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#000000",
+      },
+      undefined,
+    ]
+  }
+>
+  Custom colored text
+</Text>
+`;
+
+exports[`Themed.Text renders correctly with default theme colors 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#000",
+      },
+      undefined,
+    ]
+  }
+>
+  This is themed text
+</Text>
+`;
