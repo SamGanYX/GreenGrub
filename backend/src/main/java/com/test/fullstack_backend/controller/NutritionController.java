@@ -23,11 +23,10 @@ import com.test.fullstack_backend.repository.UserRepository;
 @CrossOrigin
 public class NutritionController {
 
-    //TODO: Figure out how to reuse rest client calls
     public FatSecretAccessToken getAccessToken() {
 
-        String clientId = "YOUR_CLIENT_ID";
-        String clientSecret = "YOUR_CLIENT_SECRET";
+        String clientId = "";
+        String clientSecret = "";
 
         RestClient restClient = RestClient.builder()
             .baseUrl("https://oauth.fatsecret.com")
@@ -62,7 +61,7 @@ public class NutritionController {
 }
 
 
-    public String getIdFromBarcode(String accessToken, int barcode) {
+    public String getIdFromBarcode(String accessToken, String barcode) {
         RestClient client = RestClient.builder()
             .baseUrl("https://platform.fatsecret.com/rest/server.api")
             .defaultHeaders(headers -> {
