@@ -1,5 +1,6 @@
 package com.test.fullstack_backend;
 
+import java.io.IOException;
 import java.nio.file.Files; // Add this import
 import java.nio.file.Paths;
 
@@ -44,10 +45,14 @@ class FullstackBackendApplicationTests {
 	}
 
 	@Test
-	void testFatSecretAccessToken() {
+	void testFatSecretAccessToken() throws IOException {
 		NutritionController controller = new NutritionController();
 		FatSecretAccessToken token = controller.getAccessToken();
-		assert(token != null);
+		String id = controller.getIdFromBarcode(token.getAccess_token(), "3017620422003");
+		String info = controller.getNutritionFromId(token.getAccess_token(), id);
+		Files.write(Paths.get("NutritionResponse.txt"), info.getBytes());
+
+		assert(info != null);
 	}
 
 	@Test
