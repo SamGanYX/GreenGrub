@@ -1,12 +1,8 @@
-// StyledText-test.js
-import * as React from 'react';
-import renderer, { act } from 'react-test-renderer';
+import { render } from '@testing-library/react-native';
 import { MonoText } from '../StyledText';
 
-it(`renders correctly`, () => {
-  let tree;
-  act(() => {
-    tree = renderer.create(<MonoText>Snapshot test!</MonoText>).toJSON();
-  });
-  expect(tree).toMatchSnapshot();
+test('renders correctly', () => {
+  const { toJSON } = render(<MonoText>Snapshot test!</MonoText>);
+  
+  expect(toJSON()).toMatchSnapshot();
 });
