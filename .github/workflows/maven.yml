@@ -81,9 +81,11 @@ jobs:
       - name: Install matching React Test Renderer
         run: |
           cd frontend
-          npm install --save-dev react-test-renderer@19.0.0 --legacy-peer-deps
+          npm list react react-dom
+          REACT_VERSION=$(node -e "console.log(require('./package.json').dependencies.react)")
+          npm install --save-dev react-test-renderer@$REACT_VERSION --legacy-peer-deps
 
       - name: Run frontend tests
         run: |
           cd frontend
-          npm test -- --no-watch
+          npm test
