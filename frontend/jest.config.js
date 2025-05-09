@@ -1,10 +1,12 @@
-// jest.config.js
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest'
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json']
-  // Remove the setupFilesAfterEnv line or point to a file you create
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  transformIgnorePatterns: [
+    '/node_modules/(?!(@react-native|react-native))'
+  ]
 };
