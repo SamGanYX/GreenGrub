@@ -1,9 +1,9 @@
-/** @type {import('jest').Config} */
-const config = {
-  verbose: true,
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest'
-  }
+    '^.+\\.(ts|tsx)$': 'ts-jest'
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect']
 };
-
-module.exports = config;
