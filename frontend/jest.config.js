@@ -1,6 +1,9 @@
-/** @returns {Promise<import('jest').Config>} */
-module.exports = async () => {
-  return {
-    verbose: true,
-  };
+/** @type {import('jest').Config} */
+const config = {
+  verbose: true,
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest'
+  }
 };
+
+module.exports = config;
