@@ -3,7 +3,9 @@ package com.test.fullstack_backend;
 import java.nio.file.Files; // Add this import
 import java.nio.file.Paths;
 
+import com.test.fullstack_backend.controller.NutritionController;
 import com.test.fullstack_backend.controller.UserController;
+import com.test.fullstack_backend.model.FatSecretAccessToken;
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +41,13 @@ class FullstackBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
+	}
+
+	@Test
+	void testFatSecretAccessToken() {
+		NutritionController controller = new NutritionController();
+		FatSecretAccessToken token = controller.getAccessToken();
+		assert(token != null);
 	}
 
 	@Test
