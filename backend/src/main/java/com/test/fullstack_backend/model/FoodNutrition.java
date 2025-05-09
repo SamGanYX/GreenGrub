@@ -1,8 +1,5 @@
 package com.test.fullstack_backend.model;
 
-import jakarta.persistence.Entity;
-
-@Entity
 public class FoodNutrition {
     private String id;
     private String gtin;

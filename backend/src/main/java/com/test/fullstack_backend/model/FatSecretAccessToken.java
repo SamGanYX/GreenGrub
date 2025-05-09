@@ -1,8 +1,5 @@
 package com.test.fullstack_backend.model;
 
-import jakarta.persistence.Entity;
-
-@Entity
 public class FatSecretAccessToken {
     private String access_token;
     private String token_type;
