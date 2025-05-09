@@ -1,15 +1,10 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
+  preset: 'react-native',
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json',
-      jsx: 'react'
-    }],
-    '^.+\\.(js|jsx)$': 'babel-jest'
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest'
   },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|react-native-.*|@react-native-.*)/)'
-  ],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json']
+  ]
 };
