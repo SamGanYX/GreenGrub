@@ -1,17 +1,10 @@
-// Mock useColorScheme module
-jest.mock('../../components/useColorScheme', () => {
-  return () => 'light';
-});
-
 import * as React from 'react';
-import renderer, { act } from 'react-test-renderer';
+import renderer from 'react-test-renderer';
+
 import { MonoText } from '../StyledText';
 
 it(`renders correctly`, () => {
-  let tree;
-  act(() => {
-    tree = renderer.create(<MonoText>Snapshot test!</MonoText>).toJSON();
-  });
+  const tree = renderer.create(<MonoText>Snapshot test!</MonoText>).toJSON();
 
   expect(tree).toMatchSnapshot();
 });
