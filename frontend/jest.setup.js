@@ -1,0 +1,1 @@
+global.useColorScheme = jest.fn(() => 'light');

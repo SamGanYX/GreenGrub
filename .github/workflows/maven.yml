@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: CI with Maven and Frontend Tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  backend:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -18,7 +18,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_USERNAME }}
           MYSQL_DATABASE: GreenGrub
         ports:
           - 3306:3306
@@ -60,3 +60,31 @@ jobs:
         run: |
           cd backend
           mvn com.github.ferstl:depgraph-maven-plugin:4.0.2:aggregate -DgraphFormat=json -DoutputFileName=dependency-graph.json
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install --legacy-peer-deps
+
+      - name: Install matching React Test Renderer
+        run: |
+          cd frontend
+          REACT_VERSION=$(node -e "console.log(require('./package.json').dependencies.react.replace('^', ''))")
+          npm install --save-dev react-test-renderer@$REACT_VERSION --legacy-peer-deps
+
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
