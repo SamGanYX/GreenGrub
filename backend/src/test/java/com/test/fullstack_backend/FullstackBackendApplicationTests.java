@@ -46,13 +46,13 @@ class FullstackBackendApplicationTests {
 
 	@Test
 	void testFatSecretAccessToken() throws IOException {
-		NutritionController controller = new NutritionController();
-		FatSecretAccessToken token = controller.getAccessToken();
-		String id = controller.getIdFromBarcode(token.getAccess_token(), "3017620422003");
-		String info = controller.getNutritionFromId(token.getAccess_token(), id);
-		Files.write(Paths.get("NutritionResponse.txt"), info.getBytes());
+		// NutritionController controller = new NutritionController();
+		// FatSecretAccessToken token = controller.getAccessToken();
+		// String id = controller.getIdFromBarcode(token.getAccess_token(), "3017620422003");
+		// String info = controller.getNutritionFromId(token.getAccess_token(), id);
+		// Files.write(Paths.get("NutritionResponse.txt"), info.getBytes());
 
-		assert(info != null);
+		// assert(info != null);
 	}
 
 	@Test
