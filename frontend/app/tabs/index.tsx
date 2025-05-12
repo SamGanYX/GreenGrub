@@ -34,21 +34,17 @@ export default function TabTwoScreen() {
       <View style={styles.table}>
         <View style={styles.tableHeader}>
           <Text style={styles.tableHeaderText}>ID</Text>
-          <Text style={styles.tableHeaderText}>Name</Text>
-          <Text style={styles.tableHeaderText}>Email</Text>
           <Text style={styles.tableHeaderText}>Username</Text>
         </View>
         {users.map((user, index) => (
           <View key={index} style={styles.tableRow}>
             <Text style={styles.tableCell}>{user.id}</Text>
-            <Text style={styles.tableCell}>{user.name}</Text>
-            <Text style={styles.tableCell}>{user.email}</Text>
             <Text style={styles.tableCell}>{user.username}</Text>
           </View>
         ))}
       </View>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+      <EditScreenInfo path="app/tabs/two.tsx" />
     </View>
   );
 }
