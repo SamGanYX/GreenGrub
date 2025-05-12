@@ -1,6 +1,5 @@
 *.class
 .vscode/settings.json
 /.vscode
-.env
-*.class
 .bashrc
+.env

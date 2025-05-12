@@ -72,7 +72,7 @@ export default function LogInPage() {
         onChangeText={setPassword}
       />
       <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>{createNew ? 'Create Account' : 'Login'}</Text>
         </TouchableOpacity>
 
