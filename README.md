@@ -26,3 +26,13 @@
 
 - Emissions data for processed foods is hard to calculate.
 - Solution: Use **relative scoring** based on key ingredients instead of exact carbon values. Over time we can modify the algorithm to be more accurate.
+
+## 📋 Running
+
+- Clone the repository
+- Make sure you have Git, Node, Expo, Maven, Java, and Typescript installed
+- In the backend folder create a .bashrc file. This file has all our secret keys so we will refrain from posting these
+- In bash type source .bashrc
+- In the backend folder this line will run the backend: mvn spring-boot:run
+- In the frontend folder this line will run the frontend: npm install; npm start
+
