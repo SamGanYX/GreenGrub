@@ -34,7 +34,6 @@ class FullstackBackendApplicationTests {
 
 	@BeforeEach
 	void setUp() {
-		userRepository.deleteAll(); // Clear the repository before each test
 	}
 
 	@Test
@@ -42,31 +41,24 @@ class FullstackBackendApplicationTests {
 	}
 
 	@Test
-	void testUsersNotEmpty() throws Exception {
-		// Create a new user JSON object
-		String newUserJson = "{\"username\":\"JohnDoe\",\"email\":\"johndoe@uw.edu\",\"name\":\"John Doe\"}";
+	void testLogin() throws Exception {
+		// Create a new user for testing
+		Users testUser = new Users();
+		testUser.setUsername("testuser");
+		testUser.setPassword("password123");
+		
 
-		// Call the newUser endpoint to add the user
-		mockMvc.perform(post("/user")
+		// Perform the login request
+		MvcResult result = mockMvc.perform(post("/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(newUserJson))
-				.andExpect(status().isOk());
-
-		// Call the getAllUsers endpoint and capture the response
-		MvcResult result = mockMvc.perform(get("/users"))
+				.content("{\"username\":\"testuser\", \"password\":\"password123\"}"))
 				.andExpect(status().isOk())
-				.andReturn(); // Capture the result
+				.andReturn();
 
-		// Write the result to a .txt file instead of printing
+		// Validate the response
 		String responseContent = result.getResponse().getContentAsString();
-		Files.write(Paths.get("response.txt"), responseContent.getBytes()); // Write to file
-
-		// Check that the response is not empty
-		mockMvc.perform(get("/users"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$").isNotEmpty()); // Check that the response is not empty
+		assertEquals(true, responseContent.contains("token"));
+		assertEquals(true, responseContent.contains("userID"));
+		assertEquals(true, responseContent.contains("username"));
 	}
-
 }
-
-// ... existing code ...

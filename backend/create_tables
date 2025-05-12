@@ -4,27 +4,10 @@ use GreenGrub;
 
 DROP TABLE users;
 
-CREATE TABLE "users" (
-  "id" bigint NOT NULL AUTO_INCREMENT,
-  "email" varchar(255) DEFAULT NULL,
-  "full_name" varchar(255) DEFAULT NULL,
-  "username" varchar(255) DEFAULT NULL,
-  PRIMARY KEY ("id")
-);
-
-CREATE TABLE UserPreferences (
-    preference_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    preferred_diet VARCHAR(100),  -- e.g., vegetarian, vegan, keto
-    avoids_ingredients TEXT,      -- comma-separated (e.g., "peanuts,gluten")
-    health_goal VARCHAR(100),     -- e.g., "high protein", "low sugar"
-    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
-);
-
-CREATE TABLE UserCarbonFootprint (
-    footprint_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    total_emissions_kg DECIMAL(10,2) DEFAULT 0,  -- lifetime or rolling total
-    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
-);
+CREATE TABLE
+  "users" (
+    "id" bigint NOT NULL AUTO_INCREMENT,
+    "username" varchar(255) UNIQUE DEFAULT NULL,
+    "password" varchar(255) DEFAULT NULL,
+    PRIMARY KEY ("id")
+  );
