@@ -46,7 +46,7 @@ class FullstackBackendApplicationTests {
 		Users testUser = new Users();
 		testUser.setUsername("testuser");
 		testUser.setPassword("password123");
-		userRepository.save(testUser); // Save the user to the repository
+		
 
 		// Perform the login request
 		MvcResult result = mockMvc.perform(post("/login")
