@@ -35,4 +35,7 @@
 - In bash type source .bashrc
 - In the backend folder this line will run the backend: mvn spring-boot:run
 - In the frontend folder this line will run the frontend: npm install; npm start
+- To test backend type "mvn test" in the backend folder
+- To test frontend type "" in the frontend folder
+- 
 
