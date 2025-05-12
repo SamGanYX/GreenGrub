@@ -1,9 +1,12 @@
 package com.test.fullstack_backend;
 
+import java.io.IOException;
 import java.nio.file.Files; // Add this import
 import java.nio.file.Paths;
 
+import com.test.fullstack_backend.controller.NutritionController;
 import com.test.fullstack_backend.controller.UserController;
+import com.test.fullstack_backend.model.FatSecretAccessToken;
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +44,17 @@ class FullstackBackendApplicationTests {
 	}
 
 	@Test
+	void testFatSecretAccessToken() throws IOException {
+		// NutritionController controller = new NutritionController();
+		// FatSecretAccessToken token = controller.getAccessToken();
+		// String id = controller.getIdFromBarcode(token.getAccess_token(), "3017620422003");
+		// String info = controller.getNutritionFromId(token.getAccess_token(), id);
+		// Files.write(Paths.get("NutritionResponse.txt"), info.getBytes());
+
+		// assert(info != null);
+	}
+  
+  @Test
 	void testLogin() throws Exception {
 		// Create a new user for testing
 		Users testUser = new Users();
