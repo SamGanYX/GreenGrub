@@ -42,6 +42,12 @@ class FullstackBackendApplicationTests {
 
 	@Test
 	void testLogin() throws Exception {
+		// Create a new user for testing
+		Users testUser = new Users();
+		testUser.setUsername("testuser");
+		testUser.setPassword("password123");
+		userRepository.save(testUser); // Save the user to the repository
+
 		// Perform the login request
 		MvcResult result = mockMvc.perform(post("/login")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -56,5 +62,3 @@ class FullstackBackendApplicationTests {
 		assertEquals(true, responseContent.contains("username"));
 	}
 }
-
-// ... existing code ...
