@@ -7,7 +7,8 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  backend-build:
+    name: Backend Build and Tests
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -55,6 +56,19 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: mvn -f backend/pom.xml test -Dtest=FullstackBackendApplicationTests
 
+      - name: Generate dependency graph manually
+        continue-on-error: true
+        run: |
+          cd backend
+          mvn com.github.ferstl:depgraph-maven-plugin:4.0.2:aggregate -DgraphFormat=json -DoutputFileName=dependency-graph.json
+
+  frontend-build:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
       # Add frontend test steps for Expo
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -71,21 +85,8 @@ jobs:
         working-directory: ./frontend
         run: npm install -D jest-expo@latest react-native-mock-render jest-environment-jsdom
 
-      - name: Create Jest setup file
-        working-directory: ./frontend
-        run: |
-          # Create Jest setup file
-          echo "global.FormData = class FormData {};" > jest.setup.js
-          echo "jest.mock('react-native', () => require('react-native-mock-render'));" >> jest.setup.js
-
-      - name: Run frontend tests with Expo setup
+      - name: Run frontend tests
         working-directory: ./frontend
         env:
           NODE_OPTIONS: --experimental-vm-modules
-        run: npx jest --setupFiles=./jest.setup.js --watchAll=false
-
-      - name: Generate dependency graph manually
-        continue-on-error: true
-        run: |
-          cd backend
-          mvn com.github.ferstl:depgraph-maven-plugin:4.0.2:aggregate -DgraphFormat=json -DoutputFileName=dependency-graph.json
+        run: npx jest --watchAll=false
