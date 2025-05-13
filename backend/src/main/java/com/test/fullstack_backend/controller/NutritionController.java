@@ -24,56 +24,60 @@ import com.test.fullstack_backend.repository.UserRepository;
 public class NutritionController {
 
     public FatSecretAccessToken getAccessToken() {
+        String clientId = System.getenv("FATSECRET_CLIENT_ID");
+        String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET");
 
-        String clientId = "";
-        String clientSecret = "";
+        // Check if clientId or clientSecret is null and handle the error
+        if (clientId == null || clientSecret == null) {
+            throw new IllegalArgumentException(
+                    "Client ID and Client Secret must be set as environment variables." + clientSecret);
+        }
 
         RestClient restClient = RestClient.builder()
-            .baseUrl("https://oauth.fatsecret.com")
-            .requestInterceptor(new BasicAuthenticationInterceptor(clientId, clientSecret))
-            .defaultHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .build();
+                .baseUrl("https://oauth.fatsecret.com")
+                .requestInterceptor(new BasicAuthenticationInterceptor(clientId, clientSecret))
+                .defaultHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .build();
         String formBody = "grant_type=client_credentials&scope=basic";
 
         return restClient.post()
-            .uri("/connect/token")
-            .body(formBody)
-            .retrieve()
-            .body(FatSecretAccessToken.class);
+                .uri("/connect/token")
+                .body(formBody)
+                .retrieve()
+                .body(FatSecretAccessToken.class);
     }
 
     public String getNutritionFromId(String accessToken, String foodId) {
 
         RestClient client = RestClient.builder()
-            .baseUrl("https://platform.fatsecret.com/rest/server.api")
-            .defaultHeaders(headers -> {
-                headers.setBearerAuth(accessToken); // Sets "Authorization: Bearer <token>"
-                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); // Sets correct Content-Type
-            })
-            .build();
+                .baseUrl("https://platform.fatsecret.com/rest/server.api")
+                .defaultHeaders(headers -> {
+                    headers.setBearerAuth(accessToken); // Sets "Authorization: Bearer <token>"
+                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); // Sets correct Content-Type
+                })
+                .build();
 
         String body = "method=food.get&food_id=" + foodId + "&format=json";
 
         return client.post()
-            .body(body)
-            .retrieve()
-            .body(String.class);
-}
-
+                .body(body)
+                .retrieve()
+                .body(String.class);
+    }
 
     public String getIdFromBarcode(String accessToken, String barcode) {
         RestClient client = RestClient.builder()
-            .baseUrl("https://platform.fatsecret.com/rest/server.api")
-            .defaultHeaders(headers -> {
-                headers.setBearerAuth(accessToken); // Sets "Authorization: Bearer <token>"
-                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); // Sets correct Content-Type
-            })
-            .build();
+                .baseUrl("https://platform.fatsecret.com/rest/server.api")
+                .defaultHeaders(headers -> {
+                    headers.setBearerAuth(accessToken); // Sets "Authorization: Bearer <token>"
+                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); // Sets correct Content-Type
+                })
+                .build();
 
         String body = "method=food.find_id_for_barcode&barcode=" + barcode + "&format=json";
         return client.post()
-            .body(body)
-            .retrieve()
-            .body(String.class);
+                .body(body)
+                .retrieve()
+                .body(String.class);
     }
 }
