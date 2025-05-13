@@ -11,6 +11,7 @@ export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scannedData, setScannedData] = useState<string | null>(null);
+  const [foodName, setFoodName] = useState<string | null>(null);
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -56,29 +57,25 @@ export default function App() {
 
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
     const gtin13 = data.padStart(13, '0'); // Ensure GTIN-13 format
-
+  
     setScannedData(data);
     console.log(`Scanned GTIN-13 barcode: ${gtin13}`);
-
+  
     try {
-      const token = await fetchAccessToken();
-      const res = await fetch(
-        `https://platform.fatsecret.com/rest/food/barcode/find-by-id/v1?barcode=${gtin13}&format=json`,
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        }
-      );
-
+      // Update the fetch call to the new API endpoint
+      const res = await fetch(`http://192.168.64.1:8080/api/food/product/${gtin13}`, {
+        method: 'GET',
+        // No need for Authorization header
+      });
+  
       if (!res.ok) throw new Error('Failed to fetch food data');
-
+  
       const json = await res.json();
       console.log(json);
-
-      const foodName = json?.food?.food_id || 'Unknown';
-      // Alert.alert('Food Found', `ID: ${foodName}`);
+  
+      const food_name = json?.food?.food_id || 'Unknown';
+      Alert.alert('Food Found', `ID: ${food_name}`);
+      setFoodName(food_name);
     } catch (err) {
       console.error(err);
       // Alert.alert('Error', 'Unable to retrieve food information.');
@@ -103,6 +100,7 @@ export default function App() {
         {scannedData && (
           <View style={styles.scanResultOverlay}>
             <Text style={styles.scanResultText}>Scanned Data: {scannedData}</Text>
+            <Text style={styles.scanResultText}>Scanned Food: {foodName}</Text>
             <TouchableOpacity
               style={styles.scanAgainButton}
               onPress={() => setScannedData(null)} // Reset state to scan again

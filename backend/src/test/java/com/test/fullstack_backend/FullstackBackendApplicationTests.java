@@ -29,16 +29,15 @@ import com.test.fullstack_backend.controller.FoodImpactController;
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = {
-    "spring.datasource.url=jdbc:h2:mem:testdb",
-    "spring.datasource.driverClassName=org.h2.Driver",
-    "spring.datasource.username=sa",
-    "spring.datasource.password=password",
-    "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
-    "spring.jpa.hibernate.ddl-auto=create-drop"
+		"spring.datasource.url=jdbc:h2:mem:testdb",
+		"spring.datasource.driverClassName=org.h2.Driver",
+		"spring.datasource.username=sa",
+		"spring.datasource.password=password",
+		"spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
+		"spring.jpa.hibernate.ddl-auto=create-drop"
 })
 class FullstackBackendApplicationTests {
 
@@ -77,7 +76,7 @@ class FullstackBackendApplicationTests {
 			assertNotNull(productInfo, "Product information should not be null");
 			System.out.println("Product Information:");
 			System.out.println(productInfo);
-			
+			Files.write(Paths.get("FoodImpactResponse.txt"), productInfo.getBytes());
 			// Example 2: Search for products
 			String searchTerm = "chocolate";
 			String searchResults = FoodImpactController.searchProducts(searchTerm);
