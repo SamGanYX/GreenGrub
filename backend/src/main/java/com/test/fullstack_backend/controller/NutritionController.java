@@ -27,8 +27,8 @@ public class NutritionController {
 
     public FatSecretAccessToken getAccessToken() {
 
-        String clientId = "";
-        String clientSecret = "";
+        String clientId = System.getenv("FATSECRET_CLIENT_API_KEY");
+        String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET_API_KEY");
 
         RestClient restClient = RestClient.builder()
             .baseUrl("https://oauth.fatsecret.com")
