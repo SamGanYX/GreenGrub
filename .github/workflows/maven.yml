@@ -83,6 +83,4 @@ jobs:
 
       - name: Run frontend tests
         working-directory: ./frontend
-        env:
-          NODE_OPTIONS: --experimental-vm-modules
         run: npm test
