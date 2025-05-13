@@ -48,31 +48,31 @@ class FullstackBackendApplicationTests {
 		NutritionController controller = new NutritionController();
 		FatSecretAccessToken token = controller.getAccessToken();
 		String id = controller.getIdFromBarcode(token.getAccess_token(), "0041570054161");
-		//String info = controller.getNutritionFromId(token.getAccess_token(), id);
-		Files.write(Paths.get("NutritionResponse.txt"), id.getBytes());
+		String info = controller.getNutritionFromId(token.getAccess_token(), id);
+		Files.write(Paths.get("NutritionResponse.txt"), info.getBytes());
 
 		assert(id != null);
 	}
   
   @Test
 	void testLogin() throws Exception {
-		// // Create a new user for testing
-		// Users testUser = new Users();
-		// testUser.setUsername("testuser");
-		// testUser.setPassword("password123");
+		// Create a new user for testing
+		Users testUser = new Users();
+		testUser.setUsername("testuser");
+		testUser.setPassword("password123");
 		
 
-		// // Perform the login request
-		// MvcResult result = mockMvc.perform(post("/login")
-		// 		.contentType(MediaType.APPLICATION_JSON)
-		// 		.content("{\"username\":\"testuser\", \"password\":\"password123\"}"))
-		// 		.andExpect(status().isOk())
-		// 		.andReturn();
+		// Perform the login request
+		MvcResult result = mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"username\":\"testuser\", \"password\":\"password123\"}"))
+				.andExpect(status().isOk())
+				.andReturn();
 
-		// // Validate the response
-		// String responseContent = result.getResponse().getContentAsString();
-		// assertEquals(true, responseContent.contains("token"));
-		// assertEquals(true, responseContent.contains("userID"));
-		// assertEquals(true, responseContent.contains("username"));
+		// Validate the response
+		String responseContent = result.getResponse().getContentAsString();
+		assertEquals(true, responseContent.contains("token"));
+		assertEquals(true, responseContent.contains("userID"));
+		assertEquals(true, responseContent.contains("username"));
 	}
 }
