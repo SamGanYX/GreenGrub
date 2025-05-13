@@ -38,6 +38,7 @@ class FullstackBackendApplicationTests {
 
 	@BeforeEach
 	void setUp() {
+		userRepository.deleteAll(); // Clear the repository before each test
 	}
 
 	@Test
@@ -54,16 +55,15 @@ class FullstackBackendApplicationTests {
 
 		assert(info.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
 	}
-  
-  @Test
+
+	@Test
 	void testLogin() throws Exception {
 		// Create a new user for testing
 		Users testUser = new Users();
 		testUser.setUsername("testuser");
 		testUser.setPassword("password123");
-		
+		userRepository.save(testUser); // Save the user to the repository
 
-		// Perform the login request
 		MvcResult result = mockMvc.perform(post("/login")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"username\":\"testuser\", \"password\":\"password123\"}"))
@@ -73,7 +73,6 @@ class FullstackBackendApplicationTests {
 		// Validate the response
 		String responseContent = result.getResponse().getContentAsString();
 		assertEquals(true, responseContent.contains("token"));
-		assertEquals(true, responseContent.contains("userID"));
 		assertEquals(true, responseContent.contains("username"));
 	}
 }

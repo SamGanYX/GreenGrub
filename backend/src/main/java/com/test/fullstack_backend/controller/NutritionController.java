@@ -39,21 +39,21 @@ public class NutritionController {
         String formBody = "grant_type=client_credentials&scope= barcode";
 
         return restClient.post()
-            .uri("/connect/token")
-            .body(formBody)
-            .retrieve()
-            .body(FatSecretAccessToken.class);
+                .uri("/connect/token")
+                .body(formBody)
+                .retrieve()
+                .body(FatSecretAccessToken.class);
     }
 
     public FoodNutrition getNutritionFromId(String accessToken, String foodId) {
 
         RestClient client = RestClient.builder()
-            .baseUrl("https://platform.fatsecret.com/rest/server.api")
-            .defaultHeaders(headers -> {
-                headers.setBearerAuth(accessToken); // Sets "Authorization: Bearer <token>"
-                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); // Sets correct Content-Type
-            })
-            .build();
+                .baseUrl("https://platform.fatsecret.com/rest/server.api")
+                .defaultHeaders(headers -> {
+                    headers.setBearerAuth(accessToken); // Sets "Authorization: Bearer <token>"
+                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); // Sets correct Content-Type
+                })
+                .build();
 
         String body = "method=food.get&food_id=" + foodId + "&format=json";
 
