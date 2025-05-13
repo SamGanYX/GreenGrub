@@ -33,7 +33,7 @@ public class NutritionController {
             .requestInterceptor(new BasicAuthenticationInterceptor(clientId, clientSecret))
             .defaultHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .build();
-        String formBody = "grant_type=client_credentials&scope=basic";
+        String formBody = "grant_type=client_credentials&scope= barcode";
 
         return restClient.post()
             .uri("/connect/token")
