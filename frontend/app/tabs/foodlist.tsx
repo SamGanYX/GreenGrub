@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function FoodListPage() {
+  const navigation = useNavigation();
+
   const data = ['Nutela', 'apple'];
 
   const preferences = ['Climate Score', 'Not Yet Ready'];
@@ -10,10 +13,13 @@ export default function FoodListPage() {
 
   const handleScan = () => {
     // goes back to camera page
+    navigation.navigate('camera')
   };
 
   const handleFinish = () => {
     // goes to HYPOTHETICAL finish page
+    navigation.navigate('finish')
+    
   };
 
   return (
