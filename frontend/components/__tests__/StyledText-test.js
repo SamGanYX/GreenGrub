@@ -5,6 +5,10 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import { MonoText } from '../StyledText';
 
+jest.mock('expo', () => ({
+  put: jest.fn(),
+}));
+
 describe('MonoText', () => {
   it('renders correctly', () => {
     const { toJSON } = render(<MonoText>Snapshot test!</MonoText>);
