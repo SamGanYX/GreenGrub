@@ -1,4 +1,4 @@
-name: Java CI with Maven and Frontend Tests
+name: CI with Maven and Frontend Tests
 
 on:
   push:
@@ -41,43 +41,64 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: mvn -B package --file backend/pom.xml
 
-      - name: Run backend tests
+      - name: Run tests
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: mvn -f backend/pom.xml test
 
-      - name: Run specific backend test
+      - name: Run specific test
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: mvn -f backend/pom.xml test -Dtest=FullstackBackendApplicationTests
 
+      # Add frontend test steps for Expo
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "16"
           cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
 
       - name: Install frontend dependencies
-        working-directory: ./frontend
         run: npm ci
 
       - name: Install jest-expo latest version and required dependencies
         run: npm install -D jest-expo@latest react-native-mock-render jest-environment-jsdom
 
-      - name: Create Jest setup file
+      - name: Create Jest setup and config files
         run: |
+          # Create Jest setup file
           echo "global.FormData = class FormData {};" > jest.setup.js
           echo "jest.mock('react-native', () => require('react-native-mock-render'));" >> jest.setup.js
+
+          # Create Jest config file
+          cat > jest.config.js << 'EOL'
+          module.exports = {
+            preset: 'jest-expo',
+            transformIgnorePatterns: [
+              'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)'
+            ],
+            collectCoverage: true,
+            collectCoverageFrom: [
+              '**/*.{js,jsx}',
+              '!**/coverage/**',
+              '!**/node_modules/**',
+              '!**/babel.config.js',
+              '!**/jest.setup.js'
+            ],
+            setupFiles: [
+              './jest.setup.js'
+            ]
+          };
+          EOL
 
       - name: Run frontend tests with Expo setup
         env:
           NODE_OPTIONS: --experimental-vm-modules
-        run: npx jest --config=jest.config.js --setupFiles=./jest.setup.js --watchAll=false
+        run: npx jest --watchAll=false
 
       - name: Generate dependency graph manually
         continue-on-error: true
