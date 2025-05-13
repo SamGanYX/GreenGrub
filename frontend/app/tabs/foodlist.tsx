@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import axios from "axios";
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
+import { View, Text, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export default function FoodListPage() {
   const data = ['Nutela', 'apple'];
@@ -12,9 +9,11 @@ export default function FoodListPage() {
   const [selected, setSelected] = useState<string | null>(null);
 
   const handleScan = () => {
+    // goes back to camera page
   };
 
   const handleFinish = () => {
+    // goes to HYPOTHETICAL finish page
   };
 
   return (
