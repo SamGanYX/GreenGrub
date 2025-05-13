@@ -66,9 +66,18 @@ jobs:
         working-directory: ./frontend
         run: npm ci
 
-      - name: Run frontend tests
-        working-directory: ./frontend
-        run: npm test -- --watchAll=false
+      - name: Install jest-expo latest version and required dependencies
+        run: npm install -D jest-expo@latest react-native-mock-render jest-environment-jsdom
+
+      - name: Create Jest setup file
+        run: |
+          echo "global.FormData = class FormData {};" > jest.setup.js
+          echo "jest.mock('react-native', () => require('react-native-mock-render'));" >> jest.setup.js
+
+      - name: Run frontend tests with Expo setup
+        env:
+          NODE_OPTIONS: --experimental-vm-modules
+        run: npx jest --config=jest.config.js --setupFiles=./jest.setup.js --watchAll=false
 
       - name: Generate dependency graph manually
         continue-on-error: true
