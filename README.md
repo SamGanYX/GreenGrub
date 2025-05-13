@@ -31,5 +31,6 @@
 - **Navigation**: Can navigate from login page to scanning page to Foods Listed page to Food information fluidly.
 ## ⚠️ Risks
 
+
 - Emissions data for processed foods is hard to calculate.
 - Solution: Use **relative scoring** based on key ingredients instead of exact carbon values. Over time we can modify the algorithm to be more accurate.
