@@ -1,10 +1,12 @@
 
 import { StyleSheet, Pressable } from 'react-native';
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { Text, View } from '@/components/Themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to GreenGrub</Text>
@@ -12,7 +14,7 @@ export default function HomeScreen() {
       <View style={styles.buttonsContainer}>
         <Pressable
           style={styles.button}
-          onPress={() => router.push('/login')}
+          onPress={() => navigation.navigate('login')}
         >
           <FontAwesome name="user" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Login</Text>
@@ -20,7 +22,7 @@ export default function HomeScreen() {
 
         <Pressable
           style={styles.button}
-          onPress={() => router.push('/camera')}
+          onPress={() => navigation.navigate('camera')}
         >
           <FontAwesome name="camera" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Scan Product</Text>
