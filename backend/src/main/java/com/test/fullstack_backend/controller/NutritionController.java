@@ -3,6 +3,8 @@ package com.test.fullstack_backend.controller;
 import java.net.http.HttpHeaders;
 import java.util.*;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +32,10 @@ public class NutritionController {
 
         String clientId = System.getenv("FATSECRET_CLIENT_API_KEY");
         String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET_API_KEY");
+        
+        if (clientId == null || clientSecret == null) {
+            throw new RuntimeErrorException(null, "Fat Secret API keys not set as env variables");
+        }
 
         RestClient restClient = RestClient.builder()
             .baseUrl("https://oauth.fatsecret.com")
