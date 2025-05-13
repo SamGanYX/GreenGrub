@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.fullstack_backend.model.FatSecretAccessToken;
+import com.test.fullstack_backend.model.FoodNutrition;
 import com.test.fullstack_backend.repository.UserRepository;
 
 @RestController
@@ -44,7 +45,7 @@ public class NutritionController {
             .body(FatSecretAccessToken.class);
     }
 
-    public String getNutritionFromId(String accessToken, String foodId) {
+    public FoodNutrition getNutritionFromId(String accessToken, String foodId) {
 
         RestClient client = RestClient.builder()
             .baseUrl("https://platform.fatsecret.com/rest/server.api")
@@ -59,31 +60,31 @@ public class NutritionController {
         return client.post()
             .body(body)
             .retrieve()
-            .body(String.class);
+            .body(FoodNutrition.class);
     }
 
     public String getIdFromBarcode(String accessToken, String barcode) {
-    RestClient client = RestClient.builder()
-        .baseUrl("https://platform.fatsecret.com/rest/server.api")
-        .defaultHeaders(headers -> {
-            headers.setBearerAuth(accessToken);
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        })
-        .build();
+        RestClient client = RestClient.builder()
+            .baseUrl("https://platform.fatsecret.com/rest/server.api")
+            .defaultHeaders(headers -> {
+                headers.setBearerAuth(accessToken);
+                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            })
+            .build();
 
-    String body = "method=food.find_id_for_barcode&barcode=" + barcode + "&format=json";
-    
-    String jsonResponse = client.post()
-        .body(body)
-        .retrieve()
-        .body(String.class);
+        String body = "method=food.find_id_for_barcode&barcode=" + barcode + "&format=json";
+        
+        String jsonResponse = client.post()
+            .body(body)
+            .retrieve()
+            .body(String.class);
 
-    try {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(jsonResponse);
-        return root.path("food_id").path("value").asText();
-    } catch (Exception e) {
-        throw new RuntimeException("Failed to parse food_id from response: " + jsonResponse, e);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(jsonResponse);
+            return root.path("food_id").path("value").asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse food_id from response: " + jsonResponse, e);
+        }
     }
-}
 }
