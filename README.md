@@ -22,6 +22,14 @@
 - **SpringBoot** for backend.
 - **Nutrition APIs** + custom/third-party emissions database such as **fatsecret**.
 
+## Operational Usecases
+
+- **User Login**: User can log into app via setting a username and password. 
+- **Scanning Barcodes**: Can scan the barcodes of foods and add them to the list of foods that the user wants information of.
+- **Selective Listing**: Can choose to remove any unwanted/old scanned foods on the list; gives the user the option to update the list however they want.
+- **Climate Information**: User can obtain climate impact information regarding the foods they scanned and have on their list.
+- **Navigation**: Can navigate from login page to scanning page to Foods Listed page to Food information fluidly.
+
 ## ⚠️ Risks
 
 - Emissions data for processed foods is hard to calculate.
