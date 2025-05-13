@@ -1,2 +1,9 @@
+*.class
 .vscode/settings.json
 /.vscode
+.bashrc
+.env
+backend/src/test/resources/application.properties
+backend/src/test/resources/application.properties
+backend/target/test-classes/application.properties
+backend/NutritionResponse.txt
