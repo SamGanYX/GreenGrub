@@ -32,7 +32,7 @@
 - Clone the repository
 - Make sure you have Git, Node, Expo, Maven, Java, and Typescript installed
 - In the backend folder create a .bashrc file. This file has all our secret keys so we will refrain from posting these
-- In bash type source .bashrc
+- In bash type source .bashrc for Mac, and use git bash for Windows
 - In the backend folder this line will run the backend: mvn spring-boot:run
 - In the frontend folder this line will run the frontend: npm install; npm start
 - To test backend type "mvn test" in the backend folder
