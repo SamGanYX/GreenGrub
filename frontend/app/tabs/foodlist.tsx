@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, Pressable} from 'react-native';
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import styles from '../../components/styles';
+
 
 export default function FoodListPage() {
-  const data = ['Nutela', 'apple'];
+  const data = ['Nutela', 'apple', 'Coke'];
 
   const preferences = ['Climate Score', 'Not Yet Ready'];
 
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selectedPreference, setSelectedPreference] = useState(preferences[0]);
+  const [showOptions, setShowOptions] = useState(false);
+
+  const handleSelect = (preference: string) => {
+    setSelectedPreference(preference);
+    setShowOptions(false);
+  };
 
   const handleScan = () => {
   };
@@ -19,6 +28,13 @@ export default function FoodListPage() {
 
   return (
     <View style={styles.container}>
+      <Pressable
+          style={styles.swapModeButton}
+          onPress={handleScan}
+        >
+          <FontAwesome name="camera" size={24} color="white" style={styles.icon} />
+          <Text style={styles.buttonText}>Scan More</Text>
+        </Pressable>
       <Text style={styles.title}>Added Foods:</Text> 
       <View>
       {data.map((item, index) => (
@@ -27,32 +43,16 @@ export default function FoodListPage() {
         </Text>
       ))}
       </View>
-      <View>
-        {preferences.map((preference, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.option}
-            onPress={() => setSelected(preference)}
-          >
-            <View style={styles.circle}>
-              {selected === preference && <View style={styles.innerCircle} />}
-            </View>
-            <Text style={styles.label}>{preference}</Text>
-          </TouchableOpacity>
-        ))}
-        <Text style={{ marginTop: 20 }}>
-          Selected: {selected ? selected : 'None'}
-        </Text>
-      </View>
 
       
+      <TouchableOpacity style={styles.button} onPress={handleFinish}>
+        <Text style={styles.buttonText}> {'Finish and Compare'} </Text>
+      </TouchableOpacity>
       
-      <Button title= 'Scan More Items' onPress={handleScan} />
-      <Button title= 'Finish and Compare' onPress={handleFinish} />
     </View>
   );
 };
-
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
     height: 10, width: 10, borderRadius: 5, backgroundColor: '#007AFF'
   },
   label: { marginLeft: 12, fontSize: 16 },
-});
+});*/

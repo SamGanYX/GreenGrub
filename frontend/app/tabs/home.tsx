@@ -3,6 +3,7 @@ import { StyleSheet, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { Text, View } from '@/components/Themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import styles from '../../components/styles';
 
 export default function HomeScreen() {
   return (
@@ -29,7 +30,7 @@ export default function HomeScreen() {
     </View>
   );
 }
-
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -62,4 +63,4 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   }
-});
+});*/
