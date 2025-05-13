@@ -81,6 +81,10 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
+      - name: Install other dependencies (backup)
+        working-directory: ./frontend
+        run: npm install --save-dev @testing-library/react-native
+
       - name: Run frontend tests
         working-directory: ./frontend
         run: npm test
