@@ -2,10 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Text } from '../Themed'; // Adjust path if needed
 
-jest.mock('expo', () => ({
-  put: jest.fn(),
-}));
-
 describe('Themed.Text', () => {
   it('renders correctly with default theme colors', () => {
     const { toJSON } = render(<Text>This is themed text</Text>);
