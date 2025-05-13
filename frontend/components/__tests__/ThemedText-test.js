@@ -1,3 +1,6 @@
+// @ts-ignore
+global.FormData = require('react-native/Libraries/Network/FormData');
+
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Text } from '../Themed'; // Adjust path if needed
@@ -19,9 +22,3 @@ describe('Themed.Text', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 });
-
-function FormDataMock() {
-  this.append = jest.fn();
-}
-
-global.FormData = FormDataMock
