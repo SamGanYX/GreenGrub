@@ -9,3 +9,9 @@ describe('MonoText', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 });
+
+function FormDataMock() {
+  this.append = jest.fn();
+}
+
+global.FormData = FormDataMock

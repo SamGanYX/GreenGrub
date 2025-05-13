@@ -19,3 +19,9 @@ describe('Themed.Text', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 });
+
+function FormDataMock() {
+  this.append = jest.fn();
+}
+
+global.FormData = FormDataMock
