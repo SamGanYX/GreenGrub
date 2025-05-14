@@ -22,7 +22,7 @@ export default function TabTwoScreen() {
 
     const loadUsers= async () => {
       // console.log('axios:', axios);
-      const result = await axios.get("http://localhost:8080/users");
+      const result = await axios.get("http://192.227.148.23:9999/users");
       setUsers(result.data);
     }
     loadUsers();

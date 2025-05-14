@@ -63,7 +63,7 @@ export default function App() {
   
     try {
       // Update the fetch call to the new API endpoint
-      const res = await fetch(`http://192.168.64.1:8080/api/food/product/${gtin13}`, {
+      const res = await fetch(`http://192.227.148.23:9999/api/food/product/${gtin13}`, {
         method: 'GET',
         // No need for Authorization header
       });
@@ -73,8 +73,8 @@ export default function App() {
       const json = await res.json();
       console.log(json);
   
-      const food_name = json?.food?.food_id || 'Unknown';
-      Alert.alert('Food Found', `ID: ${food_name}`);
+      const food_name = json?.product?.product_name || 'Unknown';
+      // Alert.alert('Food Found', `ID: ${food_name}`);
       setFoodName(food_name);
     } catch (err) {
       console.error(err);
