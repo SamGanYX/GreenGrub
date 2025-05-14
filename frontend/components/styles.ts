@@ -72,6 +72,14 @@ const styles = StyleSheet.create({
     width: '80%',           // optional: control width
     alignSelf: 'center',    // center if needed
   },
+  listContainer: {
+    paddingBottom: 20,
+  },
+  itemText: {
+    fontSize: 16,
+    marginBottom: 15,
+    color: '#333',
+  },
 });
 
 export default styles;

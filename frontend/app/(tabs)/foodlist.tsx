@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import styles from '../../components/styles';
-
+import { router } from 'expo-router';
 
 export default function FoodListPage() {
   const data = ['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box'];
@@ -23,7 +23,12 @@ export default function FoodListPage() {
   const handleScan = () => {
   };
 
+  const handlePreference = () => {
+    router.push('/preferences');
+  };
+
   const handleFinish = () => {
+    router.push('/finish');
   };
 
   return (
@@ -44,7 +49,9 @@ export default function FoodListPage() {
       ))}
       </View>
 
-      
+      <TouchableOpacity style={styles.button} onPress={handlePreference}>
+        <Text style={styles.buttonText}> {'Change Preference'} </Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleFinish}>
         <Text style={styles.buttonText}> {'Finish and Compare'} </Text>
       </TouchableOpacity>
