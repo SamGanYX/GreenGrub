@@ -28,6 +28,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 15,
     borderRadius: 10,
+    
+  },
+  foodItem: {
+    backgroundColor: 'lightgreen',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   buttonsContainer: {
     width: '100%',
@@ -59,14 +71,6 @@ const styles = StyleSheet.create({
     left: 50,               // adjust X position
     width: '80%',           // optional: control width
     alignSelf: 'center',    // center if needed
-  },
-  dropdownButton: {
-    backgroundColor: 'white',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'gray',
   },
 });
 

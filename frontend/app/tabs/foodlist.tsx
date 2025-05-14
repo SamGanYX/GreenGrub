@@ -8,7 +8,7 @@ import styles from '../../components/styles';
 
 
 export default function FoodListPage() {
-  const data = ['Nutela', 'apple', 'Coke'];
+  const data = ['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box'];
 
   const preferences = ['Climate Score', 'Not Yet Ready'];
 
@@ -38,7 +38,7 @@ export default function FoodListPage() {
       <Text style={styles.title}>Added Foods:</Text> 
       <View>
       {data.map((item, index) => (
-        <Text key={index} style={{ fontSize: 18, marginVertical: 4 }}>
+        <Text key={index} style={styles.foodItem}>
           {item}
         </Text>
       ))}
