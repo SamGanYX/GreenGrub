@@ -24,10 +24,11 @@ export default function FoodListPage() {
   };
 
   const handlePreference = () => {
-    router.push('preferences');
+    router.push('/preferences');
   };
 
   const handleFinish = () => {
+    router.push('/finish');
   };
 
   return (
@@ -48,7 +49,7 @@ export default function FoodListPage() {
       ))}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleFinish}>
+      <TouchableOpacity style={styles.button} onPress={handlePreference}>
         <Text style={styles.buttonText}> {'Change Preference'} </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleFinish}>

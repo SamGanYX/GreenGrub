@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import styles from '../../components/styles';
+import { router } from 'expo-router';
 
 export default function FinishPage() {
   const climateScores = [
@@ -8,6 +9,7 @@ export default function FinishPage() {
     "2. Pasta Roni Shells & White Cheddar 6.2 Ounce Paper Box: 4.12",
   ];
   const handleFoodList = () => {
+    router.push('foodlist');
   };
 
   return (
