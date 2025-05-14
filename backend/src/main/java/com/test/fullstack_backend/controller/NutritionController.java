@@ -30,8 +30,8 @@ public class NutritionController {
 
     public FatSecretAccessToken getAccessToken() {
 
-        String clientId = System.getenv("FATSECRET_CLIENT_API_KEY");
-        String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET_API_KEY");
+        String clientId = System.getenv("FATSECRET_CLIENT_ID");
+        String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET");
         
         if (clientId == null || clientSecret == null) {
             throw new RuntimeErrorException(null, "Fat Secret API keys not set as env variables");
