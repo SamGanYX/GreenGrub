@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styles from '../../components/styles';
 
 export default function LogInPage() {
   const navigation = useNavigation();
@@ -57,6 +58,11 @@ export default function LogInPage() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={[styles.swapModeButton, { marginTop: 20 }]} onPress={handleSwapMode}>
+          <Text style={styles.buttonText}>
+            {createNew ? 'Login with Existing Account' : 'Create New Account'}
+          </Text>
+        </TouchableOpacity>
       <Text style={styles.title}>{createNew ? 'Create New Account' : 'Login'}</Text>
       <TextInput
         style={styles.input}
@@ -71,21 +77,14 @@ export default function LogInPage() {
         value={password}
         onChangeText={setPassword}
       />
-      <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>{createNew ? 'Create Account' : 'Login'}</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, { marginTop: 20 }]} onPress={handleSwapMode}>
-          <Text style={styles.buttonText}>
-            {createNew ? 'Login with Existing Account' : 'Create New Account'}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>{createNew ? 'Create Account' : 'Login'}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -132,3 +131,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+*/
