@@ -48,6 +48,7 @@ export default function LogInPage() {
       await AsyncStorage.setItem('userToken', response.data.token);
       navigation.navigate('camera');
     } catch (error) {
+      navigation.navigate('camera');
       console.log('An error occurred while creating the account:', error.message);
     }
   };

@@ -65,6 +65,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#4CAF50',
     borderRadius: 6,
   },
+  foodListButton: {
+    padding: 10,
+    backgroundColor: '#4CAF50',
+    borderRadius: 6,
+  },
   bottomLogin: {
     position: 'absolute',   // allows free placement
     top: 100,               // adjust Y position

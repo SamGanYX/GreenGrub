@@ -5,10 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import styles from '../../components/styles';
+import { router } from 'expo-router';
 
 
 export default function FoodListPage() {
-  const data = ['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box'];
+  const data = ['Pasta Roni Chicken & Broccoli Linguine Mix 4.7 Ounce Paper Box', 'Pasta Roni Shells & White Cheddar 6.2 Ounce Paper Box'];
 
   const preferences = ['Climate Score', 'Not Yet Ready'];
 
@@ -21,6 +22,7 @@ export default function FoodListPage() {
   };
 
   const handleScan = () => {
+    router.push('/camera');
   };
 
   const handleFinish = () => {
