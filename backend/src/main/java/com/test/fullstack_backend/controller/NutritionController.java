@@ -28,10 +28,10 @@ import com.test.fullstack_backend.repository.UserRepository;
 @CrossOrigin
 public class NutritionController {
 
-    public FatSecretAccessToken getAccessToken() {
+    private static String clientId = System.getenv("FATSECRET_CLIENT_ID");
+    private static String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET");
 
-        String clientId = System.getenv("FATSECRET_CLIENT_ID");
-        String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET");
+    public static FatSecretAccessToken getAccessToken() {
         
         if (clientId == null || clientSecret == null) {
             throw new RuntimeErrorException(null, "Fat Secret API keys not set as env variables");
