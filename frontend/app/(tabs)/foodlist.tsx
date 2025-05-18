@@ -59,33 +59,3 @@ export default function FoodListPage() {
     </View>
   );
 };
-/*
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  option: { flexDirection: 'row', alignItems: 'center', marginVertical: 8 },
-  circle: {
-    height: 20, width: 20, borderRadius: 10,
-    borderWidth: 2, borderColor: '#007AFF', alignItems: 'center', justifyContent: 'center'
-  },
-  innerCircle: {
-    height: 10, width: 10, borderRadius: 5, backgroundColor: '#007AFF'
-  },
-  label: { marginLeft: 12, fontSize: 16 },
-});*/
