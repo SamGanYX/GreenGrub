@@ -51,7 +51,7 @@ public class NutritionController {
                 .body(FatSecretAccessToken.class);
     }
 
-    public FoodNutrition getNutritionFromId(String accessToken, String foodId) {
+    public static FoodNutrition getNutritionFromId(String accessToken, String foodId) {
 
         RestClient client = RestClient.builder()
                 .baseUrl("https://platform.fatsecret.com/rest/server.api")
@@ -69,7 +69,7 @@ public class NutritionController {
             .body(FoodNutrition.class);
     }
 
-    public String getIdFromBarcode(String accessToken, String barcode) {
+    public static String getIdFromBarcode(String accessToken, String barcode) {
         RestClient client = RestClient.builder()
             .baseUrl("https://platform.fatsecret.com/rest/server.api")
             .defaultHeaders(headers -> {
