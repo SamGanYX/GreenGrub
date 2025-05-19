@@ -12,7 +12,10 @@ export default function LogInPage() {
   const [password, setPassword] = useState('');
   const [createNew, setCreateNew] = useState(false);
 
+
   useEffect(() => {
+    const token = AsyncStorage.getItem('userToken');
+    console.log(token);
     const checkLoginStatus = async () => {
       const userToken = await AsyncStorage.getItem('userToken');
       if (userToken) {
@@ -32,7 +35,7 @@ export default function LogInPage() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/login', { username, password });
+      const response = await axios.post('http://18.191.105.213:8080/login', { username, password });
       console.log('Login successful:', response.data);
       await AsyncStorage.setItem('userToken', response.data.token);
       navigation.navigate('camera');
@@ -43,7 +46,7 @@ export default function LogInPage() {
 
   const handleCreateAccount = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/create_account', { username, password });
+      const response = await axios.post('http://18.191.105.213:8080/create_account', { username, password });
       console.log("Account created successfully");
       await AsyncStorage.setItem('userToken', response.data.token);
       navigation.navigate('camera');
