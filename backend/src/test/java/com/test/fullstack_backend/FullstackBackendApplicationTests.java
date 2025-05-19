@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import com.test.fullstack_backend.controller.NutritionController;
 import com.test.fullstack_backend.controller.UserController;
 import com.test.fullstack_backend.model.FatSecretAccessToken;
+import com.test.fullstack_backend.model.FoodNutrition;
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,13 +47,13 @@ class FullstackBackendApplicationTests {
 
 	@Test
 	void testFatSecretAccessToken() throws IOException {
-		// NutritionController controller = new NutritionController();
-		// FatSecretAccessToken token = controller.getAccessToken();
+		NutritionController controller = new NutritionController();
+		FatSecretAccessToken token = controller.getAccessToken();
+		String id = controller.getIdFromBarcode(token.getAccess_token(), "0041570054161");
+		FoodNutrition info = controller.getNutritionFromId(token.getAccess_token(), id);
+		Files.write(Paths.get("NutritionResponse.txt"), info.getFood().getFoodName().getBytes());
 
-		// String id = controller.getIdFromBarcode(token.getAccess_token(),
-		// "3017620422003");
-		// String info = controller.getNutritionFromId(token.getAccess_token(), id);
-		// Files.write(Paths.get("NutritionResponse.txt"), info.getBytes());
+		assert(info.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
 	}
 
 	@Test

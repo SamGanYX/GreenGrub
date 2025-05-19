@@ -1,5 +1,5 @@
 
-import { Pressable } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { Text, View } from '@/components/Themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
