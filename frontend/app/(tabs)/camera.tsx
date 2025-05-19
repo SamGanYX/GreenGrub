@@ -1,7 +1,7 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
 import { Button, Text, TouchableOpacity, View } from 'react-native';
-import { styles } from './camera_styles';
+import { styles } from '../../components/camera_styles';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
