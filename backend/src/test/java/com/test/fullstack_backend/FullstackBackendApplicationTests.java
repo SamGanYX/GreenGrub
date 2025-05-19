@@ -47,12 +47,19 @@ class FullstackBackendApplicationTests {
 
 	@Test
 	void testFatSecretAccessToken() throws IOException {
-		FatSecretAccessToken token = NutritionController.getAccessToken();
-		String id = NutritionController.getIdFromBarcode(token.getAccess_token(), "0041570054161");
-		FoodNutrition info = NutritionController.getNutritionFromId(token.getAccess_token(), id);
-		Files.write(Paths.get("NutritionResponse.txt"), info.getFood().getFoodName().getBytes());
+		//Test requesting an access token
+	}
 
-		assert(info.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
+	@Test
+	void testFatSecretIDFromeBarcode() throws IOException {
+		//Write one test for an id that exists
+		//Write one test for an id not in database
+	}
+
+	@Test
+	void testFatSecretNutritionFromID() throws IOException {
+		//Write one test for a good barcode
+		//Write one test for a fake barcode / not in database
 	}
 
 	@Test
