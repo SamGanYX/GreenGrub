@@ -13,10 +13,21 @@ All the project code is hosted in this GreenGrub directory so downloaded it is s
 ## Directory Structure
 
 We follow a standard directory layout for apps with a frontend and backend.
+This breakdown includes all the most important folders to know about.
 
-All code for the frontend, code that will visible on the client's computer, is in the frontend folder.
-All code for the backend , code that will be run on our AWS servers, is in the backend folder.
-
-TODO: FInish directory structure
+GREENGRUB/
+├── docs/              # User and developer documentation
+├── .github/           # GitHub-specific configurations (e.g., workflows)
+├── .vscode/           # VSCode-specific configurations (e.g., workflows)
+├── README.md          # Project overview and usage
+├── backend/           # Contains all backend source code
+    └──  src/          # Backend source code
+         ├── tests/         # Unit and integration tests for backend
+         └──  main/          # Contains backend folders for MVC architecture (model, controller, repository)
+└──  frontend/         # Contains all frontend source code
+     ├── app/              # Entry point and routing for the app (e.g., navigation, screens)
+     ├── assets/           # Static resources such as images, fonts, and icons
+     ├── components/       # Reusable UI components used across screens
+     └── constants/        # Centralized configuration (e.g., theme, colors, strings)
 
 ## How to build the software
