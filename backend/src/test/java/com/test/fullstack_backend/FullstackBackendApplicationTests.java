@@ -47,10 +47,9 @@ class FullstackBackendApplicationTests {
 
 	@Test
 	void testFatSecretAccessToken() throws IOException {
-		NutritionController controller = new NutritionController();
-		FatSecretAccessToken token = controller.getAccessToken();
-		String id = controller.getIdFromBarcode(token.getAccess_token(), "0041570054161");
-		FoodNutrition info = controller.getNutritionFromId(token.getAccess_token(), id);
+		FatSecretAccessToken token = NutritionController.getAccessToken();
+		String id = NutritionController.getIdFromBarcode(token.getAccess_token(), "0041570054161");
+		FoodNutrition info = NutritionController.getNutritionFromId(token.getAccess_token(), id);
 		Files.write(Paths.get("NutritionResponse.txt"), info.getFood().getFoodName().getBytes());
 
 		assert(info.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
