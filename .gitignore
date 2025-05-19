@@ -7,3 +7,5 @@ backend/src/test/resources/application.properties
 backend/src/test/resources/application.properties
 backend/target/test-classes/application.properties
 backend/NutritionResponse.txt
+/backend/target/maven-status/maven-compiler-plugin/compile/default-compile
+/backend/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile
