@@ -24,7 +24,7 @@
 
 ## Operational Usecases
 
-- **User Login**: User can log into app via setting a username and password. 
+- **User Login**: User can log into app via setting a username and password.
 - **Scanning Barcodes**: Can scan the barcodes of foods and add them to the list of foods that the user wants information of.
 - **Selective Listing**: Can choose to remove any unwanted/old scanned foods on the list; gives the user the option to update the list however they want.
 - **Climate Information**: User can obtain climate impact information regarding the foods they scanned and have on their list.
@@ -45,4 +45,3 @@
 - In the frontend folder this line will run the frontend: npm install; npm start
 - To test backend type "mvn test" in the backend folder
 - To test frontend type "npm run test" in the frontend folder
-
