@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files; // Add this import
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.test.fullstack_backend.controller.NutritionController;
 import com.test.fullstack_backend.controller.UserController;
 import com.test.fullstack_backend.model.FatSecretAccessToken;
@@ -16,18 +18,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.test.fullstack_backend.controller.FoodImpactController;
+import com.test.fullstack_backend.model.Users;
+import com.test.fullstack_backend.repository.UserRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource(properties = {
+		"spring.datasource.url=jdbc:h2:mem:testdb",
+		"spring.datasource.driverClassName=org.h2.Driver",
+		"spring.datasource.username=sa",
+		"spring.datasource.password=password",
+		"spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
+		"spring.jpa.hibernate.ddl-auto=create-drop"
+})
 class FullstackBackendApplicationTests {
 
 	@Autowired
@@ -54,6 +66,28 @@ class FullstackBackendApplicationTests {
 		Files.write(Paths.get("NutritionResponse.txt"), info.getFood().getFoodName().getBytes());
 
 		assert(info.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
+	}
+
+	@Test
+	void BryanNutritionTest() {
+		try {
+			// Example 1: Get product by barcode
+			String barcode = "3017620422003"; // Example barcode (Nutella)
+			String productInfo = FoodImpactController.getProductByBarcode(barcode);
+			assertNotNull(productInfo, "Product information should not be null");
+			System.out.println("Product Information:");
+			System.out.println(productInfo);
+			Files.write(Paths.get("FoodImpactResponse.txt"), productInfo.getBytes());
+			// Example 2: Search for products
+			String searchTerm = "chocolate";
+			String searchResults = FoodImpactController.searchProducts(searchTerm);
+			assertNotNull(searchResults, "Search results should not be null");
+			System.out.println("\nSearch Results for '" + searchTerm + "':");
+			System.out.println(searchResults);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new AssertionError("Test failed with exception: " + e.getMessage());
+		}
 	}
 
 	@Test
