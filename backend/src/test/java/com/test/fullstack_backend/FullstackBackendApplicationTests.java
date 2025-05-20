@@ -56,6 +56,60 @@ class FullstackBackendApplicationTests {
 		assert(info.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
 	}
 
+	public class OpenFoodFactsProductTest {
+
+		@Test
+		public void testDeserialization() throws Exception {
+			String json = """
+			{
+			"product": {
+				"product_name": "Organic Banana",
+				"brands": "Nature's Pride",
+				"code": "1234567890123",
+				"ecoscore_grade": "a",
+				"ecoscore_score": 90,
+				"nutriments": {
+				"energy-kcal_100g": "89",
+				"fat_100g": "0.3",
+				"saturated-fat_100g": "0.1",
+				"sugars_100g": "12",
+				"salt_100g": "0.0",
+				"proteins_100g": "1.1"
+				},
+				"ecoscore_data": {
+				"agribalyse": {
+					"co2_total": "0.9",
+					"co2_total_unit": "kg"
+				}
+				}
+			}
+			}
+			""";
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			OpenFoodFactsProduct productWrapper = objectMapper.readValue(json, OpenFoodFactsProduct.class);
+			OpenFoodFactsProduct.Product product = productWrapper.getProduct();
+
+			assertNotNull(product);
+			assertEquals("Organic Banana", product.getProductName());
+			assertEquals("Nature's Pride", product.getBrands());
+			assertEquals("1234567890123", product.getBarcode());
+			assertEquals("a", product.getEcoscoreGrade());
+			assertEquals(90, product.getEcoscoreScore());
+
+			OpenFoodFactsProduct.Nutriments nutriments = product.getNutriments();
+			assertNotNull(nutriments);
+			assertEquals("89", nutriments.getEnergyKcal100g());
+			assertEquals("0.3", nutriments.getFat100g());
+			assertEquals("1.1", nutriments.getProteins100g());
+
+			OpenFoodFactsProduct.EcoscoreData ecoscoreData = product.getEcoscoreData();
+			assertNotNull(ecoscoreData);
+			assertEquals("0.9", ecoscoreData.getAgribalyse().getCo2Total());
+			assertEquals("kg", ecoscoreData.getAgribalyse().getCo2TotalUnit());
+		}
+	}
+
 	@Test
 	void testLogin() throws Exception {
 		// Create a new user for testing
