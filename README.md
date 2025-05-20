@@ -24,7 +24,7 @@
 
 ## Operational Usecases
 
-- **User Login**: User can log into app via setting a username and password. 
+- **User Login**: User can log into app via setting a username and password.
 - **Scanning Barcodes**: Can scan the barcodes of foods and add them to the list of foods that the user wants information of.
 - **Selective Listing**: Can choose to remove any unwanted/old scanned foods on the list; gives the user the option to update the list however they want.
 - **Climate Information**: User can obtain climate impact information regarding the foods they scanned and have on their list.
@@ -46,3 +46,41 @@
 - To test backend type "mvn test" in the backend folder
 - To test frontend type "npm run test" in the frontend folder
 
+## Other User Manual Information
+
+- **Installation & Setup**
+  Clone the repository
+  Create a .bashrc file in the backend folder with required API keys
+  Mac: source .bashrc
+  Windows: Use Git Bash for the same command
+
+- **Reporting Bugs**
+  Submit issues to our issue tracker with:
+  Clear title
+  Reproduction steps
+  Expected vs. actual behavior
+  Screenshots (if applicable)
+  Device model and OS version
+  App version
+  https://github.com/SamGanYX/GreenGrub/issues
+
+- **Feature Status**
+  Work in Progress Features include:
+- User reccomendation system
+- More flexibile comparison graphics
+
+- **Climate Impact Analysis**
+  Carbon footprint scoring
+  Water usage metrics
+  Land use impact
+  Sustainability comparisons
+
+- **Detailed Nutrition Information**
+  Complete nutritional breakdown
+  Allergen identification
+  Comparative health ratings
+
+- **Known Issues**
+  Currently working on local testing issues
+  Limited emissions data for some products
+  Barcode recognition issues in poor lighting
