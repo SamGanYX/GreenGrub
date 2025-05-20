@@ -46,3 +46,6 @@
 - To test backend type "mvn test" in the backend folder
 - To test frontend type "npm run test" in the frontend folder
 
+## Other Info
+
+- To view our developer docs and our user manual, navigate to the docs folder!
