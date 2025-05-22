@@ -28,9 +28,10 @@ Before installing GreenGrub, ensure you have the following tools installed:
 ### Installation Steps
 
 1. Clone the repository:
-git clone https://github.com/SamGanYX/GreenGrub.git
+   git clone https://github.com/SamGanYX/GreenGrub.git
 
 2. Backend Setup:
+
 - Navigate to the backend folder
 - Create a `.bashrc` file with the required API keys
 - Run the following command:
@@ -40,10 +41,12 @@ git clone https://github.com/SamGanYX/GreenGrub.git
 ## Running the Software
 
 1. **Start the Backend**:
+
 - Navigate to the backend folder
 - Run: `mvn spring-boot:run`
 
 2. **Start the Frontend**:
+
 - Navigate to the frontend folder
 - Run: `npm install; npm start`
 
@@ -52,23 +55,28 @@ git clone https://github.com/SamGanYX/GreenGrub.git
 ## How to Use GreenGrub
 
 ### User Login
+
 1. Open the GreenGrub application
 2. Set a username and password to create an account or log in with existing credentials
 
 ### Scanning Barcodes
+
 1. Navigate to the scanning page
 2. Point your camera at a food product's barcode
 3. Hold steady until the app successfully scans the barcode
 4. The scanned item will be added to your food list
 
 ### Managing Your Food List
+
 1. View all scanned food items on the Food List page
 2. Remove unwanted or old scanned foods by selecting the remove option
 3. Keep your list updated with current items of interest
 
 ### Viewing Climate & Nutrition Information
+
 1. Select any food item from your list
 2. View detailed information including:
+
 - Carbon footprint scoring (Work in Progress)
 - Water usage metrics (Work in Progress)
 - Land use impact (Work in Progress)
@@ -78,20 +86,18 @@ git clone https://github.com/SamGanYX/GreenGrub.git
 - Comparative health ratings (Work in Progress)
 
 ### Navigation
+
 The app provides fluid navigation between:
+
 - Login page
 - Scanning page
 - Foods List page
 - Food Information page
 
-## Testing
-
-- To test the backend: Navigate to the backend folder and run `mvn test`
-- To test the frontend: Navigate to the frontend folder and run `npm run test`
-
 ## Work in Progress Features
 
 The following features are currently under development:
+
 - User recommendation system
 - More flexible comparison graphics
 - Detailed climate impact analysis
@@ -111,6 +117,7 @@ If you encounter any issues while using GreenGrub, please report them through ou
 https://github.com/SamGanYX/GreenGrub/issues
 
 When submitting a bug report, please include:
+
 - A clear, descriptive title
 - Detailed steps to reproduce the issue
 - Expected behavior vs. actual behavior
@@ -119,4 +126,3 @@ When submitting a bug report, please include:
 - App version number
 
 Your feedback helps us improve GreenGrub for everyone!
-
