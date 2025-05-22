@@ -1,25 +1,21 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react-native';
 import { Text } from '../Themed'; // Adjust path if needed
 
 describe('Themed.Text', () => {
   it('renders correctly with default theme colors', () => {
-    const tree = renderer
-      .create(<Text>This is themed text</Text>)
-      .toJSON();
+    const { toJSON } = render(<Text>This is themed text</Text>);
 
-    expect(tree).toMatchSnapshot();
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('applies custom light and dark colors when provided', () => {
-    const tree = renderer
-      .create(
-        <Text lightColor="#000000" darkColor="#ffffff">
-          Custom colored text
-        </Text>
-      )
-      .toJSON();
+    const { toJSON } = render(
+      <Text lightColor="#000000" darkColor="#ffffff">
+        Custom colored text
+      </Text>
+    );
 
-    expect(tree).toMatchSnapshot();
+    expect(toJSON()).toMatchSnapshot();
   });
 });
