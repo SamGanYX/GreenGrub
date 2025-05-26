@@ -3,7 +3,8 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from '../../components/styles';
+import styles from '../components/styles';
+import { router } from 'expo-router';
 
 export default function LogInPage() {
   const navigation = useNavigation();
@@ -19,7 +20,7 @@ export default function LogInPage() {
     const checkLoginStatus = async () => {
       const userToken = await AsyncStorage.getItem('userToken');
       if (userToken) {
-        navigation.navigate('camera');
+        router.push('/camera');
       }
     };
     checkLoginStatus();
@@ -38,7 +39,7 @@ export default function LogInPage() {
       const response = await axios.post('http://18.191.105.213:8080/login', { username, password });
       console.log('Login successful:', response.data);
       await AsyncStorage.setItem('userToken', response.data.token);
-      navigation.navigate('camera');
+      router.push('/camera');
     } catch (error) {
       console.log('An error occurred during login:', error.message);
     }
@@ -49,7 +50,7 @@ export default function LogInPage() {
       const response = await axios.post('http://18.191.105.213:8080/create_account', { username, password });
       console.log("Account created successfully");
       await AsyncStorage.setItem('userToken', response.data.token);
-      navigation.navigate('camera');
+      router.push('/camera');
     } catch (error) {
       console.log('An error occurred while creating the account:', error.message);
     }

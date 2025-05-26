@@ -8,7 +8,7 @@ All the project code is hosted in this GreenGrub directory so downloaded it is s
 
 - In command prompt navigate to the directory you want the code in.  
 - Type the following command:  
- > git clone https://github.com/SamGanYX/GreenGrub.git
+ > `git clone https://github.com/SamGanYX/GreenGrub.git`
 
 > **Important Note:** The code has several secret Keys for our database and APIs for the code to run you will need to set one up in the frontend and backend folder and contact us to get access to these.
 
@@ -37,25 +37,25 @@ GREENGRUB/
 To build the backend:
 - Navigate to the backend folder.
 - Run the following command:
-> mvn spring-boot:run (if maven is installed globally)
-> ./mvnw spring-boot:run (otherwise)
+> `mvn spring-boot:run` (if maven is installed globally)
+> `./mvnw spring-boot:run` (otherwise)
 
 To build the frontend:
 - Navigate to the frontend folder.
 - Run the following command:
-> npm start
+> `npm start`
 
 ## Running the tests
 
 To run the backend tests:
 - Naviage to the backend folder.
 - Type the following command:
-> mvn test
+> `mvn test`
 
 To run the frontend tests:
 - Naviage to the frontend folder.
 - Type the following command:
-> npm run test
+> `npm run test`
 
 ## Contributing new tests:
 
@@ -80,6 +80,6 @@ Backend Guidelines:
 `Note:` This is still being setup
 - Make sure all tests build
 - Run the following lines of code:
-> git tag -a vX.Y.Z -m "Release vX.Y.Z"
-> git push origin vX.Y.Z
+> `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
+> `git push origin vX.Y.Z`
 - Update to the latest version number in the release notes.
