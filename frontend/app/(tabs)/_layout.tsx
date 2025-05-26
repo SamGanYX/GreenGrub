@@ -58,6 +58,7 @@ export default function TabLayout() {
         name="login"
         options={{
           title: 'Log In',
+          tabBarButton: () => null,
           tabBarIcon: ({ color }) => <TabBarIcon name="cube" color={color} />,
         }}
       />
