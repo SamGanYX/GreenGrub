@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
 
@@ -92,5 +93,12 @@ public class NutritionController {
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse food_id from response: " + jsonResponse, e);
         }
+    }
+
+    @GetMapping("/nutrition/barcode/{barcode}")
+    public FoodNutrition getNutritionByBarcode(@PathVariable String barcode) {
+        String accessToken = getAccessToken().getAccessToken(); // Call getAccessToken() statically
+        String foodId = getIdFromBarcode(accessToken, barcode);
+        return getNutritionFromId(accessToken, foodId);
     }
 }
