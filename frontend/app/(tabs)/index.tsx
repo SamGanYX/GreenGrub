@@ -1,5 +1,5 @@
 
-import { Pressable } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { router } from 'expo-router';
@@ -17,7 +17,7 @@ export default function HomeScreen() {
         const token = await AsyncStorage.getItem('userToken');
         setLoggedIn(!!token);
       };
-  
+
       checkLogin();
     }, [])
   );
@@ -52,7 +52,7 @@ export default function HomeScreen() {
           onPress={handleLogPress}
         >
           <FontAwesome name="user" size={24} color="white" style={styles.icon} />
-          <Text style={styles.buttonText}>{loggedIn ? 'Log Out' : 'Log In' }</Text>
+          <Text style={styles.buttonText}>{loggedIn ? 'Log Out' : 'Log In'}</Text>
         </Pressable>
 
         <Pressable
