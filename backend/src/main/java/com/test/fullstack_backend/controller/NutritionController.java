@@ -98,7 +98,7 @@ public class NutritionController {
 
     @GetMapping("/nutrition/barcode/{barcode}")
     public FoodNutrition getNutritionByBarcode(@PathVariable String barcode) {
-        String accessToken = getAccessToken().getAccess_token(); // Assuming getAccessToken() returns a valid token
+        String accessToken = getAccessToken().getAccessToken(); // Assuming getAccessToken() returns a valid token
         String foodId = getIdFromBarcode(accessToken, barcode);
         return getNutritionFromId(accessToken, foodId);
     }
