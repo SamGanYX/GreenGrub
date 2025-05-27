@@ -32,17 +32,18 @@ public class NutritionController {
     private static String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET");
 
     public static FatSecretAccessToken getAccessToken() {
-        
+
         if (clientId == null || clientSecret == null) {
             throw new RuntimeErrorException(null, "Fat Secret API keys not set as env variables");
         }
 
         RestClient restClient = RestClient.builder()
-            .baseUrl("https://oauth.fatsecret.com")
-            .requestInterceptor(new BasicAuthenticationInterceptor(clientId, clientSecret))
-            .defaultHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .build();
-        String formBody = "grant_type=client_credentials";
+
+                .baseUrl("https://oauth.fatsecret.com")
+                .requestInterceptor(new BasicAuthenticationInterceptor(clientId, clientSecret))
+                .defaultHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .build();
+        String formBody = "grant_type=client_credentials&scope= barcode";
 
         return restClient.post()
                 .uri("/connect/token")
@@ -64,26 +65,26 @@ public class NutritionController {
         String body = "method=food.get&food_id=" + foodId + "&format=json";
 
         return client.post()
-            .body(body)
-            .retrieve()
-            .body(FoodNutrition.class);
+                .body(body)
+                .retrieve()
+                .body(FoodNutrition.class);
     }
 
     public static String getIdFromBarcode(String accessToken, String barcode) {
         RestClient client = RestClient.builder()
-            .baseUrl("https://platform.fatsecret.com/rest/server.api")
-            .defaultHeaders(headers -> {
-                headers.setBearerAuth(accessToken);
-                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            })
-            .build();
+                .baseUrl("https://platform.fatsecret.com/rest/server.api")
+                .defaultHeaders(headers -> {
+                    headers.setBearerAuth(accessToken);
+                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                })
+                .build();
 
         String body = "method=food.find_id_for_barcode&barcode=" + barcode + "&format=json";
-        
+
         String jsonResponse = client.post()
-            .body(body)
-            .retrieve()
-            .body(String.class);
+                .body(body)
+                .retrieve()
+                .body(String.class);
 
         try {
             ObjectMapper mapper = new ObjectMapper();
