@@ -17,6 +17,7 @@ All the project code is hosted in this GreenGrub directory so downloaded it is s
 We follow a standard directory layout for apps with a frontend and backend.
 This breakdown includes all the most important folders to know about.
 
+```
 GREENGRUB/
 ├── docs/              # User and developer documentation
 ├── .github/           # GitHub-specific configurations (e.g., workflows)
@@ -31,6 +32,7 @@ GREENGRUB/
      ├── assets/           # Static resources such as images, fonts, and icons
      ├── components/       # Reusable UI components used across screens
      └── constants/        # Centralized configuration (e.g., theme, colors, strings)
+```
 
 ## How to build the software
 
