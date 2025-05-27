@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: CI with Maven and Frontend Tests
 
 on:
   push:
@@ -7,7 +7,8 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  backend-build:
+    name: Backend Build and Tests
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -48,6 +49,8 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          FATSECRET_CLIENT_ID: ${{ secrets.FATSECRET_CLIENT_ID }}
+          FATSECRET_CLIENT_SECRET: ${{ secrets.FATSECRET_CLIENT_SECRET }}
         run: mvn -f backend/pom.xml test
 
       - name: Run specific test
@@ -55,6 +58,8 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          FATSECRET_CLIENT_ID: ${{ secrets.FATSECRET_CLIENT_ID }}
+          FATSECRET_CLIENT_SECRET: ${{ secrets.FATSECRET_CLIENT_SECRET }}
         run: mvn -f backend/pom.xml test -Dtest=FullstackBackendApplicationTests
 
       - name: Generate dependency graph manually
@@ -62,3 +67,30 @@ jobs:
         run: |
           cd backend
           mvn com.github.ferstl:depgraph-maven-plugin:4.0.2:aggregate -DgraphFormat=json -DoutputFileName=dependency-graph.json
+
+  frontend-build:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Add frontend test steps for Expo
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Install other dependencies (backup)
+        working-directory: ./frontend
+        run: npm install --save-dev @testing-library/react-native
+
+      - name: Run frontend tests
+        working-directory: ./frontend
+        run: npm test -- -u
