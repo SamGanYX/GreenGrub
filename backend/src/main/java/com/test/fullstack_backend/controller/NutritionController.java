@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.fullstack_backend.model.FatSecretAccessToken;
 import com.test.fullstack_backend.model.FoodNutrition;
 import com.test.fullstack_backend.repository.UserRepository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @CrossOrigin
@@ -92,5 +93,12 @@ public class NutritionController {
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse food_id from response: " + jsonResponse, e);
         }
+    }
+
+    @GetMapping("/nutrition/barcode/{barcode}")
+    public FoodNutrition getNutritionByBarcode(@PathVariable String barcode) {
+        String accessToken = getAccessToken().getAccess_token(); // Assuming getAccessToken() returns a valid token
+        String foodId = getIdFromBarcode(accessToken, barcode);
+        return getNutritionFromId(accessToken, foodId);
     }
 }
