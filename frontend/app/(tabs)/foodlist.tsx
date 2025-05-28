@@ -8,6 +8,7 @@ import styles from '../../components/styles';
 import { router } from 'expo-router';
 
 export default function FoodListPage() {
+  // hardcoded!! uhoh!!! guys!!!
   const data = ['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box'];
 
   const preferences = ['Climate Score', 'Not Yet Ready'];
@@ -45,6 +46,7 @@ export default function FoodListPage() {
       {data.map((item, index) => (
         <Text key={index} style={styles.foodItem}>
           {item}
+          <button> DELETE/REMOVE </button> {/* I will add deleting functinality here */}
         </Text>
       ))}
       </View>
