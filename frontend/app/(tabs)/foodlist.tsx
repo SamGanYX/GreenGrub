@@ -21,8 +21,14 @@ export default function FoodListPage() {
     setShowOptions(false);
   };
 
-  const handleScan = () => {
+  const handleScan = () => {  // lmao wtf is this
   };
+
+  // IMPORTANT: This method should be called whenever we make an API call to backend to change any foodlists
+  const handleUpdate = () => {
+    // in theory, we should just have a GET here
+    // and then a setData here
+  }
 
   const handlePreference = () => {
     router.push('/preferences');
@@ -33,10 +39,8 @@ export default function FoodListPage() {
   };
 
   const handleRemove = (index : number) => {
-    // API call should be done here to BACKEND to remove the 
-    console.log("before: ", data);
-    setData(data => data.filter((_, i) => i !== index));
-    console.log("after: ", data);
+    // API call should be done here to BACKEND to remove the element there
+    setData(data => data.filter((_, i) => i !== index));  // this should be REPLACED with the call to the backend
   }
 
   return (
