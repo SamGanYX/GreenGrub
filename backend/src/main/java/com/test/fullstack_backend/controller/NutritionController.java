@@ -3,6 +3,8 @@ package com.test.fullstack_backend.controller;
 import java.net.http.HttpHeaders;
 import java.util.*;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,29 +18,33 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.fullstack_backend.model.FatSecretAccessToken;
+import com.test.fullstack_backend.model.FoodNutrition;
 import com.test.fullstack_backend.repository.UserRepository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @CrossOrigin
 public class NutritionController {
 
-    public FatSecretAccessToken getAccessToken() {
-        String clientId = System.getenv("FATSECRET_CLIENT_ID");
-        String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET");
+    private static String clientId = System.getenv("FATSECRET_CLIENT_ID");
+    private static String clientSecret = System.getenv("FATSECRET_CLIENT_SECRET");
 
-        // Check if clientId or clientSecret is null and handle the error
+    public static FatSecretAccessToken getAccessToken() {
+
         if (clientId == null || clientSecret == null) {
-            throw new IllegalArgumentException(
-                    "Client ID and Client Secret must be set as environment variables." + clientSecret);
+            throw new RuntimeErrorException(null, "Fat Secret API keys not set as env variables");
         }
 
         RestClient restClient = RestClient.builder()
+
                 .baseUrl("https://oauth.fatsecret.com")
                 .requestInterceptor(new BasicAuthenticationInterceptor(clientId, clientSecret))
                 .defaultHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .build();
-        String formBody = "grant_type=client_credentials&scope=basic";
+        String formBody = "grant_type=client_credentials";
 
         return restClient.post()
                 .uri("/connect/token")
@@ -47,7 +53,7 @@ public class NutritionController {
                 .body(FatSecretAccessToken.class);
     }
 
-    public String getNutritionFromId(String accessToken, String foodId) {
+    public static FoodNutrition getNutritionFromId(String accessToken, String foodId) {
 
         RestClient client = RestClient.builder()
                 .baseUrl("https://platform.fatsecret.com/rest/server.api")
@@ -62,22 +68,38 @@ public class NutritionController {
         return client.post()
                 .body(body)
                 .retrieve()
-                .body(String.class);
+                .body(FoodNutrition.class);
     }
 
-    public String getIdFromBarcode(String accessToken, String barcode) {
+    public static String getIdFromBarcode(String accessToken, String barcode) {
         RestClient client = RestClient.builder()
                 .baseUrl("https://platform.fatsecret.com/rest/server.api")
                 .defaultHeaders(headers -> {
-                    headers.setBearerAuth(accessToken); // Sets "Authorization: Bearer <token>"
-                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); // Sets correct Content-Type
+                    headers.setBearerAuth(accessToken);
+                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                 })
                 .build();
 
         String body = "method=food.find_id_for_barcode&barcode=" + barcode + "&format=json";
-        return client.post()
+
+        String jsonResponse = client.post()
                 .body(body)
                 .retrieve()
                 .body(String.class);
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(jsonResponse);
+            return root.path("food_id").path("value").asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse food_id from response: " + jsonResponse, e);
+        }
+    }
+
+    @GetMapping("/nutrition/barcode/{barcode}")
+    public FoodNutrition getNutritionByBarcode(@PathVariable String barcode) {
+        String accessToken = getAccessToken().getAccess_token(); // Assuming getAccessToken() returns a valid token
+        String foodId = getIdFromBarcode(accessToken, barcode);
+        return getNutritionFromId(accessToken, foodId);
     }
 }
