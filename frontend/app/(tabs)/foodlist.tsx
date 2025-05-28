@@ -9,14 +9,14 @@ import { router } from 'expo-router';
 
 export default function FoodListPage() {
   // hardcoded!! uhoh!!! guys!!!
-  const data = ['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box'];
+  const [data, setData] = useState(['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box']); // realisitcally should be done by our new call
 
   const preferences = ['Climate Score', 'Not Yet Ready'];
 
   const [selectedPreference, setSelectedPreference] = useState(preferences[0]);
   const [showOptions, setShowOptions] = useState(false);
 
-  const handleSelect = (preference: string) => {
+  const handleSelect = (preference: string) => { // that's crazy why is this never called
     setSelectedPreference(preference);
     setShowOptions(false);
   };
@@ -32,6 +32,13 @@ export default function FoodListPage() {
     router.push('/finish');
   };
 
+  const handleRemove = (index : number) => {
+    // API call should be done here to BACKEND to remove the 
+    console.log("before: ", data);
+    setData(data => data.filter((_, i) => i !== index));
+    console.log("after: ", data);
+  }
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -46,7 +53,9 @@ export default function FoodListPage() {
       {data.map((item, index) => (
         <Text key={index} style={styles.foodItem}>
           {item}
-          <button> DELETE/REMOVE </button> {/* I will add deleting functinality here */}
+          <div>
+            <button onClick={() => handleRemove(index)}> DELETE/REMOVE </button> {/* I will add deleting functinality here */}
+          </div>
         </Text>
       ))}
       </View>
