@@ -22,7 +22,7 @@
 
 //     const loadUsers= async () => {
 //       // console.log('axios:', axios);
-//       const result = await axios.get("http://18.191.105.213:8080/users");
+//       const result = await axios.get("http://localhost:8080/users");
 //       setUsers(result.data);
 //     }
 //     loadUsers();
