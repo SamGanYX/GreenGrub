@@ -1,6 +1,7 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { styles } from '../../components/camera_styles';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
@@ -122,66 +123,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  message: {
-    textAlign: 'center',
-    paddingBottom: 10,
-    fontSize: 16,
-  },
-  camera: {
-    flex: 1,
-  },
-  bottomButtonContainer: {
-    position: 'absolute', // Position buttons at the bottom
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    paddingVertical: 20, // Add padding vertically
-    paddingHorizontal: 64, // Add padding horizontally
-    justifyContent: 'center', // Center the flip button
-  },
-  flipButton: {
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent background
-  },
-  flipButtonText: {
-    fontSize: 18, // Slightly smaller font size
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  scanResultOverlay: {
-    position: 'absolute',
-    bottom: 100, // Position above the flip button container
-    left: 20,
-    right: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center', // Center items horizontally
-  },
-  scanResultText: {
-    color: 'white',
-    fontSize: 16,
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  scanAgainButton: {
-    backgroundColor: '#4CAF50', // A green color for the button
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  scanAgainButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});

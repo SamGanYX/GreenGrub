@@ -11,3 +11,4 @@ backend/NutritionResponse.txt
 /backend/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile
 backend/target/test-classes/com/test/fullstack_backend/FullstackBackendApplicationTests.class
 backend/GreenGrubSSH.pem
+*.pem
