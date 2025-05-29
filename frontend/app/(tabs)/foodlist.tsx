@@ -45,13 +45,14 @@ export default function FoodListPage() {
 
   return (
     <View style={styles.container}>
+      {/*}
       <Pressable
           style={styles.swapModeButton}
           onPress={handleScan}
         >
           <FontAwesome name="camera" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>Scan More</Text>
-        </Pressable>
+        </Pressable>*/}
       <Text style={styles.title}>Added Foods:</Text> 
       <View>
       {data.map((item, index) => (
@@ -63,10 +64,10 @@ export default function FoodListPage() {
         </Text>
       ))}
       </View>
-
+      {/*
       <TouchableOpacity style={styles.button} onPress={handlePreference}>
         <Text style={styles.buttonText}> {'Change Preference'} </Text>
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
       <TouchableOpacity style={styles.button} onPress={handleFinish}>
         <Text style={styles.buttonText}> {'Finish and Compare'} </Text>
       </TouchableOpacity>
