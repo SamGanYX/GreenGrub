@@ -1,10 +1,11 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { styles } from '../../components/camera_styles';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
+import { useFocusEffect } from 'expo-router';
 
 const { fatsecretClientId, fatsecretClientSecret } = Constants.expoConfig?.extra || {};
 
@@ -12,6 +13,15 @@ export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scannedData, setScannedData] = useState<string | null>(null);
+
+  const [isCameraActive, setIsCameraActive] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsCameraActive(true);
+      return () => setIsCameraActive(false); // Cleanup when leaving screen
+    }, [])
+  );
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -89,7 +99,7 @@ export default function App() {
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> {isCameraActive && 
       <CameraView
         style={styles.camera}
         facing={facing}
@@ -119,7 +129,7 @@ export default function App() {
             <Text style={styles.flipButtonText}>Flip Camera</Text>
           </TouchableOpacity>
         </View>
-      </CameraView>
+      </CameraView>}
     </View>
   );
 }
