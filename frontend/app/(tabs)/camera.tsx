@@ -129,48 +129,35 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}> {isCameraActive && 
-      <CameraView
-        style={styles.camera}
-        facing={facing}
-        // Only set the scanner prop if we haven't scanned data yet
-        onBarcodeScanned={scannedData ? undefined : handleBarCodeScanned}
-        barcodeScannerSettings={{
-          // Configure the barcode types you want to scan
-          barcodeTypes: ["qr", "ean13", "ean8", "pdf417", "upc_a", "upc_e", "code128"],
-        }}
-      >
-        {/* Overlay for Scanned Data and Scan Again Button */}
-        {scannedData && (
-          <View style={styles.scanResultOverlay}>
-            <Text style={styles.scanResultText}>Scanned Data: {scannedData}</Text>
-            <TouchableOpacity
-              style={styles.scanAgainButton}
-              onPress={() => setScannedData(null)} // Reset state to scan again
-            >
-              <Text style={styles.scanAgainButtonText}>Scan Again</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={handleSaveBarcode}
-            >
-              <Text style={styles.saveButtonText}>Save Info</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Container for the Flip Camera Button */}
-        <View style={styles.bottomButtonContainer}>
-          <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
-            <Text style={styles.flipButtonText}>Flip Camera</Text>
-          </TouchableOpacity>
-          
-          {/* New button to test handleSaveBarcode */}
-          <TouchableOpacity style={styles.flipButton} onPress={handleSaveBarcode}>
-            <Text style={styles.flipButtonText}>Test Save Barcode</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>}
+    <View style={styles.container}>
+      {isCameraActive && 
+        <CameraView
+          style={styles.camera}
+          facing={facing}
+          onBarcodeScanned={scannedData ? undefined : handleBarCodeScanned}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr", "ean13", "ean8", "pdf417", "upc_a", "upc_e", "code128"],
+          }}
+        >
+          {scannedData && (
+            <View style={styles.scanResultOverlay}>
+              <Text style={styles.scanResultText}>Scanned Data: {scannedData}</Text>
+              <TouchableOpacity
+                style={styles.scanAgainButton}
+                onPress={() => setScannedData(null)}
+              >
+                <Text style={styles.scanAgainButtonText}>Scan Again</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handleSaveBarcode}
+              >
+                <Text style={styles.saveButtonText}>Save Info</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </CameraView>
+      }
     </View>
   );
 }
