@@ -69,7 +69,7 @@ export default function App() {
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
     const gtin13 = data.padStart(13, '0'); // Ensure GTIN-13 format
 
-    setScannedData(data);
+    setScannedData(gtin13);
     console.log(`Scanned GTIN-13 barcode: ${gtin13}`);
 
     try {
@@ -98,34 +98,34 @@ export default function App() {
   };
 
   const handleSaveBarcode = async () => {
-    if (scannedData) {
-        const barcodeToSave = {
-            userId: AsyncStorage.getItem("userId"), // Replace with actual userId logic
-            barcode: scannedData,
-            active: true, // or any logic to determine if it's active
-        };
+    const id = await AsyncStorage.getItem("userId");
+    console.log(id);
+    const barcodeToSave = {
+      userId: id, // Corrected to await the promise
+      barcode: scannedData,
+      active: true, // or any logic to determine if it's active
+  };
 
-        try {
-            const response = await fetch('http://localhost:8080/barcodes/add', { // Replace with your actual API URL
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(barcodeToSave),
-            });
+  try {
+      const response = await fetch('http://localhost:8080/barcodes/add', { // Replace with your actual API URL
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(barcodeToSave),
+      });
 
-            if (!response.ok) {
-                throw new Error('Failed to save barcode');
-            }
+      if (!response.ok) {
+          throw new Error('Failed to save barcode');
+      }
 
-            const savedBarcode = await response.json();
-            console.log('Barcode saved:', savedBarcode);
-            // Optionally, show a success message to the user
-        } catch (error) {
-            console.error('Error saving barcode:', error);
-            // Optionally, show an error message to the user
-        }
-    }
+      const savedBarcode = await response.json();
+      console.log('Barcode saved:', savedBarcode);
+      // Optionally, show a success message to the user
+  } catch (error) {
+      console.error('Error saving barcode:', error);
+      // Optionally, show an error message to the user
+  }
   };
 
   return (
@@ -163,6 +163,11 @@ export default function App() {
         <View style={styles.bottomButtonContainer}>
           <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
             <Text style={styles.flipButtonText}>Flip Camera</Text>
+          </TouchableOpacity>
+          
+          {/* New button to test handleSaveBarcode */}
+          <TouchableOpacity style={styles.flipButton} onPress={handleSaveBarcode}>
+            <Text style={styles.flipButtonText}>Test Save Barcode</Text>
           </TouchableOpacity>
         </View>
       </CameraView>}
