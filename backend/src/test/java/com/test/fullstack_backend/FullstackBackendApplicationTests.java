@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -101,19 +102,19 @@ class FullstackBackendApplicationTests {
 			assertEquals("0.9", ecoscoreData.getAgribalyse().getCo2Total());
 			assertEquals("kg", ecoscoreData.getAgribalyse().getCo2TotalUnit());
 		}
-		//Test requesting an access token
+		// Test requesting an access token
 	}
 
 	@Test
 	void testFatSecretIDFromeBarcode() throws IOException {
-		//Write one test for an id that exists
-		//Write one test for an id not in database
+		// Write one test for an id that exists
+		// Write one test for an id not in database
 	}
 
 	@Test
 	void testFatSecretNutritionFromID() throws IOException {
-		//Write one test for a good barcode
-		//Write one test for a fake barcode / not in database
+		// Write one test for a good barcode
+		// Write one test for a fake barcode / not in database
 	}
 
 	@Test
@@ -134,5 +135,27 @@ class FullstackBackendApplicationTests {
 		String responseContent = result.getResponse().getContentAsString();
 		assertEquals(true, responseContent.contains("token"));
 		assertEquals(true, responseContent.contains("username"));
+	}
+
+	@Test
+	void testSetPreference() throws Exception {
+		// Create a new user for testing
+		Users testUser = new Users();
+		testUser.setUsername("testuser");
+		testUser.setPassword("password123");
+		testUser.setPreference("Bulking");
+		userRepository.save(testUser);
+
+		MvcResult result = mockMvc.perform(put("/update/testuser")
+				.param("preference", "skibidi")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		// Validate the response
+		String responseContent = result.getResponse().getContentAsString();
+		assertEquals(true, responseContent.contains("token"));
+		assertEquals(true, responseContent.contains("username"));
+		assertEquals(true, responseContent.contains("should be set to: skibidi"));
 	}
 }
