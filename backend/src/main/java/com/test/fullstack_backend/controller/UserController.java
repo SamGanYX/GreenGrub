@@ -23,11 +23,18 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/create_account")
-    Users newUser(@RequestBody Users newUser) {
+    Map<String, String> newUser(@RequestBody Users newUser) {
         if (userRepository.findByUsername(newUser.getUsername()) != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists");
         }
-        return userRepository.save(newUser);
+        Users savedUser = userRepository.save(newUser);
+
+        // Create a response map to return the token and userID
+        Map<String, String> response = new HashMap<>();
+        response.put("token", "congratsyouareloggedin"); // You might want to implement a real token generation
+        response.put("userID", String.valueOf(savedUser.getId()));
+
+        return response; // Return the response map
     }
 
     @PostMapping("/login")

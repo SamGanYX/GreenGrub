@@ -2,6 +2,7 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useCallback, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { styles } from '../../components/camera_styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
@@ -68,7 +69,7 @@ export default function App() {
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
     const gtin13 = data.padStart(13, '0'); // Ensure GTIN-13 format
 
-    setScannedData(data);
+    setScannedData(gtin13);
     console.log(`Scanned GTIN-13 barcode: ${gtin13}`);
 
     try {
@@ -96,40 +97,67 @@ export default function App() {
     }
   };
 
+  const handleSaveBarcode = async () => {
+    const id = await AsyncStorage.getItem("userId");
+    console.log(id);
+    const barcodeToSave = {
+      userId: id, // Corrected to await the promise
+      barcode: scannedData,
+      active: true, // or any logic to determine if it's active
+  };
 
+  try {
+      const response = await fetch('http://localhost:8080/barcodes/add', { // Replace with your actual API URL
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(barcodeToSave),
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to save barcode');
+      }
+
+      const savedBarcode = await response.json();
+      console.log('Barcode saved:', savedBarcode);
+      // Optionally, show a success message to the user
+  } catch (error) {
+      console.error('Error saving barcode:', error);
+      // Optionally, show an error message to the user
+  }
+  };
 
   return (
-    <View style={styles.container}> {isCameraActive && 
-      <CameraView
-        style={styles.camera}
-        facing={facing}
-        // Only set the scanner prop if we haven't scanned data yet
-        onBarcodeScanned={scannedData ? undefined : handleBarCodeScanned}
-        barcodeScannerSettings={{
-          // Configure the barcode types you want to scan
-          barcodeTypes: ["qr", "ean13", "ean8", "pdf417", "upc_a", "upc_e", "code128"],
-        }}
-      >
-        {/* Overlay for Scanned Data and Scan Again Button */}
-        {scannedData && (
-          <View style={styles.scanResultOverlay}>
-            <Text style={styles.scanResultText}>Scanned Data: {scannedData}</Text>
-            <TouchableOpacity
-              style={styles.scanAgainButton}
-              onPress={() => setScannedData(null)} // Reset state to scan again
-            >
-              <Text style={styles.scanAgainButtonText}>Scan Again</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Container for the Flip Camera Button */}
-        <View style={styles.bottomButtonContainer}>
-          <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
-            <Text style={styles.flipButtonText}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>}
+    <View style={styles.container}>
+      {isCameraActive && 
+        <CameraView
+          style={styles.camera}
+          facing={facing}
+          onBarcodeScanned={scannedData ? undefined : handleBarCodeScanned}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr", "ean13", "ean8", "pdf417", "upc_a", "upc_e", "code128"],
+          }}
+        >
+          {scannedData && (
+            <View style={styles.scanResultOverlay}>
+              <Text style={styles.scanResultText}>Scanned Data: {scannedData}</Text>
+              <TouchableOpacity
+                style={styles.scanAgainButton}
+                onPress={() => setScannedData(null)}
+              >
+                <Text style={styles.scanAgainButtonText}>Scan Again</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handleSaveBarcode}
+              >
+                <Text style={styles.saveButtonText}>Save Info</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </CameraView>
+      }
     </View>
   );
 }
