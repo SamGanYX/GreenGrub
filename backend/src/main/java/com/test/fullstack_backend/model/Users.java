@@ -12,6 +12,7 @@ public class Users {
     private Long id;
     private String username;
     private String password;
+    private String preference;
 
     public Long getId() {
         return id;
@@ -25,11 +26,19 @@ public class Users {
         return password;
     }
 
+    public String getPreference() {
+        return preference;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setPreference(String preference) {
+        this.preference = preference;
     }
 }

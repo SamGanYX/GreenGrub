@@ -53,6 +53,7 @@ public class UserController {
         response.put("userID", String.valueOf(user.getId()));
         response.put("username", userInfo.getUsername());
         response.put("password", userInfo.getPassword());
+        response.put("preference", String.valueOf(user.getPreference()));
         return response;
     }
 
