@@ -2,6 +2,7 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useCallback, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { styles } from '../../components/camera_styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
@@ -96,7 +97,36 @@ export default function App() {
     }
   };
 
+  const handleSaveBarcode = async () => {
+    if (scannedData) {
+        const barcodeToSave = {
+            userId: AsyncStorage.getItem("userId"), // Replace with actual userId logic
+            barcode: scannedData,
+            active: true, // or any logic to determine if it's active
+        };
 
+        try {
+            const response = await fetch('http://localhost:8080/barcodes/add', { // Replace with your actual API URL
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(barcodeToSave),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save barcode');
+            }
+
+            const savedBarcode = await response.json();
+            console.log('Barcode saved:', savedBarcode);
+            // Optionally, show a success message to the user
+        } catch (error) {
+            console.error('Error saving barcode:', error);
+            // Optionally, show an error message to the user
+        }
+    }
+  };
 
   return (
     <View style={styles.container}> {isCameraActive && 
@@ -119,6 +149,12 @@ export default function App() {
               onPress={() => setScannedData(null)} // Reset state to scan again
             >
               <Text style={styles.scanAgainButtonText}>Scan Again</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={handleSaveBarcode}
+            >
+              <Text style={styles.saveButtonText}>Save Info</Text>
             </TouchableOpacity>
           </View>
         )}

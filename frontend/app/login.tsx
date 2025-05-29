@@ -39,6 +39,7 @@ export default function LogInPage() {
       const response = await axios.post('http://localhost:8080/login', { username, password });
       console.log('Login successful:', response.data);
       await AsyncStorage.setItem('userToken', response.data.token);
+      await AsyncStorage.setItem('userId', response.data.userId);
       router.push('/camera');
     } catch (error) {
       console.log('An error occurred during login:', error.message);
