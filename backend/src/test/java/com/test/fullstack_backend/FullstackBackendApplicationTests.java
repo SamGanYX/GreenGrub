@@ -146,6 +146,8 @@ class FullstackBackendApplicationTests {
 		testUser.setPreference("Bulking");
 		userRepository.save(testUser);
 
+		assertEquals("Bulking", testUser.getPreference());
+
 		MvcResult result = mockMvc.perform(put("/update/testuser")
 				.param("preference", "skibidi")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -157,5 +159,6 @@ class FullstackBackendApplicationTests {
 		assertEquals(true, responseContent.contains("token"));
 		assertEquals(true, responseContent.contains("username"));
 		assertEquals(true, responseContent.contains("should be set to: skibidi"));
+		assertEquals(false, responseContent.contains("Bulking"));
 	}
 }
