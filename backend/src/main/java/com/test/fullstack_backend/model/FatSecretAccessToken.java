@@ -3,7 +3,8 @@ package com.test.fullstack_backend.model;
 public class FatSecretAccessToken {
     private String access_token;
     private String token_type;
-    private int expires_in; //TODO: We will need a token for when we got it and how long it lasts so we can calculate this accurately
+    private int expires_in; // TODO: We will need a token for when we got it and how long it lasts so we can
+                            // calculate this accurately
     private String scope;
 
     // Getters and setters

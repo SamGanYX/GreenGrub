@@ -11,3 +11,12 @@ CREATE TABLE
     "password" varchar(255) DEFAULT NULL,
     PRIMARY KEY ("id")
   );
+
+CREATE TABLE "barcodes" (
+  "id" bigint NOT NULL AUTO_INCREMENT,
+  "user_id" bigint,
+  "barcode" varchar(255),
+  "active" boolean,
+  FOREIGN KEY ("user_id") REFERENCES "users"("id"),
+  PRIMARY KEY ("id")
+)
