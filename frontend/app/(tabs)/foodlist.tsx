@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, Pressable} from 'react-native';
-import axios from "axios";
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import styles from '../../components/styles';
 import { router } from 'expo-router';
 
 export default function FoodListPage() {
   // hardcoded!! uhoh!!! guys!!!
-  const [data, setData] = useState(['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box']); // realisitcally should be done by our new call
+  const [data, setData] = useState<string[]>(['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box']); // realisitcally should be done by our new call
 
   const preferences = ['Climate Score', 'Not Yet Ready'];
 
@@ -58,9 +54,7 @@ export default function FoodListPage() {
       {data.map((item, index) => (
         <Text key={index} style={styles.foodItem}>
           {item}
-          <div>
-            <button onClick={() => handleRemove(index)}> DELETE/REMOVE </button> {/* I will add deleting functinality here */}
-          </div>
+          <Button title="Delete/Remove" onPress={() => handleRemove(index)}/> {/* I will add deleting functinality here */}
         </Text>
       ))}
       </View>
