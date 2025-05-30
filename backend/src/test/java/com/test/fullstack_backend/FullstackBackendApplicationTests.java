@@ -1,13 +1,7 @@
 package com.test.fullstack_backend;
 
 import java.io.IOException;
-import java.nio.file.Files; // Add this import
-import java.nio.file.Paths;
 
-import com.test.fullstack_backend.controller.NutritionController;
-import com.test.fullstack_backend.controller.UserController;
-import com.test.fullstack_backend.model.FatSecretAccessToken;
-import com.test.fullstack_backend.model.FoodNutrition;
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,9 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.fullstack_backend.model.OpenFood; // Adjust the package as necessary
@@ -101,19 +93,19 @@ class FullstackBackendApplicationTests {
 			assertEquals("0.9", ecoscoreData.getAgribalyse().getCo2Total());
 			assertEquals("kg", ecoscoreData.getAgribalyse().getCo2TotalUnit());
 		}
-		//Test requesting an access token
+		// Test requesting an access token
 	}
 
 	@Test
 	void testFatSecretIDFromeBarcode() throws IOException {
-		//Write one test for an id that exists
-		//Write one test for an id not in database
+		// Write one test for an id that exists
+		// Write one test for an id not in database
 	}
 
 	@Test
 	void testFatSecretNutritionFromID() throws IOException {
-		//Write one test for a good barcode
-		//Write one test for a fake barcode / not in database
+		// Write one test for a good barcode
+		// Write one test for a fake barcode / not in database
 	}
 
 	@Test

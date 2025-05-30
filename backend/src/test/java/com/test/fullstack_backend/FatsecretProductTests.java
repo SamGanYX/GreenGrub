@@ -32,7 +32,7 @@ class FatsecretProductTests {
 
     @Test
     void testFatSecretAccessToken() throws IOException {
-        String[] expectedScopes = {"barcode", "basic", "premier"};
+        String[] expectedScopes = { "barcode", "basic", "premier" };
         for (String scope : expectedScopes) {
             assertTrue(token.getScope().contains(scope), "Scope should include: " + scope);
         }
@@ -46,7 +46,7 @@ class FatsecretProductTests {
         String id = NutritionController.getIdFromBarcode(token.getAccess_token(), barcode);
         assertEquals("5406437", id);
 
-        //TODO: Add test for invalid barcode
+        // TODO: Add test for invalid barcode
     }
 
     @Test
@@ -55,11 +55,12 @@ class FatsecretProductTests {
         FoodNutrition nutrition = NutritionController.getNutritionFromId(token.getAccess_token(), validID);
         assertNotNull(nutrition);
         assertEquals("5406437", nutrition.getFood().getFoodId());
-        assert(nutrition.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
+        assert (nutrition.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
 
-        //TODO: Add test for invalid input
+        // TODO: Add test for invalid input
         // String invalidID = "0000000";
-        // FoodNutrition badNutrition = NutritionController.getNutritionFromId(token.getAccess_token(), invalidID);
+        // FoodNutrition badNutrition =
+        // NutritionController.getNutritionFromId(token.getAccess_token(), invalidID);
         // assertNull(badNutrition); // Or check for error handling
     }
 
@@ -69,11 +70,12 @@ class FatsecretProductTests {
         FoodNutrition nutrition = NutritionController.getNutritionByBarcode(barcode);
         assertNotNull(nutrition);
         assertEquals("5406437", nutrition.getFood().getFoodId());
-        assert(nutrition.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
+        assert (nutrition.getFood().getFoodName().equals("Almond Breeze Original Unsweetened Almond Milk"));
 
-        //TODO: Add this bad test
+        // TODO: Add this bad test
         // String badBarcode = "0000000000000";
-        // FoodNutrition badNutrition = NutritionController.getNutritionByBarcode(badBarcode);
+        // FoodNutrition badNutrition =
+        // NutritionController.getNutritionByBarcode(badBarcode);
         // assertThrows(badNutrition, ); // Or assert error message if thrown
     }
 }
