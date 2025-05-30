@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -191,5 +192,30 @@ class FullstackBackendApplicationTests {
 		String responseContent = result.getResponse().getContentAsString();
 		assertEquals(true, responseContent.contains("token"));
 		assertEquals(true, responseContent.contains("username"));
+	}
+
+	@Test
+	void testSetPreference() throws Exception {
+		// Create a new user for testing
+		Users testUser = new Users();
+		testUser.setUsername("testuser");
+		testUser.setPassword("password123");
+		testUser.setPreference("Bulking");
+		userRepository.save(testUser);
+
+		assertEquals("Bulking", testUser.getPreference());
+
+		MvcResult result = mockMvc.perform(put("/update/testuser")
+				.param("preference", "skibidi")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		// Validate the response
+		String responseContent = result.getResponse().getContentAsString();
+		assertEquals(true, responseContent.contains("token"));
+		assertEquals(true, responseContent.contains("username"));
+		assertEquals(true, responseContent.contains("should be set to: skibidi"));
+		assertEquals(false, responseContent.contains("Bulking"));
 	}
 }
