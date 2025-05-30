@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, Pressable} from 'react-native';
-import axios from "axios";
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import React, { useState } from 'react';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
 import styles from '../../components/styles';
 import { router } from 'expo-router';
+import { useFoodData } from '../datashare';
 
 export default function FoodListPage() {
-  // hardcoded!! uhoh!!! guys!!!
-  const [data, setData] = useState(['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box']); // realisitcally should be done by our new call
-
   const preferences = ['Climate Score', 'Not Yet Ready'];
 
   const [selectedPreference, setSelectedPreference] = useState(preferences[0]);
   const [showOptions, setShowOptions] = useState(false);
+
+  const { data, setData } = useFoodData();
+
+  console.log("data entries:", Array.from(data.entries()));
 
   const handleSelect = (preference: string) => { // that's crazy why is this never called
     setSelectedPreference(preference);
@@ -35,13 +33,33 @@ export default function FoodListPage() {
   };
 
   const handleFinish = () => {
+    console.log("going to finish now");
     router.push('/finish');
   };
 
-  const handleRemove = (index : number) => {
+  const handleRemove = (gtin: string) => {
     // API call should be done here to BACKEND to remove the element there
-    setData(data => data.filter((_, i) => i !== index));  // this should be REPLACED with the call to the backend
+    setData(data => {
+      const newMap = new Map(data);
+      newMap.delete(gtin);
+      return newMap;
+    });
   }
+
+  const getFoodName = (jsonString: string) => {
+    try {
+      const foodData = JSON.parse(jsonString);
+      if (foodData.food && foodData.food.food_name) {
+        return foodData.food.food_name;
+      }
+      if (typeof foodData === 'string') {
+        return foodData;
+      }
+      return 'CAN\'T FIND THE FOOD';
+    } catch (error) {
+      return jsonString;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -55,14 +73,13 @@ export default function FoodListPage() {
         </Pressable>*/}
       <Text style={styles.title}>Added Foods:</Text> 
       <View>
-      {data.map((item, index) => (
-        <Text key={index} style={styles.foodItem}>
-          {item}
-          <div>
-            <button onClick={() => handleRemove(index)}> DELETE/REMOVE </button> {/* I will add deleting functinality here */}
-          </div>
-        </Text>
-      ))}
+        {Array.from(data.entries()).map(([key, value]) => (
+          <View key={key} style={styles.foodItem}>
+            <Text>Food Name: {getFoodName(value)}</Text>
+            <Text>Barcode: {key}</Text>
+            <Button title="Delete/Remove" onPress={() => handleRemove(key)}/> 
+          </View>
+        ))}
       </View>
       {/*
       <TouchableOpacity style={styles.button} onPress={handlePreference}>
@@ -71,7 +88,6 @@ export default function FoodListPage() {
       <TouchableOpacity style={styles.button} onPress={handleFinish}>
         <Text style={styles.buttonText}> {'Finish and Compare'} </Text>
       </TouchableOpacity>
-      
     </View>
   );
 };
