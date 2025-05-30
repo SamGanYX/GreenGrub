@@ -105,18 +105,6 @@ class FullstackBackendApplicationTests {
 	}
 
 	@Test
-	void testFatSecretIDFromeBarcode() throws IOException {
-		//Write one test for an id that exists
-		//Write one test for an id not in database
-	}
-
-	@Test
-	void testFatSecretNutritionFromID() throws IOException {
-		//Write one test for a good barcode
-		//Write one test for a fake barcode / not in database
-	}
-
-	@Test
 	void testLogin() throws Exception {
 		// Create a new user for testing
 		Users testUser = new Users();
