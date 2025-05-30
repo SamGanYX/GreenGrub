@@ -12,6 +12,8 @@ export default function FoodListPage() {
 
   const { data, setData } = useFoodData();
 
+  console.log("data entries:", Array.from(data.entries()));
+
   const handleSelect = (preference: string) => { // that's crazy why is this never called
     setSelectedPreference(preference);
     setShowOptions(false);
@@ -31,10 +33,11 @@ export default function FoodListPage() {
   };
 
   const handleFinish = () => {
+    console.log("going to finish now");
     router.push('/finish');
   };
 
-  const handleRemove = (gtin : string) => {
+  const handleRemove = (gtin: string) => {
     // API call should be done here to BACKEND to remove the element there
     setData(data => {
       const newMap = new Map(data);
@@ -42,6 +45,21 @@ export default function FoodListPage() {
       return newMap;
     });
   }
+
+  const getFoodName = (jsonString: string) => {
+    try {
+      const foodData = JSON.parse(jsonString);
+      if (foodData.food && foodData.food.food_name) {
+        return foodData.food.food_name;
+      }
+      if (typeof foodData === 'string') {
+        return foodData;
+      }
+      return 'CAN\'T FIND THE FOOD';
+    } catch (error) {
+      return jsonString;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -55,13 +73,13 @@ export default function FoodListPage() {
         </Pressable>*/}
       <Text style={styles.title}>Added Foods:</Text> 
       <View>
-      {Array.from(data.entries()).map(([key, value]) => (
-        <Text key={key} style={styles.foodItem}>
-          {"Food Name: " + value + "\n"}
-          {"Barcode Value: " + key + "\n"}
-          <Button title="Delete/Remove" onPress={() => handleRemove(key)}/> 
-        </Text>
-      ))}
+        {Array.from(data.entries()).map(([key, value]) => (
+          <View key={key} style={styles.foodItem}>
+            <Text>Food Name: {getFoodName(value)}</Text>
+            <Text>Barcode: {key}</Text>
+            <Button title="Delete/Remove" onPress={() => handleRemove(key)}/> 
+          </View>
+        ))}
       </View>
       {/*
       <TouchableOpacity style={styles.button} onPress={handlePreference}>
@@ -70,7 +88,6 @@ export default function FoodListPage() {
       <TouchableOpacity style={styles.button} onPress={handleFinish}>
         <Text style={styles.buttonText}> {'Finish and Compare'} </Text>
       </TouchableOpacity>
-      
     </View>
   );
 };

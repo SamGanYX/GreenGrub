@@ -16,7 +16,7 @@ export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scannedGtin, setScannedGtin] = useState<string>("");
-  const [scannedName, setScannedName] = useState<string>("");
+  const [foodDataJson, setJson] = useState<string>("");
   const [isCameraActive, setIsCameraActive] = useState(true);
 
   useFocusEffect(
@@ -75,23 +75,13 @@ export default function App() {
     setScannedGtin(gtin13);
     try {
       const token = await fetchAccessToken();
-      const res = await fetch(
-        `https://platform.fatsecret.com/rest/food/barcode/find-by-id/v1?barcode=${gtin13}&format=json`,
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`http://localhost:8080/nutrition/barcode/${gtin13}`);
 
       if (!res.ok) throw new Error('Failed to fetch food data');
 
       const json = await res.json();
       console.log(json);
-
-      const foodName = json?.food?.food_id || 'Unknown';
-      setScannedName(foodName);
+      setJson(JSON.stringify(json));
       // Alert.alert('Food Found', `ID: ${foodName}`);
     } catch (err) {
       console.error(err);
@@ -100,7 +90,7 @@ export default function App() {
   };
 
   const handleSaveBarcode = async () => {  // why is this allat? why we writing hella? what does it even do
-    setData(prev => new Map(prev).set(scannedGtin, scannedName));  // ADDS THE NEW BARCODE-FOOD PAIR TO OUR GLOBAL MAP THING
+    setData(prev => new Map(prev).set(scannedGtin, foodDataJson));  // ADDS THE NEW BARCODE-FOOD PAIR TO OUR GLOBAL MAP THING
     const id = await AsyncStorage.getItem("userId");
     console.log(id);
     const barcodeToSave = {  // what does this do: TODO Figure out 
@@ -144,10 +134,10 @@ export default function App() {
         >
           {scannedGtin && (
             <View style={styles.scanResultOverlay}>
-              <Text style={styles.scanResultText}>Scanned Data: {scannedName}</Text>
+              <Text style={styles.scanResultText}>Scanned Data: {foodDataJson}</Text>
               <TouchableOpacity
                 style={styles.scanAgainButton}
-                onPress={() => {setScannedGtin(""); setScannedName("")}}
+                onPress={() => {setScannedGtin(""); setJson("")}}
               >
                 <Text style={styles.scanAgainButtonText}>Scan Again</Text>
               </TouchableOpacity>
