@@ -1,20 +1,22 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useCallback, useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { Button, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../components/camera_styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
 import { useFocusEffect } from 'expo-router';
+import { useFoodData } from '../datashare';
 
 const { fatsecretClientId, fatsecretClientSecret } = Constants.expoConfig?.extra || {};
 
 export default function App() {
+  const { data, setData } = useFoodData();
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [scannedData, setScannedData] = useState<string | null>(null);
-
+  const [scannedGtin, setScannedGtin] = useState<string>("");
+  const [foodDataJson, setJson] = useState<string>("");
   const [isCameraActive, setIsCameraActive] = useState(true);
 
   useFocusEffect(
@@ -41,9 +43,10 @@ export default function App() {
     );
   }
 
+  /* Removed functionality to avoid the silly bug
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
-  }
+  }*/
 
   async function fetchAccessToken() {
     const credentials = `${fatsecretClientId}:${fatsecretClientSecret}`;
@@ -68,28 +71,17 @@ export default function App() {
 
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
     const gtin13 = data.padStart(13, '0'); // Ensure GTIN-13 format
-
-    setScannedData(gtin13);
     console.log(`Scanned GTIN-13 barcode: ${gtin13}`);
-
+    setScannedGtin(gtin13);
     try {
       const token = await fetchAccessToken();
-      const res = await fetch(
-        `https://platform.fatsecret.com/rest/food/barcode/find-by-id/v1?barcode=${gtin13}&format=json`,
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`http://localhost:8080/nutrition/barcode/${gtin13}`);
 
       if (!res.ok) throw new Error('Failed to fetch food data');
 
       const json = await res.json();
       console.log(json);
-
-      const foodName = json?.food?.food_id || 'Unknown';
+      setJson(JSON.stringify(json));
       // Alert.alert('Food Found', `ID: ${foodName}`);
     } catch (err) {
       console.error(err);
@@ -97,12 +89,13 @@ export default function App() {
     }
   };
 
-  const handleSaveBarcode = async () => {
+  const handleSaveBarcode = async () => {  // why is this allat? why we writing hella? what does it even do
+    setData(prev => new Map(prev).set(scannedGtin, foodDataJson));  // ADDS THE NEW BARCODE-FOOD PAIR TO OUR GLOBAL MAP THING
     const id = await AsyncStorage.getItem("userId");
     console.log(id);
-    const barcodeToSave = {
+    const barcodeToSave = {  // what does this do: TODO Figure out 
       userId: id, // Corrected to await the promise
-      barcode: scannedData,
+      barcode: scannedGtin,
       active: true, // or any logic to determine if it's active
   };
 
@@ -134,25 +127,27 @@ export default function App() {
         <CameraView
           style={styles.camera}
           facing={facing}
-          onBarcodeScanned={scannedData ? undefined : handleBarCodeScanned}
+          onBarcodeScanned={scannedGtin ? undefined : handleBarCodeScanned}
           barcodeScannerSettings={{
             barcodeTypes: ["qr", "ean13", "ean8", "pdf417", "upc_a", "upc_e", "code128"],
           }}
         >
-          {scannedData && (
+          {scannedGtin && (
             <View style={styles.scanResultOverlay}>
-              <Text style={styles.scanResultText}>Scanned Data: {scannedData}</Text>
+              <Text style={styles.scanResultText}>Scanned Data: {foodDataJson}</Text>
               <TouchableOpacity
                 style={styles.scanAgainButton}
-                onPress={() => setScannedData(null)}
+                onPress={() => {setScannedGtin(""); setJson("")}}
               >
                 <Text style={styles.scanAgainButtonText}>Scan Again</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.saveButton}
+                // style={styles.saveButton}  bro this style striaght up doesn't exist, so im removing it
                 onPress={handleSaveBarcode}
               >
-                <Text style={styles.saveButtonText}>Save Info</Text>
+                <Text 
+                 // style={styles.saveButtonText} again if you go to Styles, this is also striaght up not defined
+                >Save Info</Text>
               </TouchableOpacity>
             </View>
           )}

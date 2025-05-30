@@ -1,13 +1,7 @@
 package com.test.fullstack_backend;
 
 import java.io.IOException;
-import java.nio.file.Files; // Add this import
-import java.nio.file.Paths;
 
-import com.test.fullstack_backend.controller.NutritionController;
-import com.test.fullstack_backend.controller.UserController;
-import com.test.fullstack_backend.model.FatSecretAccessToken;
-import com.test.fullstack_backend.model.FoodNutrition;
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,9 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -29,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.fullstack_backend.model.OpenFood; // Adjust the package as necessary
+import com.test.fullstack_backend.model.OpenFood;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,6 +39,9 @@ class FullstackBackendApplicationTests {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@MockBean
+	private RestTemplate restTemplate;
 
 	@BeforeEach
 	void setUp() {
@@ -102,7 +104,62 @@ class FullstackBackendApplicationTests {
 			assertEquals("0.9", ecoscoreData.getAgribalyse().getCo2Total());
 			assertEquals("kg", ecoscoreData.getAgribalyse().getCo2TotalUnit());
 		}
-		// Test requesting an access token
+	}
+
+	@Test
+	void testGetProductByBarcodeSuccess() throws Exception {
+		OpenFood mockResponse = new OpenFood();
+		OpenFood.Product mockProduct = new OpenFood.Product();
+		mockProduct.setProductName("Almond Breeze Original Unsweetened Almond Milk");
+		mockProduct.setBrands("Blue Diamond");
+		mockProduct.setBarcode("0041570054161");
+		mockResponse.setProduct(mockProduct);
+
+		when(restTemplate.getForObject(
+				eq("https://world.openfoodfacts.org/api/v2/product/0041570054161.json"),
+				eq(OpenFood.class)))
+				.thenReturn(mockResponse);
+
+		mockMvc.perform(get("/api/products/0041570054161"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.product.product_name").value("Almond Breeze Original Unsweetened Almond Milk"))
+				.andExpect(jsonPath("$.product.brands").value("Blue Diamond"))
+				.andExpect(jsonPath("$.product.code").value("0041570054161"));
+	}
+
+	@Test
+	void testGetProductByBarcodeNotFound() throws Exception {
+		when(restTemplate.getForObject(
+				eq("https://world.openfoodfacts.org/api/v2/product/9999999999999.json"),
+				eq(OpenFood.class)))
+				.thenReturn(null);
+
+		mockMvc.perform(get("/api/products/9999999999999"))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void testGetProductByBarcodeEmptyProduct() throws Exception {
+		// Mock RestTemplate to return response with null product
+		OpenFood mockResponse = new OpenFood();
+		mockResponse.setProduct(null);
+
+		when(restTemplate.getForObject(
+				eq("https://world.openfoodfacts.org/api/v2/product/1111111111111.json"),
+				eq(OpenFood.class)))
+				.thenReturn(mockResponse);
+
+		mockMvc.perform(get("/api/products/1111111111111"))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void testGetProductByBarcodeException() throws Exception {
+		when(restTemplate.getForObject(anyString(), eq(OpenFood.class)))
+				.thenThrow(new RuntimeException("API Error"));
+
+		mockMvc.perform(get("/api/products/0041570054161"))
+				.andExpect(status().isInternalServerError());
 	}
 
 	@Test
