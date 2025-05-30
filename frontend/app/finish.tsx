@@ -1,19 +1,21 @@
-import React from 'react';
+import { useState} from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import styles from '../components/styles';
-import { router } from 'expo-router';
+import { useFoodData } from './datashare';
 
 export default function FinishPage() {
-  const climateScores = [
-    "1. Pasta Roni Chicken & Broccoli Linguine Mix 4.7 Ounce Paper Box : 4.03",
-    "2. Pasta Roni Shells & White Cheddar 6.2 Ounce Paper Box: 4.12",
-  ];
-  /*
-  const handleFoodList = () => {
-    router.push('foodlist');
-  };*/
+  const { data, setData } = useFoodData();
+  const [ userPref, setUserPref ] = useState<string>("Climate"); // get this from call to BACKEND: for now we'll hardcode it
+  const [ climateScores, setClimateScores ] = useState<string[]>([]); // this will be filled in YEp
 
-  return (
+  // ON MOUNT, update user pref (setUserPref :D) from UserPref call to BACKEND
+
+
+  // construct TEMPORARY list of scores that match current user preference
+
+
+
+  return ( // bro why is everything hardcoded :D
     <View style={styles.container}>
       {/*<Pressable
           style={styles.swapModeButton}
