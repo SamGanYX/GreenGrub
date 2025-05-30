@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Component renders camera view correctly when permission is granted 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <div
+    onClick={[Function]}
+  >
+    <View
+      style={
+        {
+          "backgroundColor": "transparent",
+          "bottom": 0,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "left": 0,
+          "paddingHorizontal": 64,
+          "paddingVertical": 20,
+          "position": "absolute",
+          "right": 0,
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "rgba(0,0,0,0.5)",
+            "borderRadius": 10,
+            "opacity": 1,
+            "padding": 15,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "white",
+              "fontSize": 18,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Flip Camera
+        </Text>
+      </View>
+    </View>
+  </div>
+</View>
+`;
+
+exports[`App Component renders correctly when permissions are loading 1`] = `<View />`;

@@ -19,23 +19,3 @@ exports[`MonoText renders correctly 1`] = `
   Snapshot test!
 </Text>
 `;
-
-exports[`renders correctly 1`] = `
-<Text
-  style={
-    [
-      {
-        "color": "#000",
-      },
-      [
-        undefined,
-        {
-          "fontFamily": "SpaceMono",
-        },
-      ],
-    ]
-  }
->
-  Snapshot test!
-</Text>
-`;
