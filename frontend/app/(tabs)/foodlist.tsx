@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, Pressable} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
 import styles from '../../components/styles';
 import { router } from 'expo-router';
+import { useFoodData } from '../datashare';
 
 export default function FoodListPage() {
-  // hardcoded!! uhoh!!! guys!!!
-  const [data, setData] = useState<string[]>(['Pasta Roni Chicken & Broccoli Linguine Mix, 4.7-Ounce Box', 'Pasta Roni Shells & White Cheddar 6.2 oz Box']); // realisitcally should be done by our new call
-
   const preferences = ['Climate Score', 'Not Yet Ready'];
 
   const [selectedPreference, setSelectedPreference] = useState(preferences[0]);
   const [showOptions, setShowOptions] = useState(false);
+
+  const { data, setData } = useFoodData();
 
   const handleSelect = (preference: string) => { // that's crazy why is this never called
     setSelectedPreference(preference);

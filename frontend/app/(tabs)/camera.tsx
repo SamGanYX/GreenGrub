@@ -1,6 +1,6 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useCallback, useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { Button, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../components/camera_styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // Optional: Import Haptics for feedback on scan
