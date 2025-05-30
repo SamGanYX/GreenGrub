@@ -34,9 +34,13 @@ export default function FoodListPage() {
     router.push('/finish');
   };
 
-  const handleRemove = (index : number) => {
+  const handleRemove = (gtin : string) => {
     // API call should be done here to BACKEND to remove the element there
-    setData(data => data.filter((_, i) => i !== index));  // this should be REPLACED with the call to the backend
+    setData(data => {
+      const newMap = new Map(data);
+      newMap.delete(gtin);
+      return newMap;
+    });
   }
 
   return (
@@ -51,10 +55,11 @@ export default function FoodListPage() {
         </Pressable>*/}
       <Text style={styles.title}>Added Foods:</Text> 
       <View>
-      {data.map((item, index) => (
-        <Text key={index} style={styles.foodItem}>
-          {item}
-          <Button title="Delete/Remove" onPress={() => handleRemove(index)}/> {/* I will add deleting functinality here */}
+      {Array.from(data.entries()).map(([key, value]) => (
+        <Text key={key} style={styles.foodItem}>
+          {"Food Name: " + value + "\n"}
+          {"Barcode Value: " + key + "\n"}
+          <Button title="Delete/Remove" onPress={() => handleRemove(key)}/> 
         </Text>
       ))}
       </View>
