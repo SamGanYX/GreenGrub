@@ -1,21 +1,23 @@
+jest.mock('expo-camera', () => ({
+  CameraView: ({ children, onBarcodeScanned }) => (
+    <div onClick={() => onBarcodeScanned && onBarcodeScanned({ type: 'ean13', data: '1234567890123' })}>
+      {children}
+    </div>
+  ),
+  CameraType: {
+    back: 'back',
+    front: 'front',
+  },
+  // Set a default return value for the mock function
+  useCameraPermissions: jest.fn().mockReturnValue([{ granted: true }, jest.fn()]),
+  Camera: () => null,
+}));
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import App from 'frontend/app/(tabs)/camera.tsx';
+import { render } from '@testing-library/react-native';
+import App from '../../app/(tabs)/camera.tsx'; // TODO: This is currently changed because not entirely sure how the original one works. THis one hyperlinks in Vscode.. so i'll keep it for now.
 
 // Mock the necessary modules
-jest.mock('expo-camera', () => ({
-    CameraView: ({ children, onBarcodeScanned }) => (
-      <div onClick={() => onBarcodeScanned && onBarcodeScanned({ type: 'ean13', data: '1234567890123' })}>
-        {children}
-      </div>
-    ),
-    CameraType: {
-      back: 'back',
-      front: 'front',
-    },
-    // Set a default return value for the mock function
-    useCameraPermissions: jest.fn().mockReturnValue([{ granted: true }, jest.fn()]),
-  }));
+
 
 jest.mock('expo-constants', () => ({
   expoConfig: {
@@ -26,6 +28,13 @@ jest.mock('expo-constants', () => ({
   },
 }));
 
+jest.mock('@react-navigation/native', () => {
+  return {
+    ...jest.requireActual('@react-navigation/native'),
+    useNavigation: jest.fn(() => ({}))
+  };
+});
+
 global.fetch = jest.fn();
 global.btoa = jest.fn().mockReturnValue('mocked-encoded-credentials');
 
@@ -35,7 +44,9 @@ describe('App Component', () => {
   });
 
   it('renders correctly when permissions are loading', () => {
+    console.log(useCameraPermissions)
     require('expo-camera').useCameraPermissions.mockReturnValueOnce([null, jest.fn()]);
+    console.log(useCameraPermissions)
     const { toJSON } = render(<App />);
     expect(toJSON()).toMatchSnapshot();
   });

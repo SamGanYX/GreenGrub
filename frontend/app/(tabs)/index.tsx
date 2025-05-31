@@ -6,7 +6,7 @@ import { router } from 'expo-router';
 import { Text, View } from '@/components/Themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import styles from '../../components/styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 export default function HomeScreen() {
   const [loggedIn, setLoggedIn] = useState(false); // ✅ tracked in state
@@ -14,7 +14,7 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(() => {
       const checkLogin = async () => {
-        const token = await AsyncStorage.getItem('userToken');
+        const token = await SecureStore.getItemAsync('userToken');
         setLoggedIn(!!token);
       };
 
@@ -32,7 +32,7 @@ export default function HomeScreen() {
 
   const handleLogOut = async () => {
     try {
-      await AsyncStorage.removeItem('userToken');
+      await SecureStore.deleteItemAsync('userToken');
       setLoggedIn(false);
       console.log('Logged out successfully');
     } catch (error) {
