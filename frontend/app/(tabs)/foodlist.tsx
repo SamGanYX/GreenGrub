@@ -50,7 +50,7 @@ export default function FoodListPage() {
 
   const handleRemove = async (id: number) => {
     try {
-      await axios.post(`http://localhost:8080/remove/${id}`);
+      await axios.post(`http://localhost:8080/barcodes/remove/${id}`);
       setBarcodes(barcodes => {
         const newMap = new Map(barcodes);
         newMap.delete(id);
@@ -85,7 +85,7 @@ export default function FoodListPage() {
         
         // Save fetched barcodes to state using the Barcode interface
         const newBarcodes = new Map<number, Barcode>(
-          response.data.map((item: Barcode) => [item.id, { userId: id, barcode: item.barcode, active: true }])
+          response.data.map((item: Barcode) => [item.id, { id: item.id, userId: id, barcode: item.barcode, active: true }])
         ); 
         setBarcodes(newBarcodes);
       } catch (error) {
@@ -110,10 +110,10 @@ export default function FoodListPage() {
         </Pressable>*/}
       <Text style={styles.title}>Added Foods:</Text> 
       <View>
-        {Array.from(barcodes.entries()).map(([key, { barcode }]) => (
+        {Array.from(barcodes.entries()).map(([key, { id, barcode }]) => (
           <View key={key} style={styles.foodItem}>
             <Text>Barcode: {barcode}</Text>
-            <Button title="Delete/Remove" onPress={() => handleRemove(key)}/> 
+            <Button title="Delete/Remove" onPress={() => handleRemove(id)}/> 
           </View>
         ))}
       </View>
