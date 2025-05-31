@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TouchableOpacity } from 'react-native';
 import styles from '../../components/styles';
 import { router } from 'expo-router';
 import { useFoodData } from '../datashare';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+
+// Define the Barcode interface
+interface Barcode {
+  id: number;
+  userId: string;
+  barcode: string;
+  active: boolean;
+}
 
 export default function FoodListPage() {
   const preferences = ['Climate Score', 'Not Yet Ready'];
@@ -11,6 +21,7 @@ export default function FoodListPage() {
   const [showOptions, setShowOptions] = useState(false);
 
   const { data, setData } = useFoodData();
+  const [barcodes, setBarcodes] = useState<Map<number, Barcode>>(new Map()); // Use Barcode interface
 
   console.log("data entries:", Array.from(data.entries()));
 
@@ -37,14 +48,18 @@ export default function FoodListPage() {
     router.push('/finish');
   };
 
-  const handleRemove = (gtin: string) => {
-    // API call should be done here to BACKEND to remove the element there
-    setData(data => {
-      const newMap = new Map(data);
-      newMap.delete(gtin);
-      return newMap;
-    });
-  }
+  const handleRemove = async (id: number) => {
+    try {
+      await axios.post(`http://localhost:8080/barcodes/remove/${id}`);
+      setBarcodes(barcodes => {
+        const newMap = new Map(barcodes);
+        newMap.delete(id);
+        return newMap;
+      });
+    } catch (error) {
+      console.error("Error removing barcode:", error);
+    }
+  };
 
   const getFoodName = (jsonString: string) => {
     try {
@@ -61,6 +76,28 @@ export default function FoodListPage() {
     }
   };
 
+  const fetchBarcodes = async () => {
+    const id = await AsyncStorage.getItem("userId");
+    if (id) {
+      try {
+        const response = await axios.get(`http://localhost:8080/barcodes/user/${id}`);
+        console.log("Fetched barcodes:", response.data);
+        
+        // Save fetched barcodes to state using the Barcode interface
+        const newBarcodes = new Map<number, Barcode>(
+          response.data.map((item: Barcode) => [item.id, { id: item.id, userId: id, barcode: item.barcode, active: true }])
+        ); 
+        setBarcodes(newBarcodes);
+      } catch (error) {
+        console.error("Error fetching barcodes:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchBarcodes();
+  }, []);
+
   return (
     <View style={styles.container}>
       {/*}
@@ -73,11 +110,10 @@ export default function FoodListPage() {
         </Pressable>*/}
       <Text style={styles.title}>Added Foods:</Text> 
       <View>
-        {Array.from(data.entries()).map(([key, value]) => (
+        {Array.from(barcodes.entries()).map(([key, { id, barcode }]) => (
           <View key={key} style={styles.foodItem}>
-            <Text>Food Name: {getFoodName(value)}</Text>
-            <Text>Barcode: {key}</Text>
-            <Button title="Delete/Remove" onPress={() => handleRemove(key)}/> 
+            <Text>Barcode: {barcode}</Text>
+            <Button title="Delete/Remove" onPress={() => handleRemove(id)}/> 
           </View>
         ))}
       </View>

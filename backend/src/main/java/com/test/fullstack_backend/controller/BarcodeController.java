@@ -29,4 +29,11 @@ public class BarcodeController {
         Barcode savedBarcode = barcodeRepository.save(barcode);
         return ResponseEntity.ok(savedBarcode);
     }
+
+    // POST method to remove a barcode by id
+    @PostMapping("/remove/{id}")
+    public ResponseEntity<Void> removeBarcode(@PathVariable Long id) {
+        barcodeRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
