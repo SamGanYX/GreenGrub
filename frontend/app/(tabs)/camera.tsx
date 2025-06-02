@@ -73,20 +73,6 @@ export default function App() {
     const gtin13 = data.padStart(13, '0'); // Ensure GTIN-13 format
     console.log(`Scanned GTIN-13 barcode: ${gtin13}`);
     setScannedGtin(gtin13);
-    try {
-      const token = await fetchAccessToken();
-      const res = await fetch(`http://localhost:8080/nutrition/barcode/${gtin13}`);
-
-      if (!res.ok) throw new Error('Failed to fetch food data');
-
-      const json = await res.json();
-      console.log(json);
-      setJson(JSON.stringify(json));
-      // Alert.alert('Food Found', `ID: ${foodName}`);
-    } catch (err) {
-      console.error(err);
-      // Alert.alert('Error', 'Unable to retrieve food information.');
-    }
   };
 
   const handleSaveBarcode = async () => {  // why is this allat? why we writing hella? what does it even do
@@ -95,15 +81,15 @@ export default function App() {
     console.log(id);
     const barcodeToSave = {  // what does this do: TODO Figure out 
       userId: id, // Corrected to await the promise
-      // barcode: scannedGtin,
-      barcode: "8076800195019",
+      barcode: scannedGtin,
+      // barcode: "8076800195019",
       active: true, // or any logic to determine if it's active
     };
 
     console.log(scannedGtin);
 
   try {
-      const response = await fetch('http://localhost:8080/barcodes/add', { // Replace with your actual API URL
+      const response = await fetch('http://13.59.176.110:8080/barcodes/add', { // Replace with your actual API URL
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -137,7 +123,7 @@ export default function App() {
         >
           {scannedGtin && (
             <View style={styles.scanResultOverlay}>
-              <Text style={styles.scanResultText}>Scanned Data: {foodDataJson}</Text>
+              <Text style={styles.scanResultText}>Scanned Data: {scannedGtin}</Text>
               <TouchableOpacity
                 style={styles.scanAgainButton}
                 onPress={() => {setScannedGtin(""); setJson("")}}
@@ -145,7 +131,7 @@ export default function App() {
                 <Text style={styles.scanAgainButtonText}>Scan Again</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                // style={styles.saveButton}  bro this style striaght up doesn't exist, so im removing it
+                style={styles.scanAgainButton}
                 onPress={handleSaveBarcode}
               >
                 <Text 

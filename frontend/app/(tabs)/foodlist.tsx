@@ -48,7 +48,7 @@ export default function FoodListPage() {
 
   const handleRemove = async (id: number) => {
     try {
-      await axios.post(`http://localhost:8080/barcodes/remove/${id}`);
+      await axios.post(`http://13.59.176.110:8080/barcodes/remove/${id}`);
       setBarcodes(barcodes => {
         const newMap = new Map(barcodes);
         newMap.delete(id);
@@ -78,7 +78,7 @@ export default function FoodListPage() {
     const id = await AsyncStorage.getItem("userId");
     if (id) {
       try {
-        const response = await axios.get(`http://localhost:8080/barcodes/user/${id}`);
+        const response = await axios.get(`http://13.59.176.110:8080/barcodes/user/${id}`);
         console.log("Fetched barcodes:", response.data);
 
         // Save fetched barcodes to state using the Barcode interface
@@ -89,7 +89,7 @@ export default function FoodListPage() {
 
         const newNutritionData = []; // Initialize an array to hold nutrition data
         for (const item of response.data) {
-          const ecoscoreResponse = await axios.get(`http://localhost:8080/openfood/barcode/${item.barcode}`);
+          const ecoscoreResponse = await axios.get(`http://13.59.176.110:8080/openfood/barcode/${item.barcode}`);
           console.log(`Ecoscore for barcode ${item.barcode}:`, ecoscoreResponse.data);
           const parsedData = {
             product: {
