@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { useFoodData } from '../datashare';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
 
 // Define the Barcode interface
 interface Barcode {
@@ -22,6 +23,7 @@ export default function FoodListPage() {
 
   const [barcodes, setBarcodes] = useState<Map<number, Barcode>>(new Map()); // Use Barcode interface
   const [nutritionData, setNutritionData] = useState<any[]>([]); // Adjust type as needed
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const handleSelect = (preference: string) => { // that's crazy why is this never called
     setSelectedPreference(preference);
@@ -69,6 +71,7 @@ export default function FoodListPage() {
   };
 
   const fetchBarcodes = async () => {
+    setLoading(true); // Set loading to true before fetching
     const id = await AsyncStorage.getItem("userId");
     if (id) {
       try {
@@ -102,32 +105,34 @@ export default function FoodListPage() {
         setNutritionData(newNutritionData);
       } catch (error) {
         console.error("Error fetching barcodes:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
+    } else {
+      setLoading(false); // Set loading to false if no userId
     }
   };
 
-  useEffect(() => {
-    fetchBarcodes();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchBarcodes();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
-      {/*}
-      <Pressable
-          style={styles.swapModeButton}
-          onPress={handleScan}
-        >
-          <FontAwesome name="camera" size={24} color="white" style={styles.icon} />
-          <Text style={styles.buttonText}>Scan More</Text>
-        </Pressable>*/}
-      <Text style={styles.title}>Added Foods:</Text>
-      <View>
-        {Array.from(barcodes.entries()).map(([key, { id, barcode }]) => {
-          // Find the corresponding nutrition data for the barcode
-          const nutritionItem = nutritionData.find(item => item.product.code === barcode);
-          const productName = nutritionItem ? nutritionItem.product.product_name : 'Unknown Product'; // Fallback if not found
-          const ecoscoreGrade = nutritionItem ? nutritionItem.product.ecoscore_grade : 'N/A'; // Fallback if not found
-          const ecoscoreScore = nutritionItem ? nutritionItem.product.ecoscore_score : 'N/A'; // Fallback if not found
+      {loading ? ( // Show loading indicator while fetching
+        <Text>Loading...</Text>
+      ) : (
+        <>
+          <Text style={styles.title}>Added Foods:</Text>
+          <View>
+            {Array.from(barcodes.entries()).map(([key, { id, barcode }]) => {
+              // Find the corresponding nutrition data for the barcode
+              const nutritionItem = nutritionData.find(item => item.product.code === barcode);
+              const productName = nutritionItem ? nutritionItem.product.product_name : 'Unknown Product'; // Fallback if not found
+              const ecoscoreGrade = nutritionItem ? nutritionItem.product.ecoscore_grade : 'N/A'; // Fallback if not found
+              const ecoscoreScore = nutritionItem ? nutritionItem.product.ecoscore_score : 'N/A'; // Fallback if not found
 
           return (
             <View key={key} style={styles.foodItem}>

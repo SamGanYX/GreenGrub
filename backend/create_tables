@@ -14,12 +14,14 @@ CREATE TABLE
     PRIMARY KEY ("id")
   );
 
-CREATE TABLE "barcodes" (
-  "id" bigint NOT NULL AUTO_INCREMENT,
-  "user_id" bigint,
-  "barcode" varchar(255),
-  "active" boolean,
-  FOREIGN KEY ("user_id") REFERENCES "users"("id"),
-  PRIMARY KEY ("id")
-);
+CREATE TABLE
+  "barcode" (
+    "id" bigint NOT NULL AUTO_INCREMENT,
+    "user_id" bigint,
+    "barcode" varchar(255),
+    "active" boolean,
+    FOREIGN KEY ("user_id") REFERENCES "users"("id"),
+    PRIMARY KEY ("id")
+  );
+
 
