@@ -33,6 +33,7 @@ export default function HomeScreen() {
   const handleLogOut = async () => {
     try {
       await AsyncStorage.removeItem('userToken');
+      await AsyncStorage.removeItem('userId');
       setLoggedIn(false);
       console.log('Logged out successfully');
     } catch (error) {

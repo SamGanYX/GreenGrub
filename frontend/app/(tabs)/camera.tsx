@@ -102,9 +102,12 @@ export default function App() {
     console.log(id);
     const barcodeToSave = {
       userId: id, // Corrected to await the promise
-      barcode: scannedData,
+      // barcode: scannedGtin,
+      barcode: "8076800195019",
       active: true, // or any logic to determine if it's active
-  };
+    };
+
+    console.log(scannedGtin);
 
   try {
       const response = await fetch('http://localhost:8080/barcodes/add', { // Replace with your actual API URL
@@ -158,6 +161,15 @@ export default function App() {
           )}
         </CameraView>
       }
+      <TouchableOpacity
+        onPress={() => {
+
+          handleSaveBarcode();
+
+        }} // Dummy GTIN-13 data
+      >
+        <Text>Test Scan with Dummy Data</Text>
+      </TouchableOpacity>
     </View>
   );
 }

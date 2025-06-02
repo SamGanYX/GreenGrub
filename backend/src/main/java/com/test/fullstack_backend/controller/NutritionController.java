@@ -1,6 +1,5 @@
 package com.test.fullstack_backend.controller;
 
-
 import javax.management.RuntimeErrorException;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
