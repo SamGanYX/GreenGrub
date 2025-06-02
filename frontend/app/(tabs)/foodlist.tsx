@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TouchableOpacity } from 'react-native';
 import styles from '../../components/styles';
 import { router } from 'expo-router';
 import { useFoodData } from '../datashare';
-import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+
+// Define the Barcode interface
+interface Barcode {
+  id: number;
+  userId: string;
+  barcode: string;
+  active: boolean;
+}
 
 export default function FoodListPage() {
   const preferences = ['Climate Score', 'Not Yet Ready'];
@@ -34,6 +42,7 @@ export default function FoodListPage() {
   };
 
   const handleFinish = () => {
+    console.log("going to finish now");
     router.push('/finish');
   };
 
@@ -140,10 +149,9 @@ export default function FoodListPage() {
       <TouchableOpacity style={styles.button} onPress={handlePreference}>
         <Text style={styles.buttonText}> {'Change Preference'} </Text>
       </TouchableOpacity>*/}
-    < TouchableOpacity style = { styles.button } onPress = { handleFinish } >
-      <Text style={styles.buttonText}> {'Finish and Compare'} </Text>
-      </TouchableOpacity >
-      
-    </View >
+      <TouchableOpacity style = { styles.button } onPress = { handleFinish }>
+        <Text style={styles.buttonText}> {'Finish and Compare'} </Text>
+      </TouchableOpacity>
+    </View>
   );
 };

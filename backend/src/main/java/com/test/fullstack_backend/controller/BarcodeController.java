@@ -5,7 +5,6 @@ import com.test.fullstack_backend.repository.BarcodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -29,5 +28,12 @@ public class BarcodeController {
     public ResponseEntity<Barcode> createBarcode(@RequestBody Barcode barcode) {
         Barcode savedBarcode = barcodeRepository.save(barcode);
         return ResponseEntity.ok(savedBarcode);
+    }
+
+    // POST method to remove a barcode by id
+    @PostMapping("/remove/{id}")
+    public ResponseEntity<Void> removeBarcode(@PathVariable Long id) {
+        barcodeRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

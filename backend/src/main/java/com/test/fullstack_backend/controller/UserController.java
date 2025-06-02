@@ -7,8 +7,11 @@ import com.test.fullstack_backend.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -53,6 +56,7 @@ public class UserController {
         response.put("userID", String.valueOf(user.getId()));
         response.put("username", userInfo.getUsername());
         response.put("password", userInfo.getPassword());
+        response.put("preference", String.valueOf(user.getPreference()));
         return response;
     }
 
@@ -61,4 +65,22 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @PutMapping("/update/{username}")
+    Map<String, String> changePreference(@PathVariable("username") String username,
+            @RequestParam("preference") String newPreference) {
+        Users user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+
+        user.setPreference(newPreference);
+        userRepository.save(user); // Actually save the changes
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", "should be set to: " + newPreference);
+        response.put("userID", String.valueOf(user.getId()));
+        response.put("username", user.getUsername());
+        response.put("preference", user.getPreference());
+        return response;
+    }
 }

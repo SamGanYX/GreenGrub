@@ -1,2 +1,4 @@
 *.class
 *.env
+target/surefire-reports/
+target/classes/

@@ -2,6 +2,7 @@ create database GreenGrub;
 
 use GreenGrub;
 
+DROP TABLE barcodes;
 DROP TABLE users;
 
 CREATE TABLE
@@ -9,6 +10,7 @@ CREATE TABLE
     "id" bigint NOT NULL AUTO_INCREMENT,
     "username" varchar(255) UNIQUE DEFAULT NULL,
     "password" varchar(255) DEFAULT NULL,
+    "preference" varchar(255) DEFAULT NULL,
     PRIMARY KEY ("id")
   );
 
@@ -19,4 +21,5 @@ CREATE TABLE "barcodes" (
   "active" boolean,
   FOREIGN KEY ("user_id") REFERENCES "users"("id"),
   PRIMARY KEY ("id")
-)
+);
+
