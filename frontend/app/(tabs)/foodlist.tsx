@@ -28,18 +28,12 @@ export default function FoodListPage() {
     setShowOptions(false);
   };
 
-  const handleScan = () => {  // lmao wtf is this
-  };
 
   // IMPORTANT: This method should be called whenever we make an API call to backend to change any foodlists
   const handleUpdate = () => {
     // in theory, we should just have a GET here
     // and then a setData here
   }
-
-  const handlePreference = () => {
-    router.push('/preferences');
-  };
 
   const handleFinish = () => {
     console.log("going to finish now");
@@ -137,10 +131,9 @@ export default function FoodListPage() {
 
           return (
             <View key={key} style={styles.foodItem}>
-              <Text>Product Name: {productName}</Text> {/* Display product name instead of barcode */}
-              <Text>Ecoscore Grade: {ecoscoreGrade}</Text> {/* Display ecoscore grade */}
-              <Text>Ecoscore Score: {ecoscoreScore}</Text> {/* Display ecoscore score */}
-              <Button title="Delete/Remove" onPress={() => handleRemove(id)}/>
+              {}
+              <Text>{productName}  </Text> {/* Display product name instead of barcode */}
+              <Button title="Delete" onPress={() => handleRemove(id)}/>
             </View>
           );
         })}
