@@ -220,7 +220,7 @@ class FullstackBackendApplicationTests {
 		String responseContent = result.getResponse().getContentAsString();
 		assertEquals(true, responseContent.contains("token"));
 		assertEquals(true, responseContent.contains("username"));
-		assertEquals(true, responseContent.contains("should be set to: skibidi"));
+		assertEquals(true, responseContent.contains("should be set to: PROTEIN"));
 		assertEquals(false, responseContent.contains("PROTEIN"));
 	}
 }
