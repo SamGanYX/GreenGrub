@@ -6,11 +6,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 export default function FinishPage() {
-  const [ userPref, setUserPref ] = useState<string>("Climate"); // get this from call to BACKEND: for now we'll hardcode it
   const [ climateScores, setClimateScores ] = useState<string[]>([]); // this will be filled in YEp
   const [sortedBarcodes, setSortedBarcodes] = useState<any[]>([]); // State to hold sorted barcodes
   const [loading, setLoading] = useState(true); // Loading state
-
+  const [userPreference, setUserPreference] = useState<string | null>(null);
 
   const fetchSortedBarcodes = async () => {
     setLoading(true); // Set loading to true before fetching
@@ -30,8 +29,24 @@ export default function FinishPage() {
     }
   };
 
+    // Function to fetch user preference
+    const fetchUserPreference = async () => {
+      const id = await AsyncStorage.getItem("userId");
+      if (id) {
+        try {
+          const response = await axios.get(`http://13.59.176.110:8080/users/${id}/preference`); // Adjust the endpoint as needed
+          setUserPreference(response.data.preference); // Assuming the response contains a 'preference' field
+          console.log(userPreference);
+        } catch (error) {
+          console.error("Error fetching user preference:", error);
+        }
+      }
+    };
+  
+
   useEffect(() => {
     fetchSortedBarcodes(); // Fetch sorted barcodes on component mount
+    fetchUserPreference();
   }, []);
 
   return (
