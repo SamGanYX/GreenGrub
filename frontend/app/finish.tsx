@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from '../components/styles';
 import { useFoodData } from './datashare';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useRouter } from 'expo-router';
 
 export default function FinishPage() {
   const { data } = useFoodData();
@@ -11,6 +12,7 @@ export default function FinishPage() {
   const [sortedBarcodes, setSortedBarcodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [userPreference, setUserPreference] = useState<string | null>(null);
+  const router = useRouter();
 
   // Extract climate scores from user food data (if needed)
   useEffect(() => {
@@ -92,15 +94,19 @@ export default function FinishPage() {
                   {userPreference === 'PROTEIN' && <Text style={styles.tableHeaderText}>Proteins (100g)</Text>}
                 </View>
 
-                {sortedBarcodes.map(({ id, productName, ecoscoreScore, nutriscoreScore, energyKcal100g, sugars100g, proteins100g }) => (
-                  <View key={id} style={styles.tableRow}>
+                {sortedBarcodes.map(({ id, barcode, productName, ecoscoreScore, nutriscoreScore, energyKcal100g, sugars100g, proteins100g }) => (
+                  <TouchableOpacity
+                    key={id}
+                    style={styles.tableRow}
+                    onPress={() => router.push(`/details/${barcode}`)}
+                  >
                     <Text style={styles.tableCell}>{productName || 'Unknown'}</Text>
                     {userPreference === 'LOW_CALORIE' && <Text style={styles.tableCell}>{energyKcal100g ?? 'N/A'}</Text>}
                     {userPreference === 'LOW_SUGAR' && <Text style={styles.tableCell}>{sugars100g ?? 'N/A'}</Text>}
                     {userPreference === 'NUTRISCORE' && <Text style={styles.tableCell}>{nutriscoreScore ?? 'N/A'}</Text>}
                     {userPreference === 'ECOSCORE' && <Text style={styles.tableCell}>{ecoscoreScore ?? 'N/A'}</Text>}
                     {userPreference === 'PROTEIN' && <Text style={styles.tableCell}>{proteins100g ?? 'N/A'}</Text>}
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             </ScrollView>
