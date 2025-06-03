@@ -125,7 +125,7 @@ class FullstackBackendApplicationTests {
 				eq(OpenFood.class)))
 				.thenReturn(mockResponse);
 
-		mockMvc.perform(get("/api/products/0041570054161"))
+		mockMvc.perform(get("/openfood/barcode/0041570054161"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.product.product_name").value("Almond Breeze Original Unsweetened Almond Milk"))
 				.andExpect(jsonPath("$.product.brands").value("Blue Diamond"))
@@ -139,7 +139,7 @@ class FullstackBackendApplicationTests {
 				eq(OpenFood.class)))
 				.thenReturn(null);
 
-		mockMvc.perform(get("/api/products/9999999999999"))
+		mockMvc.perform(get("/openfood/barcode/9999999999999"))
 				.andExpect(status().isNotFound());
 	}
 
@@ -154,7 +154,7 @@ class FullstackBackendApplicationTests {
 				eq(OpenFood.class)))
 				.thenReturn(mockResponse);
 
-		mockMvc.perform(get("/api/products/1111111111111"))
+		mockMvc.perform(get("/openfood/barcode/1111111111111"))
 				.andExpect(status().isNotFound());
 	}
 
@@ -163,7 +163,7 @@ class FullstackBackendApplicationTests {
 		when(restTemplate.getForObject(anyString(), eq(OpenFood.class)))
 				.thenThrow(new RuntimeException("API Error"));
 
-		mockMvc.perform(get("/api/products/0041570054161"))
+		mockMvc.perform(get("/openfood/barcode/0041570054161"))
 				.andExpect(status().isInternalServerError());
 	}
 
