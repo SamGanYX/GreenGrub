@@ -86,7 +86,8 @@ public class UserController {
 
     @PutMapping("/preference/{id}")
     Map<String, String> changePreferenceName(@PathVariable("id") Long userId,
-            @RequestBody Users.Preference newPreference) {
+            @RequestBody Map<String, String> requestBody) {
+        Users.Preference newPreference = Users.Preference.valueOf(requestBody.get("preference"));
         Users user = userRepository.findById(userId).orElse(null);
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
