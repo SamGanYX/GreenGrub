@@ -24,7 +24,7 @@ CREATE TABLE
     "ecoscore_score" varchar(255),
     "nutriscore_grade" varchar(255),
     "nutriscore_score" varchar(255),
-    "energy-kcal_100g" varchar(255),
+    "energy_kcal_100g" varchar(255),
     "sugars_100g" varchar(255),
     "proteins_100g" varchar(255),
     FOREIGN KEY ("user_id") REFERENCES "users"("id"),

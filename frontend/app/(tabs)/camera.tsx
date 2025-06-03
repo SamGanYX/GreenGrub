@@ -80,16 +80,16 @@ export default function App() {
     const id = await AsyncStorage.getItem("userId");
     console.log(id);
     const barcodeToSave = {  // Updated to include additional product information
-      userId: id, 
+      user_id: id, 
       barcode: scannedGtin,
       product_name: '',
-      ecoscoreGrade: '', // Placeholder for ecoscore grade
-      ecoscoreScore: '', // Placeholder for ecoscore score
-      nutriscoreGrade: '', // Placeholder for nutriscore grade
-      nutriscoreScore: '', // Placeholder for nutriscore score
-      energyKcal100g: '', // Placeholder for energy in kcal per 100g
-      sugars100g: '', // Placeholder for sugars per 100g
-      proteins100g: '', // Placeholder for proteins per 100g
+      ecoscore_grade: '', // Placeholder for ecoscore grade
+      ecoscore_score: '', // Placeholder for ecoscore score
+      nutriscore_grade: '', // Placeholder for nutriscore grade
+      nutriscore_score: '', // Placeholder for nutriscore score
+      energy_kcal_100g: '', // Placeholder for energy in kcal per 100g
+      sugars_100g: '', // Placeholder for sugars per 100g
+      proteins_100g: '', // Placeholder for proteins per 100g
     }; 
 
     console.log(scannedGtin);
@@ -106,13 +106,13 @@ export default function App() {
 
       // Add additional product information to barcodeToSave
       barcodeToSave.product_name = product.product_name;
-      barcodeToSave.ecoscoreGrade = product.ecoscore_grade;
-      barcodeToSave.ecoscoreScore = product.ecoscore_score;
-      barcodeToSave.nutriscoreGrade = product.nutriscore_grade;
-      barcodeToSave.nutriscoreScore = product.nutriscore_score;
-      barcodeToSave.energyKcal100g = product.nutriments.energy_kcal_100g;
-      barcodeToSave.sugars100g = product.nutriments.sugars_100g;
-      barcodeToSave.proteins100g = product.nutriments.proteins_100g;
+      barcodeToSave.ecoscore_grade = product.ecoscore_grade;
+      barcodeToSave.ecoscore_score = product.ecoscore_score;
+      barcodeToSave.nutriscore_grade = product.nutriscore_grade;
+      barcodeToSave.nutriscore_score = product.nutriscore_score;
+      barcodeToSave.energy_kcal_100g = product.nutriments.energy_kcal_100g;
+      barcodeToSave.sugars_100g = product.nutriments.sugars_100g;
+      barcodeToSave.proteins_100g = product.nutriments.proteins_100g;
 
       const response = await fetch('http://13.59.176.110:8080/barcodes/add', {
           method: 'POST',
