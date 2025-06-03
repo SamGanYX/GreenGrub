@@ -69,9 +69,9 @@ public class BarcodeController {
                 case "NUTRISCORE":
                     return Float.parseFloat(b.getNutriscoreScore());
                 case "ECOSCORE":
-                    return Float.parseFloat(b.getEcoscoreScore());
+                    return -Float.parseFloat(b.getEcoscoreScore());
                 case "PROTEIN":
-                    return -Float.parseFloat(b.getProteins100g());
+                    return -(Float.parseFloat(b.getProteins100g()) / Float.parseFloat(b.getEnergyKcal100g()));
                 default:
                     return 0f; // Default case if preference is not recognized
             }
