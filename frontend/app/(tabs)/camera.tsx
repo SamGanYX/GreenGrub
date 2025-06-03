@@ -110,7 +110,7 @@ export default function App() {
       barcodeToSave.ecoscoreScore = product.ecoscore_score;
       barcodeToSave.nutriscoreGrade = product.nutriscore_grade;
       barcodeToSave.nutriscoreScore = product.nutriscore_score;
-      barcodeToSave.energyKcal100g = product.nutriments.energy_kcal_100g;
+      barcodeToSave.energyKcal100g = product.nutriments["energy-kcal_100g"];
       barcodeToSave.sugars100g = product.nutriments.sugars_100g;
       barcodeToSave.proteins100g = product.nutriments.proteins_100g;
 
