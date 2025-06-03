@@ -2,7 +2,7 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useCallback, useState } from 'react';
 import { Button, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../components/camera_styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
@@ -17,12 +17,12 @@ export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scannedGtin, setScannedGtin] = useState<string>("");
   const [foodDataJson, setJson] = useState<string>("");
-  const [isCameraActive, setIsCameraActive] = useState(true);
+  const [isCameraActive, setIsCameraActive] = useState("true");
 
   useFocusEffect(
     useCallback(() => {
-      setIsCameraActive(true);
-      return () => setIsCameraActive(false); // Cleanup when leaving screen
+      setIsCameraActive("true");
+      return () => setIsCameraActive("false"); // Cleanup when leaving screen
     }, [])
   );
 
@@ -73,34 +73,46 @@ export default function App() {
     const gtin13 = data.padStart(13, '0'); // Ensure GTIN-13 format
     console.log(`Scanned GTIN-13 barcode: ${gtin13}`);
     setScannedGtin(gtin13);
-    try {
-      const token = await fetchAccessToken();
-      const res = await fetch(`http://localhost:8080/nutrition/barcode/${gtin13}`);
-
-      if (!res.ok) throw new Error('Failed to fetch food data');
-
-      const json = await res.json();
-      console.log(json);
-      setJson(JSON.stringify(json));
-      // Alert.alert('Food Found', `ID: ${foodName}`);
-    } catch (err) {
-      console.error(err);
-      // Alert.alert('Error', 'Unable to retrieve food information.');
-    }
   };
 
   const handleSaveBarcode = async () => {  // why is this allat? why we writing hella? what does it even do
     setData(prev => new Map(prev).set(scannedGtin, foodDataJson));  // ADDS THE NEW BARCODE-FOOD PAIR TO OUR GLOBAL MAP THING
-    const id = await AsyncStorage.getItem("userId");
+    const id = SecureStore.getItemAsync("userId");
     console.log(id);
-    const barcodeToSave = {  // what does this do: TODO Figure out 
-      userId: id, // Corrected to await the promise
+    const barcodeToSave = {  // Updated to include additional product information
+      userId: id, 
       barcode: scannedGtin,
-      active: true, // or any logic to determine if it's active
-  };
+      ecoscoreGrade: '', // Placeholder for ecoscore grade
+      ecoscoreScore: '', // Placeholder for ecoscore score
+      nutriscoreGrade: '', // Placeholder for nutriscore grade
+      nutriscoreScore: '', // Placeholder for nutriscore score
+      energyKcal100g: '', // Placeholder for energy in kcal per 100g
+      sugars100g: '', // Placeholder for sugars per 100g
+      proteins100g: '', // Placeholder for proteins per 100g
+    }; 
 
-  try {
-      const response = await fetch('http://localhost:8080/barcodes/add', { // Replace with your actual API URL
+    console.log(scannedGtin);
+
+    try {
+      // Fetch product details using the scanned barcode
+      const productResponse = await fetch(`http://13.59.176.110:8080/openfood/barcode/${scannedGtin}`);
+      if (!productResponse.ok) {
+          throw new Error('Failed to fetch product details');
+      }
+      
+      const productData = await productResponse.json();
+      const product = productData.product;
+
+      // Add additional product information to barcodeToSave
+      barcodeToSave.ecoscoreGrade = product.ecoscore_grade;
+      barcodeToSave.ecoscoreScore = product.ecoscore_score;
+      barcodeToSave.nutriscoreGrade = product.nutriscore_grade;
+      barcodeToSave.nutriscoreScore = product.nutriscore_score;
+      barcodeToSave.energyKcal100g = product.nutriments.energy_kcal_100g;
+      barcodeToSave.sugars100g = product.nutriments.sugars_100g;
+      barcodeToSave.proteins100g = product.nutriments.proteins_100g;
+
+      const response = await fetch('http://13.59.176.110:8080/barcodes/add', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -114,16 +126,14 @@ export default function App() {
 
       const savedBarcode = await response.json();
       console.log('Barcode saved:', savedBarcode);
-      // Optionally, show a success message to the user
-  } catch (error) {
-      console.error('Error saving barcode:', error);
-      // Optionally, show an error message to the user
-  }
+    } catch (error) {
+        console.error('Error saving barcode:', error);
+    }
   };
 
   return (
     <View style={styles.container}>
-      {isCameraActive && 
+      {isCameraActive==="true" && 
         <CameraView
           style={styles.camera}
           facing={facing}
@@ -134,7 +144,7 @@ export default function App() {
         >
           {scannedGtin && (
             <View style={styles.scanResultOverlay}>
-              <Text style={styles.scanResultText}>Scanned Data: {foodDataJson}</Text>
+              <Text style={styles.scanResultText}>Scanned Data: {scannedGtin}</Text>
               <TouchableOpacity
                 style={styles.scanAgainButton}
                 onPress={() => {setScannedGtin(""); setJson("")}}
@@ -142,7 +152,7 @@ export default function App() {
                 <Text style={styles.scanAgainButtonText}>Scan Again</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                // style={styles.saveButton}  bro this style striaght up doesn't exist, so im removing it
+                style={styles.scanAgainButton}
                 onPress={handleSaveBarcode}
               >
                 <Text 
@@ -153,6 +163,15 @@ export default function App() {
           )}
         </CameraView>
       }
+      <TouchableOpacity
+        onPress={() => {
+
+          handleSaveBarcode();
+
+        }} // Dummy GTIN-13 data
+      >
+        <Text>Test Scan with Dummy Data</Text>
+      </TouchableOpacity>
     </View>
   );
 }
