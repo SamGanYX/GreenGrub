@@ -40,6 +40,8 @@ class FullstackBackendApplicationTests {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
 	private BarcodeRepository barcodeRepository;
 
 	@MockBean
