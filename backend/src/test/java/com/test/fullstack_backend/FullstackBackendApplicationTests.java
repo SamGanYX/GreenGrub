@@ -211,7 +211,7 @@ class FullstackBackendApplicationTests {
 		assertEquals(Users.Preference.PROTEIN, testUser.getPreference());
 
 		MvcResult result = mockMvc.perform(put("/update/testuser")
-				.param("preference", "skibidi")
+				.param("preference", "LOW_SUGAR")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andReturn();
