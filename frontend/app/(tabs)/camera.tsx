@@ -166,15 +166,6 @@ export default function App() {
           )}
         </CameraView>
       }
-      <TouchableOpacity
-        onPress={() => {
-
-          handleSaveBarcode();
-
-        }} // Dummy GTIN-13 data
-      >
-        <Text>Test Scan with Dummy Data</Text>
-      </TouchableOpacity>
     </View>
   );
 }
