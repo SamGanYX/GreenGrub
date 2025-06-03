@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.test.fullstack_backend.repository.UserRepository;
 
@@ -102,5 +103,14 @@ public class UserController {
         response.put("username", user.getUsername());
         response.put("preference", user.getPreference().name());
         return response;
+    }
+
+    @GetMapping("/users/{id}/preference")
+    public ResponseEntity<Users.Preference> getUserPreference(@PathVariable Long id) {
+        Users user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build(); // Return 404 if user not found
+        }
+        return ResponseEntity.ok(user.getPreference()); // Return the user's preference
     }
 }
