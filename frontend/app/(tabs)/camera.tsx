@@ -79,17 +79,40 @@ export default function App() {
     setData(prev => new Map(prev).set(scannedGtin, foodDataJson));  // ADDS THE NEW BARCODE-FOOD PAIR TO OUR GLOBAL MAP THING
     const id = await AsyncStorage.getItem("userId");
     console.log(id);
-    const barcodeToSave = {  // what does this do: TODO Figure out 
-      userId: id, // Corrected to await the promise
+    const barcodeToSave = {  // Updated to include additional product information
+      userId: id, 
       barcode: scannedGtin,
-      // barcode: "8076800195019",
-      active: true, // or any logic to determine if it's active
-    };
+      ecoscoreGrade: '', // Placeholder for ecoscore grade
+      ecoscoreScore: '', // Placeholder for ecoscore score
+      nutriscoreGrade: '', // Placeholder for nutriscore grade
+      nutriscoreScore: '', // Placeholder for nutriscore score
+      energyKcal100g: '', // Placeholder for energy in kcal per 100g
+      sugars100g: '', // Placeholder for sugars per 100g
+      proteins100g: '', // Placeholder for proteins per 100g
+    }; 
 
     console.log(scannedGtin);
 
-  try {
-      const response = await fetch('http://13.59.176.110:8080/barcodes/add', { // Replace with your actual API URL
+    try {
+      // Fetch product details using the scanned barcode
+      const productResponse = await fetch(`http://13.59.176.110:8080/openfood/barcode/${scannedGtin}`);
+      if (!productResponse.ok) {
+          throw new Error('Failed to fetch product details');
+      }
+      
+      const productData = await productResponse.json();
+      const product = productData.product;
+
+      // Add additional product information to barcodeToSave
+      barcodeToSave.ecoscoreGrade = product.ecoscore_grade;
+      barcodeToSave.ecoscoreScore = product.ecoscore_score;
+      barcodeToSave.nutriscoreGrade = product.nutriscore_grade;
+      barcodeToSave.nutriscoreScore = product.nutriscore_score;
+      barcodeToSave.energyKcal100g = product.nutriments.energy_kcal_100g;
+      barcodeToSave.sugars100g = product.nutriments.sugars_100g;
+      barcodeToSave.proteins100g = product.nutriments.proteins_100g;
+
+      const response = await fetch('http://13.59.176.110:8080/barcodes/add', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -103,11 +126,9 @@ export default function App() {
 
       const savedBarcode = await response.json();
       console.log('Barcode saved:', savedBarcode);
-      // Optionally, show a success message to the user
-  } catch (error) {
-      console.error('Error saving barcode:', error);
-      // Optionally, show an error message to the user
-  }
+    } catch (error) {
+        console.error('Error saving barcode:', error);
+    }
   };
 
   return (
