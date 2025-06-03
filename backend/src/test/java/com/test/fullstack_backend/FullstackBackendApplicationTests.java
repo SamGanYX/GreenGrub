@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
+import com.test.fullstack_backend.repository.BarcodeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,14 @@ class FullstackBackendApplicationTests {
 
 	@Autowired
 	private UserRepository userRepository;
+	private BarcodeRepository barcodeRepository;
 
 	@MockBean
 	private RestTemplate restTemplate;
 
 	@BeforeEach
 	void setUp() {
+		barcodeRepository.deleteAll(); // Clear the repository before each test
 		userRepository.deleteAll(); // Clear the repository before each test
 	}
 
