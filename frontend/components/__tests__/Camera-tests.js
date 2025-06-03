@@ -14,7 +14,6 @@ jest.mock('expo-camera', () => ({
     back: 'back',
     front: 'front',
   },
-  // Set a default return value for the mock function
   useCameraPermissions: jest.fn().mockReturnValue([{ granted: true }, jest.fn()]),
 }));
 
@@ -25,6 +24,15 @@ jest.mock('expo-constants', () => ({
       fatsecretClientSecret: 'test-client-secret',
     },
   },
+}));
+
+// Mock expo-router hooks
+jest.mock('expo-router', () => ({
+  useNavigation: jest.fn().mockReturnValue({
+    navigate: jest.fn(),
+    goBack: jest.fn(),
+  }),
+  useFocusEffect: jest.fn().mockImplementation((callback) => callback()),
 }));
 
 global.fetch = jest.fn();
