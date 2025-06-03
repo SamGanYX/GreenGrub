@@ -131,11 +131,10 @@ export default function App() {
                 <Text style={styles.scanAgainButtonText}>Scan Again</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.scanAgainButton}
+                style={styles.saveInfoButton}
                 onPress={handleSaveBarcode}
               >
-                <Text 
-                 // style={styles.saveButtonText} again if you go to Styles, this is also striaght up not defined
+                <Text style={styles.scanAgainButtonText}
                 >Save Info</Text>
               </TouchableOpacity>
             </View>
