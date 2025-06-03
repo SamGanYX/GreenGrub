@@ -3,7 +3,7 @@ import { View, Text, Button, TouchableOpacity } from 'react-native';
 import styles from '../../components/styles';
 import { router } from 'expo-router';
 import { useFoodData } from '../datashare';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -71,8 +71,8 @@ export default function FoodListPage() {
   };
 
   const fetchBarcodes = async () => {
-    setLoading(true); // Set loading to true before fetching
-    const id = await AsyncStorage.getItem("userId");
+    setLoading(true);
+    const id = SecureStore.getItemAsync("userId");
     if (id) {
       try {
         const response = await axios.get(`http://13.59.176.110:8080/barcodes/user/${id}`);
