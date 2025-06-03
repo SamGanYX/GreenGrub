@@ -17,12 +17,12 @@ export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scannedGtin, setScannedGtin] = useState<string>("");
   const [foodDataJson, setJson] = useState<string>("");
-  const [isCameraActive, setIsCameraActive] = useState(true);
+  const [isCameraActive, setIsCameraActive] = useState("true");
 
   useFocusEffect(
     useCallback(() => {
-      setIsCameraActive(true);
-      return () => setIsCameraActive(false); // Cleanup when leaving screen
+      setIsCameraActive("true");
+      return () => setIsCameraActive("false"); // Cleanup when leaving screen
     }, [])
   );
 
@@ -133,7 +133,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {isCameraActive && 
+      {isCameraActive==="true" && 
         <CameraView
           style={styles.camera}
           facing={facing}
