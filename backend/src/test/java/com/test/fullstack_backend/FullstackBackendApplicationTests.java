@@ -205,10 +205,10 @@ class FullstackBackendApplicationTests {
 		Users testUser = new Users();
 		testUser.setUsername("testuser");
 		testUser.setPassword("password123");
-		testUser.setPreference("Bulking");
+		testUser.setPreference("PROTEIN");
 		userRepository.save(testUser);
 
-		assertEquals("Bulking", testUser.getPreference());
+		assertEquals("PROTEIN", testUser.getPreference());
 
 		MvcResult result = mockMvc.perform(put("/update/testuser")
 				.param("preference", "skibidi")
@@ -221,6 +221,6 @@ class FullstackBackendApplicationTests {
 		assertEquals(true, responseContent.contains("token"));
 		assertEquals(true, responseContent.contains("username"));
 		assertEquals(true, responseContent.contains("should be set to: skibidi"));
-		assertEquals(false, responseContent.contains("Bulking"));
+		assertEquals(false, responseContent.contains("PROTEIN"));
 	}
 }
