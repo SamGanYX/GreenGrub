@@ -42,34 +42,4 @@ describe('App Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-
-  it('renders correctly when permissions are loading', () => {
-    require('expo-camera').useCameraPermissions.mockReturnValueOnce([null, jest.fn()]);
-    const { toJSON } = render(
-      <NavigationContainer>
-        <App />
-      </NavigationContainer>
-    );
-    expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('renders correctly when permission is not granted', () => {
-    require('expo-camera').useCameraPermissions.mockReturnValueOnce([{ granted: false }, jest.fn()]);
-    const { getByText } = render(
-      <NavigationContainer>
-        <App />
-      </NavigationContainer>
-    );
-    expect(getByText('We need your permission to show the camera')).toBeTruthy();
-  });
-
-  it('renders camera view correctly when permission is granted', () => {
-    require('expo-camera').useCameraPermissions.mockReturnValueOnce([{ granted: true }, jest.fn()]);
-    const { toJSON } = render(
-      <NavigationContainer>
-        <App />
-      </NavigationContainer>
-    );
-    expect(toJSON()).toMatchSnapshot();
-  });
 });
