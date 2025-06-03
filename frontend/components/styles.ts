@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     overflow: 'hidden',
-    marginTop: 20, // Add some margin for spacing
+    marginTop: 20,
+    flexGrow: 1, // Allow the table to grow
   },
   tableHeader: {
     flexDirection: 'row',
@@ -131,10 +132,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     padding: 10,
+    flexWrap: 'wrap', // Allow wrapping of content
   },
   tableCell: {
     flex: 1,
     textAlign: 'center',
+    minWidth: 100, // Set a minimum width for cells
   },
 });
 
