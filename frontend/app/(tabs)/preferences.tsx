@@ -7,19 +7,21 @@ import { router } from 'expo-router';
 
 export default function PreferencesPage() {
   const preferences = [
-    { value: 'low_calorie', display: 'Low Calorie' },
-    { value: 'high_calorie', display: 'High Calorie' },
-    { value: 'low_sugar', display: 'Low Sugar' },
-    { value: 'nutriscore', display: 'Nutriscore' },
-    { value: 'ecoscore', display: 'Ecoscore' },
-    { value: 'protein', display: 'Protein' }
+    { value: 'LOW_CALORIE', display: 'Low Calorie' },
+    { value: 'HIGH_CALORIE', display: 'High Calorie' },
+    { value: 'LOW_SUGAR', display: 'Low Sugar' },
+    { value: 'NUTRISCORE', display: 'Nutriscore' },
+    { value: 'ECOSCORE', display: 'Ecoscore' },
+    { value: 'PROTEIN', display: 'Protein' }
   ];
 
   const handlePreferencePress = async (preference: string) => {
     try {
       const id = await AsyncStorage.getItem("userId");
       if (id) {
-        await axios.put(`http://13.59.176.110:8080/preference/${id}`, { preference });
+        const requestBody = { preference }; // Prepare the request body
+        console.log("Sending request:", requestBody); // Log the request body
+        await axios.put(`http://13.59.176.110:8080/preference/${id}`, requestBody);
         console.log(`Preference updated to: ${preference}`);
       } else {
         console.log("User ID not found.");

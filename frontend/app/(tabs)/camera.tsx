@@ -126,6 +126,8 @@ export default function App() {
 
       const savedBarcode = await response.json();
       console.log('Barcode saved:', savedBarcode);
+      setScannedGtin("");
+      setJson("");
     } catch (error) {
         console.error('Error saving barcode:', error);
     }
