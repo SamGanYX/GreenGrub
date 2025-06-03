@@ -13,6 +13,13 @@ interface Barcode {
   userId: string;
   barcode: string;
   active: boolean;
+  ecoscore_grade?: string;
+  ecoscore_score?: string;
+  nutriscore_grade?: string;
+  nutriscore_score?: string;
+  energy_kcal_100g?: string;
+  sugars_100g?: string;
+  proteins_100g?: string;
 }
 
 export default function FoodListPage() {
@@ -80,29 +87,25 @@ export default function FoodListPage() {
 
         // Save fetched barcodes to state using the Barcode interface
         const newBarcodes = new Map<number, Barcode>(
-          response.data.map((item: Barcode) => [item.id, { id: item.id, userId: id, barcode: item.barcode, active: true }])
+          response.data.map((item: Barcode) => [
+            item.id, 
+            { 
+              id: item.id, 
+              userId: id, 
+              barcode: item.barcode, 
+              active: true,
+              ecoscore_grade: item.ecoscore_grade,
+              ecoscore_score: item.ecoscore_score,
+              nutriscore_grade: item.nutriscore_grade,
+              nutriscore_score: item.nutriscore_score,
+              energy_kcal_100g: item['energy-kcal_100g'],
+              sugars_100g: item.sugars_100g,
+              proteins_100g: item.proteins_100g
+            }
+          ])
         );
         setBarcodes(newBarcodes);
-
-        const newNutritionData = []; // Initialize an array to hold nutrition data
-        for (const item of response.data) {
-          const ecoscoreResponse = await axios.get(`http://13.59.176.110:8080/openfood/barcode/${item.barcode}`);
-          console.log(`Ecoscore for barcode ${item.barcode}:`, ecoscoreResponse.data);
-          const parsedData = {
-            product: {
-              brands: ecoscoreResponse.data.product.brand_name || 'Unknown Brand',
-              nutriments: ecoscoreResponse.data.product.nutriments || {},
-              product_name: ecoscoreResponse.data.product.product_name || 'Unknown Product',
-              code: ecoscoreResponse.data.product.code || item.barcode,
-              ecoscore_grade: ecoscoreResponse.data.product.ecoscore_grade || 'unknown',
-              ecoscore_score: ecoscoreResponse.data.product.ecoscore_score || null,
-              ecoscore_data: ecoscoreResponse.data.product.ecoscore_data || { agribalyse: { co2_total: null, co2_total_unit: null } }
-            }
-          };
-          // Push the nutrition data into the array
-          newNutritionData.push(parsedData);
-        }
-        setNutritionData(newNutritionData);
+        
       } catch (error) {
         console.error("Error fetching barcodes:", error);
       } finally {

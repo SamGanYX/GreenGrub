@@ -82,6 +82,7 @@ export default function App() {
     const barcodeToSave = {  // Updated to include additional product information
       userId: id, 
       barcode: scannedGtin,
+      product_name: '',
       ecoscoreGrade: '', // Placeholder for ecoscore grade
       ecoscoreScore: '', // Placeholder for ecoscore score
       nutriscoreGrade: '', // Placeholder for nutriscore grade
@@ -104,6 +105,7 @@ export default function App() {
       const product = productData.product;
 
       // Add additional product information to barcodeToSave
+      barcodeToSave.product_name = product.product_name;
       barcodeToSave.ecoscoreGrade = product.ecoscore_grade;
       barcodeToSave.ecoscoreScore = product.ecoscore_score;
       barcodeToSave.nutriscoreGrade = product.nutriscore_grade;

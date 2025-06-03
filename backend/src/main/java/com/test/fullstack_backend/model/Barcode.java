@@ -12,6 +12,7 @@ public class Barcode {
     private Long id;
 
     private Long userId;
+    private String productName;
     private String barcode;
     private String ecoscoreGrade;
     private String ecoscoreScore;
@@ -34,6 +35,16 @@ public class Barcode {
     // Setter for userId
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    // Getter for productName
+    public String getProductName() {
+        return productName;
+    }
+
+    // Setter for barcode
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     // Getter for barcode

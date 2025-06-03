@@ -19,6 +19,7 @@ CREATE TABLE
     "id" bigint NOT NULL AUTO_INCREMENT,
     "user_id" bigint,
     "barcode" varchar(255),
+    "product_name" varchar(255),
     "ecoscore_grade" varchar(255),
     "ecoscore_score" varchar(255),
     "nutriscore_grade" varchar(255),
