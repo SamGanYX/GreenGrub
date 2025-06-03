@@ -205,10 +205,10 @@ class FullstackBackendApplicationTests {
 		Users testUser = new Users();
 		testUser.setUsername("testuser");
 		testUser.setPassword("password123");
-		testUser.setPreference("PROTEIN");
+		testUser.setPreference(Users.Preference.PROTEIN);
 		userRepository.save(testUser);
 
-		assertEquals("PROTEIN", testUser.getPreference());
+		assertEquals(Users.Preference.PROTEIN, testUser.getPreference());
 
 		MvcResult result = mockMvc.perform(put("/update/testuser")
 				.param("preference", "skibidi")
