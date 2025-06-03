@@ -2,7 +2,7 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useCallback, useState } from 'react';
 import { Button, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../components/camera_styles';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
@@ -77,11 +77,12 @@ export default function App() {
 
   const handleSaveBarcode = async () => {  // why is this allat? why we writing hella? what does it even do
     setData(prev => new Map(prev).set(scannedGtin, foodDataJson));  // ADDS THE NEW BARCODE-FOOD PAIR TO OUR GLOBAL MAP THING
-    const id = SecureStore.getItemAsync("userId");
+    const id = await AsyncStorage.getItem("userId");
     console.log(id);
     const barcodeToSave = {  // Updated to include additional product information
       userId: id, 
       barcode: scannedGtin,
+      productName: '',
       ecoscoreGrade: '', // Placeholder for ecoscore grade
       ecoscoreScore: '', // Placeholder for ecoscore score
       nutriscoreGrade: '', // Placeholder for nutriscore grade
@@ -104,11 +105,12 @@ export default function App() {
       const product = productData.product;
 
       // Add additional product information to barcodeToSave
+      barcodeToSave.productName = product.product_name;
       barcodeToSave.ecoscoreGrade = product.ecoscore_grade;
       barcodeToSave.ecoscoreScore = product.ecoscore_score;
       barcodeToSave.nutriscoreGrade = product.nutriscore_grade;
       barcodeToSave.nutriscoreScore = product.nutriscore_score;
-      barcodeToSave.energyKcal100g = product.nutriments.energy_kcal_100g;
+      barcodeToSave.energyKcal100g = product.nutriments["energy-kcal_100g"];
       barcodeToSave.sugars100g = product.nutriments.sugars_100g;
       barcodeToSave.proteins100g = product.nutriments.proteins_100g;
 
@@ -126,6 +128,8 @@ export default function App() {
 
       const savedBarcode = await response.json();
       console.log('Barcode saved:', savedBarcode);
+      setScannedGtin("");
+      setJson("");
     } catch (error) {
         console.error('Error saving barcode:', error);
     }
@@ -152,26 +156,16 @@ export default function App() {
                 <Text style={styles.scanAgainButtonText}>Scan Again</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.scanAgainButton}
+                style={styles.saveInfoButton}
                 onPress={handleSaveBarcode}
               >
-                <Text 
-                 // style={styles.saveButtonText} again if you go to Styles, this is also striaght up not defined
+                <Text style={styles.scanAgainButtonText}
                 >Save Info</Text>
               </TouchableOpacity>
             </View>
           )}
         </CameraView>
       }
-      <TouchableOpacity
-        onPress={() => {
-
-          handleSaveBarcode();
-
-        }} // Dummy GTIN-13 data
-      >
-        <Text>Test Scan with Dummy Data</Text>
-      </TouchableOpacity>
     </View>
   );
 }

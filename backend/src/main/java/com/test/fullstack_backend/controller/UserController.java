@@ -83,4 +83,24 @@ public class UserController {
         response.put("preference", user.getPreference().name());
         return response;
     }
+
+    @PutMapping("/preference/{id}")
+    Map<String, String> changePreferenceName(@PathVariable("id") Long userId,
+            @RequestBody Map<String, String> requestBody) {
+        Users.Preference newPreference = Users.Preference.valueOf(requestBody.get("preference"));
+        Users user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+
+        user.setPreference(newPreference);
+        userRepository.save(user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", "should be set to: " + newPreference);
+        response.put("userID", String.valueOf(user.getId()));
+        response.put("username", user.getUsername());
+        response.put("preference", user.getPreference().name());
+        return response;
+    }
 }

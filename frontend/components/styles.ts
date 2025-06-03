@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 15,
     borderRadius: 10,
-    
+    marginTop: 10
   },
   foodItem: {
     backgroundColor: 'lightgreen',
@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
-    borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: -2,
     fontSize: 18,
     fontWeight: 'bold',
+    borderColor: 'black',
+    borderWidth: 2
   },
   buttonsContainer: {
     width: '100%',
@@ -76,9 +77,22 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   itemText: {
-    fontSize: 16,
-    marginBottom: 15,
     color: '#333',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 5,
+    marginLeft: 10, // Optional: space between text and button
+  },
+
+  deleteButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

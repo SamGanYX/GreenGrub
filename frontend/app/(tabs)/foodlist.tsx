@@ -3,7 +3,7 @@ import { View, Text, Button, TouchableOpacity } from 'react-native';
 import styles from '../../components/styles';
 import { router } from 'expo-router';
 import { useFoodData } from '../datashare';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -12,7 +12,14 @@ interface Barcode {
   id: number;
   userId: string;
   barcode: string;
-  active: boolean;
+  productName: string;
+  ecoscoreGrade?: string;
+  ecoscoreScore?: string;
+  nutriscoreGrade?: string;
+  nutriscoreScore?: string;
+  energyKcal100g?: string;
+  sugars100g?: string;
+  proteins100g?: string;
 }
 
 export default function FoodListPage() {
@@ -71,8 +78,8 @@ export default function FoodListPage() {
   };
 
   const fetchBarcodes = async () => {
-    setLoading(true);
-    const id = SecureStore.getItemAsync("userId");
+    setLoading(true); // Set loading to true before fetching
+    const id = await AsyncStorage.getItem("userId");
     if (id) {
       try {
         const response = await axios.get(`http://13.59.176.110:8080/barcodes/user/${id}`);
@@ -80,29 +87,26 @@ export default function FoodListPage() {
 
         // Save fetched barcodes to state using the Barcode interface
         const newBarcodes = new Map<number, Barcode>(
-          response.data.map((item: Barcode) => [item.id, { id: item.id, userId: id, barcode: item.barcode, active: true }])
+          response.data.map((item: Barcode) => [
+            item.id, 
+            { 
+              id: item.id, 
+              userId: id, 
+              barcode: item.barcode, 
+              active: true,
+              productName: item.productName,
+              ecoscoreGrade: item.ecoscoreGrade,
+              ecoscoreScore: item.ecoscoreScore,
+              nutriscoreGrade: item.nutriscoreGrade,
+              nutriscoreScore: item.nutriscoreScore,
+              energyKcal100g: item.energyKcal100g,
+              sugars100g: item.sugars100g,
+              proteins100g: item.proteins100g
+            }
+          ])
         );
         setBarcodes(newBarcodes);
-
-        const newNutritionData = []; // Initialize an array to hold nutrition data
-        for (const item of response.data) {
-          const ecoscoreResponse = await axios.get(`http://13.59.176.110:8080/openfood/barcode/${item.barcode}`);
-          console.log(`Ecoscore for barcode ${item.barcode}:`, ecoscoreResponse.data);
-          const parsedData = {
-            product: {
-              brands: ecoscoreResponse.data.product.brand_name || 'Unknown Brand',
-              nutriments: ecoscoreResponse.data.product.nutriments || {},
-              product_name: ecoscoreResponse.data.product.product_name || 'Unknown Product',
-              code: ecoscoreResponse.data.product.code || item.barcode,
-              ecoscore_grade: ecoscoreResponse.data.product.ecoscore_grade || 'unknown',
-              ecoscore_score: ecoscoreResponse.data.product.ecoscore_score || null,
-              ecoscore_data: ecoscoreResponse.data.product.ecoscore_data || { agribalyse: { co2_total: null, co2_total_unit: null } }
-            }
-          };
-          // Push the nutrition data into the array
-          newNutritionData.push(parsedData);
-        }
-        setNutritionData(newNutritionData);
+        
       } catch (error) {
         console.error("Error fetching barcodes:", error);
       } finally {
@@ -128,14 +132,15 @@ export default function FoodListPage() {
         <Text style={styles.title}>Added Foods:</Text>
 
         <View>
-          {Array.from(barcodes.entries()).map(([key, { id, barcode }]) => {
-            const nutritionItem = nutritionData.find(item => item.product.code === barcode);
-            const productName = nutritionItem ? nutritionItem.product.product_name : 'Unknown Product';
+          {Array.from(barcodes.entries()).map(([key, { id, barcode, productName }]) => {
+            const displayName = productName || 'Unknown Product';
 
             return (
               <View key={key} style={styles.foodItem}>
-                <Text>{productName}</Text>
-                <Button title="Delete" onPress={() => handleRemove(id)} />
+                <Text style={styles.itemText}>{displayName}</Text>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => handleRemove(id)}>
+                  <Text style={styles.deleteButtonText}>Delete</Text>
+                </TouchableOpacity>
               </View>
             );
           })}
