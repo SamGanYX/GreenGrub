@@ -6,6 +6,7 @@ import { useFoodData } from '../datashare';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 // Define the Barcode interface
 interface Barcode {
@@ -36,6 +37,12 @@ export default function FoodListPage() {
   const handleFinish = () => {
     console.log("going to finish now");
     router.push('/finish');
+  };
+
+  const handlePreference = () => {
+    console.log("going to preferences now");
+    router.push('/preferences');
+
   };
 
   const handleRemove = async (id: number) => {
@@ -123,7 +130,11 @@ export default function FoodListPage() {
       <Text>Loading...</Text>
     ) : (
       <>
-        <Text style={styles.title}>Added Foods:</Text>
+        <TouchableOpacity style={[styles.swapModeButton, { marginTop: 20, flexDirection: 'row', alignItems: 'center' }]} onPress={handlePreference}>
+          <Ionicons name="settings-sharp" size={20} color="white" style={{ marginRight: 8 }} />
+          <Text style={styles.buttonText}>Preference</Text>
+        </TouchableOpacity>
+                <Text style={styles.title}>Added Foods:</Text>
 
         <View>
           {Array.from(barcodes.entries()).map(([key, { id, barcode, productName }]) => {
