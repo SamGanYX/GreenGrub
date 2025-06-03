@@ -2,7 +2,7 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useCallback, useState } from 'react';
 import { Button, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../components/camera_styles';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Optional: Import Haptics for feedback on scan
 // import * as Haptics from 'expo-haptics';
 import Constants from 'expo-constants';
@@ -77,7 +77,7 @@ export default function App() {
 
   const handleSaveBarcode = async () => {  // why is this allat? why we writing hella? what does it even do
     setData(prev => new Map(prev).set(scannedGtin, foodDataJson));  // ADDS THE NEW BARCODE-FOOD PAIR TO OUR GLOBAL MAP THING
-    const id = SecureStore.getItemAsync("userId");
+    const id = await AsyncStorage.getItem("userId");
     console.log(id);
     const barcodeToSave = {  // Updated to include additional product information
       userId: id, 

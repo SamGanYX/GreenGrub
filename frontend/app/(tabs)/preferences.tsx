@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Pressable } from 'react-native';
 import styles from '../../components/styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import { router } from 'expo-router';
 
 export default function PreferencesPage() {
@@ -13,10 +15,20 @@ export default function PreferencesPage() {
     { value: 'protein', display: 'Protein' }
   ];
 
-  const handlePreferencePress = (preference: string) => {
-    Alert.alert(`You pressed: ${preference}`);
-    // You can replace this with navigation, API calls, etc.
-    router.push('/foodlist')
+  const handlePreferencePress = async (preference: string) => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      if (id) {
+        await axios.put(`http://13.59.176.110:8080/preference/${id}`, { preference });
+        console.log(`Preference updated to: ${preference}`);
+      } else {
+        console.log("User ID not found.");
+      }
+    } catch (error) {
+      console.error("Error updating preference:", error);
+      Alert.alert("Failed to update preference.");
+    }
+    router.push('/foodlist');
   };
 
   const handleFoodList = () => {
