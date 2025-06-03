@@ -1,7 +1,7 @@
 
 import { StyleSheet, Pressable } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useCallback, useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { Text, View } from '@/components/Themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -10,17 +10,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen() {
   const [loggedIn, setLoggedIn] = useState(false); // ✅ tracked in state
-
+  const navigation = useNavigation();
   useFocusEffect(
     useCallback(() => {
       const checkLogin = async () => {
         const token = await AsyncStorage.getItem('userToken');
         setLoggedIn(!!token);
       };
-
       checkLogin();
     }, [])
   );
+  
+  useEffect(() => {
+    navigation.setOptions({ headerShown: loggedIn,
+      tabBarStyle: loggedIn ? undefined : { display: 'none' },
+    });
+  }, [loggedIn, navigation]);
 
   const handleLogPress = () => {
     if (!loggedIn) {
@@ -55,14 +60,6 @@ export default function HomeScreen() {
           <FontAwesome name="user" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>{loggedIn ? 'Log Out' : 'Log In'}</Text>
         </Pressable>
-
-        {/*<Pressable
-          style={styles.button}
-          onPress={() => router.push('/camera')}
-        >
-          <FontAwesome name="camera" size={24} color="white" style={styles.icon} />
-          <Text style={styles.buttonText}>Scan Product</Text>
-        </Pressable>*/}
       </View>
     </View>
   );

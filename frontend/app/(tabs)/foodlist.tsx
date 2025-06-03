@@ -133,10 +133,12 @@ export default function FoodListPage() {
             const productName = nutritionItem ? nutritionItem.product.product_name : 'Unknown Product';
 
             return (
-              <View key={key} style={styles.foodItem}>
-                <Text>{productName}</Text>
-                <Button title="Delete" onPress={() => handleRemove(id)} />
-              </View>
+            <View key={key} style={styles.foodItem}>
+              <Text style = {styles.itemText}>{productName}</Text>
+              <TouchableOpacity style={styles.deleteButton} onPress={() => handleRemove(id)}>
+                <Text style={styles.deleteButtonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
             );
           })}
         </View>

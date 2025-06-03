@@ -52,10 +52,18 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   scanAgainButton: {
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginBottom: 10
+  },
+  saveInfoButton: {
     backgroundColor: '#4CAF50',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
+    marginBottom: 10
   },
   scanAgainButtonText: {
     color: 'white',
