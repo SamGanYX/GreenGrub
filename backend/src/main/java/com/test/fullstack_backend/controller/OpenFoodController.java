@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/openfood")
 @CrossOrigin(origins = "*")
 public class OpenFoodController {
 
@@ -16,7 +16,7 @@ public class OpenFoodController {
 
     private static final String OPENFOODFACTS_API = "https://world.openfoodfacts.org/api/v2/product/";
 
-    @GetMapping("/{barcode}")
+    @GetMapping("/barcode/{barcode}")
     public ResponseEntity<OpenFood> getProductByBarcode(@PathVariable String barcode) {
         try {
             String url = OPENFOODFACTS_API + barcode + ".json";

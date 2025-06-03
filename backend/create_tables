@@ -2,7 +2,7 @@ create database GreenGrub;
 
 use GreenGrub;
 
-DROP TABLE barcodes;
+DROP TABLE barcode;
 DROP TABLE users;
 
 CREATE TABLE
@@ -20,6 +20,8 @@ CREATE TABLE
     "user_id" bigint,
     "barcode" varchar(255),
     "active" boolean,
+    "ecoscore_grade" varchar(255),
+    "ecoscore_score" varchar(255),
     FOREIGN KEY ("user_id") REFERENCES "users"("id"),
     PRIMARY KEY ("id")
   );
