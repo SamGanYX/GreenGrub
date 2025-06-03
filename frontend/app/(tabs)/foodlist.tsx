@@ -146,9 +146,15 @@ export default function FoodListPage() {
           })}
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleFinish}>
-          <Text style={styles.buttonText}>Finish and Compare</Text>
-        </TouchableOpacity>
+        {barcodes.size > 0 ? (
+          <TouchableOpacity style={styles.button} onPress={handleFinish}>
+            <Text style={styles.buttonText}>Finish and Compare</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/camera')}>
+            <Text style={styles.buttonText}>Scan New Barcodes</Text>
+          </TouchableOpacity>
+        )}
       </>
     )}
   </View>

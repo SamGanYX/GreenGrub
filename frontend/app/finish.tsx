@@ -6,18 +6,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 export default function FinishPage() {
-  const { data, setData } = useFoodData();
   const [ userPref, setUserPref ] = useState<string>("Climate"); // get this from call to BACKEND: for now we'll hardcode it
   const [ climateScores, setClimateScores ] = useState<string[]>([]); // this will be filled in YEp
   const [sortedBarcodes, setSortedBarcodes] = useState<any[]>([]); // State to hold sorted barcodes
   const [loading, setLoading] = useState(true); // Loading state
 
-  // ON MOUNT, update user pref (setUserPref :D) from UserPref call to BACKEND
-  for (const [_, json] of data) {
-    const name = JSON.parse(json).food.food_name;
-    console.log("skibkid gyatt ", name);
-    climateScores.push(name);
-  }
 
   const fetchSortedBarcodes = async () => {
     setLoading(true); // Set loading to true before fetching
