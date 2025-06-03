@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 public class Users {
@@ -12,7 +14,22 @@ public class Users {
     private Long id;
     private String username;
     private String password;
-    private String preference;
+
+    public enum Preference {
+        LOW_CALORIE,
+        HIGH_CALORIE,
+        LOW_SUGAR,
+        NUTRISCORE,
+        ECOSCORE,
+        PROTEIN
+    }
+
+    @Enumerated(EnumType.STRING)
+    private Preference preference;
+
+    public Users() {
+        this.preference = Preference.ECOSCORE;
+    }
 
     public Long getId() {
         return id;
@@ -26,7 +43,7 @@ public class Users {
         return password;
     }
 
-    public String getPreference() {
+    public Preference getPreference() {
         return preference;
     }
 
@@ -38,7 +55,7 @@ public class Users {
         this.password = password;
     }
 
-    public void setPreference(String preference) {
+    public void setPreference(Preference preference) {
         this.preference = preference;
     }
 }
