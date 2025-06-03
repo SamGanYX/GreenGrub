@@ -30,11 +30,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10
   },
+  preferenceButton: {
+    backgroundColor: '#4CAF50',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 10,
+    width: 250,
+  },
   foodItem: {
     backgroundColor: 'lightgreen',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     padding: 15,
     marginBottom: -2,
     fontSize: 18,
@@ -86,7 +96,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
-    marginLeft: 10, // Optional: space between text and button
+    marginLeft: 10, 
+    alignSelf: 'flex-end',
+
   },
 
   deleteButtonText: {
