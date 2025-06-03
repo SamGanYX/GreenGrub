@@ -7,14 +7,35 @@ import { router } from 'expo-router';
 
 export default function PreferencesPage() {
   const preferences = [
-    { value: 'LOW_CALORIE', display: 'Low Calorie' },
+    { value: 'ECOSCORE', display: 'Ecoscore' },
+    { value: 'NUTRISCORE', display: 'Nutriscore' },
+    { value: 'LOW_CALORIE', display: 'Low Calorie'},
     { value: 'HIGH_CALORIE', display: 'High Calorie' },
     { value: 'LOW_SUGAR', display: 'Low Sugar' },
-    { value: 'NUTRISCORE', display: 'Nutriscore' },
-    { value: 'ECOSCORE', display: 'Ecoscore' },
     { value: 'PROTEIN', display: 'Protein' }
   ];
 
+  function darkenColor(amount: number) {
+    // baseColor must be in hex format like '#4CAF50'
+    const baseColor = '#4CAF50';
+    let color = baseColor.replace('#', '');
+    let r = parseInt(color.substring(0, 2), 16);
+    let g = parseInt(color.substring(2, 4), 16);
+    let b = parseInt(color.substring(4, 6), 16);
+
+    r = Math.max(0, r - amount);
+    g = Math.max(0, g - amount);
+    b = Math.max(0, b - amount);
+
+    const newColor =
+      '#' +
+      r.toString(16).padStart(2, '0') +
+      g.toString(16).padStart(2, '0') +
+      b.toString(16).padStart(2, '0');
+
+    return newColor;
+  }
+  
   const handlePreferencePress = async (preference: string) => {
     try {
       const id = await AsyncStorage.getItem("userId");
@@ -42,7 +63,7 @@ export default function PreferencesPage() {
       {preferences.map((pref, index) => (
         <TouchableOpacity
         key={index}
-        style={styles.button}
+        style={[styles.preferenceButton, { backgroundColor: darkenColor(index*15) }]}
         onPress={() => handlePreferencePress(pref.value)} // Use the value for handling
       >
         <Text style={styles.buttonText}>{pref.display}</Text>

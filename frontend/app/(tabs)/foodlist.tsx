@@ -32,17 +32,6 @@ export default function FoodListPage() {
   const [nutritionData, setNutritionData] = useState<any[]>([]); // Adjust type as needed
   const [loading, setLoading] = useState(true); // Add loading state
 
-  const handleSelect = (preference: string) => { // that's crazy why is this never called
-    setSelectedPreference(preference);
-    setShowOptions(false);
-  };
-
-
-  // IMPORTANT: This method should be called whenever we make an API call to backend to change any foodlists
-  const handleUpdate = () => {
-    // in theory, we should just have a GET here
-    // and then a setData here
-  }
 
   const handleFinish = () => {
     console.log("going to finish now");
@@ -61,6 +50,11 @@ export default function FoodListPage() {
       console.error("Error removing barcode:", error);
     }
   };
+
+  function shortenString(input: string, maxL: number) {
+    if (input.length <= maxL) return input;
+    return input.slice(0, maxL-3) + '...'; // 12 + 3 dots = 15 total
+  }
 
   const getFoodName = (jsonString: string) => {
     try {
@@ -136,12 +130,12 @@ export default function FoodListPage() {
             const displayName = productName || 'Unknown Product';
 
             return (
-              <View key={key} style={styles.foodItem}>
-                <Text style={styles.itemText}>{displayName}</Text>
-                <TouchableOpacity style={styles.deleteButton} onPress={() => handleRemove(id)}>
-                  <Text style={styles.deleteButtonText}>Delete</Text>
-                </TouchableOpacity>
-              </View>
+            <View key={key} style={styles.foodItem}>
+              <Text style = {styles.itemText}>{shortenString(productName, 30)}</Text>
+              <TouchableOpacity style={styles.deleteButton} onPress={() => handleRemove(id)}>
+                <Text style={styles.deleteButtonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
             );
           })}
         </View>
