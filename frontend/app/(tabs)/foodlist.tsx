@@ -121,35 +121,31 @@ export default function FoodListPage() {
 
   return (
     <View style={styles.container}>
-      {loading ? ( // Show loading indicator while fetching
-        <Text>Loading...</Text>
-      ) : (
-        <>
-          <Text style={styles.title}>Added Foods:</Text>
-          <View>
-            {Array.from(barcodes.entries()).map(([key, { id, barcode }]) => {
-              // Find the corresponding nutrition data for the barcode
-              const nutritionItem = nutritionData.find(item => item.product.code === barcode);
-              const productName = nutritionItem ? nutritionItem.product.product_name : 'Unknown Product'; // Fallback if not found
-              const ecoscoreGrade = nutritionItem ? nutritionItem.product.ecoscore_grade : 'N/A'; // Fallback if not found
-              const ecoscoreScore = nutritionItem ? nutritionItem.product.ecoscore_score : 'N/A'; // Fallback if not found
+    {loading ? (
+      <Text>Loading...</Text>
+    ) : (
+      <>
+        <Text style={styles.title}>Added Foods:</Text>
 
-          return (
-            <View key={key} style={styles.foodItem}>
-              {}
-              <Text>{productName}  </Text> {/* Display product name instead of barcode */}
-              <Button title="Delete" onPress={() => handleRemove(id)}/>
-            </View>
-          );
-        })}
-      </View>
-  {/*
-      <TouchableOpacity style={styles.button} onPress={handlePreference}>
-        <Text style={styles.buttonText}> {'Change Preference'} </Text>
-      </TouchableOpacity>*/}
-      <TouchableOpacity style = { styles.button } onPress = { handleFinish }>
-        <Text style={styles.buttonText}> {'Finish and Compare'} </Text>
-      </TouchableOpacity>
-    </View>
+        <View>
+          {Array.from(barcodes.entries()).map(([key, { id, barcode }]) => {
+            const nutritionItem = nutritionData.find(item => item.product.code === barcode);
+            const productName = nutritionItem ? nutritionItem.product.product_name : 'Unknown Product';
+
+            return (
+              <View key={key} style={styles.foodItem}>
+                <Text>{productName}</Text>
+                <Button title="Delete" onPress={() => handleRemove(id)} />
+              </View>
+            );
+          })}
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={handleFinish}>
+          <Text style={styles.buttonText}>Finish and Compare</Text>
+        </TouchableOpacity>
+      </>
+    )}
+  </View>
   );
 };
