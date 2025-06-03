@@ -30,6 +30,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10
   },
+  preferenceButton: {
+    backgroundColor: '#4CAF50',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 10,
+    width: 250,
+  },
   foodItem: {
     backgroundColor: 'lightgreen',
     flexDirection: 'row',
