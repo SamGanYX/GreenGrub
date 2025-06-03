@@ -2,7 +2,7 @@ create database GreenGrub;
 
 use GreenGrub;
 
-DROP TABLE barcodes;
+DROP TABLE barcode;
 DROP TABLE users;
 
 CREATE TABLE
@@ -19,7 +19,14 @@ CREATE TABLE
     "id" bigint NOT NULL AUTO_INCREMENT,
     "user_id" bigint,
     "barcode" varchar(255),
-    "active" boolean,
+    "product_name" varchar(255),
+    "ecoscore_grade" varchar(255),
+    "ecoscore_score" varchar(255),
+    "nutriscore_grade" varchar(255),
+    "nutriscore_score" varchar(255),
+    "energy_kcal100g" varchar(255),
+    "sugars100g" varchar(255),
+    "proteins100g" varchar(255),
     FOREIGN KEY ("user_id") REFERENCES "users"("id"),
     PRIMARY KEY ("id")
   );

@@ -48,7 +48,7 @@ export default function LogInPage() {
 
   const handleCreateAccount = async () => {
     try {
-      const response = await axios.post('http://13.59.176.110:8080/create_account', { username, password });
+      const response = await axios.post('http://13.59.176.110:8080/create_account', { username, password, "preference" : "ECOSCORE" });
       console.log("Account created successfully");
       await AsyncStorage.setItem('userToken', response.data.token);
       await AsyncStorage.setItem('userId', response.data.userID);

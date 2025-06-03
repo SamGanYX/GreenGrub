@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.test.fullstack_backend.model.Users;
 import com.test.fullstack_backend.repository.UserRepository;
+import com.test.fullstack_backend.repository.BarcodeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +41,15 @@ class FullstackBackendApplicationTests {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private BarcodeRepository barcodeRepository;
+
 	@MockBean
 	private RestTemplate restTemplate;
 
 	@BeforeEach
 	void setUp() {
+		barcodeRepository.deleteAll(); // Clear the repository before each test
 		userRepository.deleteAll(); // Clear the repository before each test
 	}
 
@@ -120,7 +125,7 @@ class FullstackBackendApplicationTests {
 				eq(OpenFood.class)))
 				.thenReturn(mockResponse);
 
-		mockMvc.perform(get("/api/products/0041570054161"))
+		mockMvc.perform(get("/openfood/barcode/0041570054161"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.product.product_name").value("Almond Breeze Original Unsweetened Almond Milk"))
 				.andExpect(jsonPath("$.product.brands").value("Blue Diamond"))
@@ -134,7 +139,7 @@ class FullstackBackendApplicationTests {
 				eq(OpenFood.class)))
 				.thenReturn(null);
 
-		mockMvc.perform(get("/api/products/9999999999999"))
+		mockMvc.perform(get("/openfood/barcode/9999999999999"))
 				.andExpect(status().isNotFound());
 	}
 
@@ -149,7 +154,7 @@ class FullstackBackendApplicationTests {
 				eq(OpenFood.class)))
 				.thenReturn(mockResponse);
 
-		mockMvc.perform(get("/api/products/1111111111111"))
+		mockMvc.perform(get("/openfood/barcode/1111111111111"))
 				.andExpect(status().isNotFound());
 	}
 
@@ -158,7 +163,7 @@ class FullstackBackendApplicationTests {
 		when(restTemplate.getForObject(anyString(), eq(OpenFood.class)))
 				.thenThrow(new RuntimeException("API Error"));
 
-		mockMvc.perform(get("/api/products/0041570054161"))
+		mockMvc.perform(get("/openfood/barcode/0041570054161"))
 				.andExpect(status().isInternalServerError());
 	}
 
@@ -200,13 +205,13 @@ class FullstackBackendApplicationTests {
 		Users testUser = new Users();
 		testUser.setUsername("testuser");
 		testUser.setPassword("password123");
-		testUser.setPreference("Bulking");
+		testUser.setPreference(Users.Preference.PROTEIN);
 		userRepository.save(testUser);
 
-		assertEquals("Bulking", testUser.getPreference());
+		assertEquals(Users.Preference.PROTEIN, testUser.getPreference());
 
 		MvcResult result = mockMvc.perform(put("/update/testuser")
-				.param("preference", "skibidi")
+				.param("preference", "LOW_SUGAR")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andReturn();
@@ -215,7 +220,7 @@ class FullstackBackendApplicationTests {
 		String responseContent = result.getResponse().getContentAsString();
 		assertEquals(true, responseContent.contains("token"));
 		assertEquals(true, responseContent.contains("username"));
-		assertEquals(true, responseContent.contains("should be set to: skibidi"));
-		assertEquals(false, responseContent.contains("Bulking"));
+		assertEquals(true, responseContent.contains("should be set to: LOW_SUGAR"));
+		assertEquals(false, responseContent.contains("PROTEIN"));
 	}
 }
