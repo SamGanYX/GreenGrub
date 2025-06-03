@@ -12,14 +12,14 @@ interface Barcode {
   id: number;
   userId: string;
   barcode: string;
-  active: boolean;
-  ecoscore_grade?: string;
-  ecoscore_score?: string;
-  nutriscore_grade?: string;
-  nutriscore_score?: string;
-  energy_kcal_100g?: string;
-  sugars_100g?: string;
-  proteins_100g?: string;
+  productName: string;
+  ecoscoreGrade?: string;
+  ecoscoreScore?: string;
+  nutriscoreGrade?: string;
+  nutriscoreScore?: string;
+  energyKcal100g?: string;
+  sugars100g?: string;
+  proteins100g?: string;
 }
 
 export default function FoodListPage() {
@@ -94,13 +94,14 @@ export default function FoodListPage() {
               userId: id, 
               barcode: item.barcode, 
               active: true,
-              ecoscore_grade: item.ecoscore_grade,
-              ecoscore_score: item.ecoscore_score,
-              nutriscore_grade: item.nutriscore_grade,
-              nutriscore_score: item.nutriscore_score,
-              energy_kcal_100g: item['energy-kcal_100g'],
-              sugars_100g: item.sugars_100g,
-              proteins_100g: item.proteins_100g
+              productName: item.productName,
+              ecoscoreGrade: item.ecoscoreGrade,
+              ecoscoreScore: item.ecoscoreScore,
+              nutriscoreGrade: item.nutriscoreGrade,
+              nutriscoreScore: item.nutriscoreScore,
+              energyKcal100g: item.energyKcal100g,
+              sugars100g: item.sugars100g,
+              proteins100g: item.proteins100g
             }
           ])
         );
@@ -131,17 +132,16 @@ export default function FoodListPage() {
         <Text style={styles.title}>Added Foods:</Text>
 
         <View>
-          {Array.from(barcodes.entries()).map(([key, { id, barcode }]) => {
-            const nutritionItem = nutritionData.find(item => item.product.code === barcode);
-            const productName = nutritionItem ? nutritionItem.product.product_name : 'Unknown Product';
+          {Array.from(barcodes.entries()).map(([key, { id, barcode, productName }]) => {
+            const displayName = productName || 'Unknown Product';
 
             return (
-            <View key={key} style={styles.foodItem}>
-              <Text style = {styles.itemText}>{productName}</Text>
-              <TouchableOpacity style={styles.deleteButton} onPress={() => handleRemove(id)}>
-                <Text style={styles.deleteButtonText}>Delete</Text>
-              </TouchableOpacity>
-            </View>
+              <View key={key} style={styles.foodItem}>
+                <Text style={styles.itemText}>{displayName}</Text>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => handleRemove(id)}>
+                  <Text style={styles.deleteButtonText}>Delete</Text>
+                </TouchableOpacity>
+              </View>
             );
           })}
         </View>
