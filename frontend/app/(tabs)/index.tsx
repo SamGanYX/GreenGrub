@@ -60,14 +60,6 @@ export default function HomeScreen() {
           <FontAwesome name="user" size={24} color="white" style={styles.icon} />
           <Text style={styles.buttonText}>{loggedIn ? 'Log Out' : 'Log In'}</Text>
         </Pressable>
-
-        {/*<Pressable
-          style={styles.button}
-          onPress={() => router.push('/camera')}
-        >
-          <FontAwesome name="camera" size={24} color="white" style={styles.icon} />
-          <Text style={styles.buttonText}>Scan Product</Text>
-        </Pressable>*/}
       </View>
     </View>
   );
