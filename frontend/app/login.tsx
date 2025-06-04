@@ -12,6 +12,7 @@ export default function LogInPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [createNew, setCreateNew] = useState(false);
+  const [message, setMessage] = useState('');
 
   useLayoutEffect(() => {
       navigation.setOptions({
@@ -49,6 +50,8 @@ export default function LogInPage() {
       router.push('/camera');
     } catch (error) {
       console.log('An error occurred during login:', error.message);
+      setMessage("Password or Username is wrong!");
+
     }
   };
 
@@ -61,11 +64,13 @@ export default function LogInPage() {
       router.push('/camera');
     } catch (error) {
       console.log('An error occurred while creating the account:', error.message);
+      setMessage("That Username is taken!");
     }
   };
 
   const handleSwapMode = () => {
     setCreateNew(!createNew);
+    setMessage("");
   }
 
   return (
@@ -93,6 +98,7 @@ export default function LogInPage() {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>{createNew ? 'Create Account' : 'Login'}</Text>
       </TouchableOpacity>
+      <Text style = {styles.errorText}>{message}</Text>
     </View>
   );
 };

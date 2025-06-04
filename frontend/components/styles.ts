@@ -181,8 +181,11 @@ const styles = StyleSheet.create({
     minWidth: 100, 
     textAlign: 'center',
     // justifyContent: 'center'
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 10
   }
-  
 });
 
 export default styles;
