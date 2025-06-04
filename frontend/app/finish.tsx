@@ -1,4 +1,6 @@
+
 import { useState, useEffect, useLayoutEffect } from 'react';
+
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from '../components/styles';
 import { useFoodData } from './datashare';
@@ -8,6 +10,7 @@ import { useRouter } from 'expo-router';
 import { shortenString } from './(tabs)/foodlist';
 import { useNavigation } from 'expo-router';
 
+
 export default function FinishPage() {
   const { data } = useFoodData();
   const [climateScores, setClimateScores] = useState<string[]>([]);
@@ -15,6 +18,7 @@ export default function FinishPage() {
   const [loading, setLoading] = useState(true);
   const [userPreference, setUserPreference] = useState<string | null>(null);
   const router = useRouter();
+
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
@@ -23,6 +27,7 @@ export default function FinishPage() {
       headerBackTitleVisible: true,  // Optional (shows the label)
     });
   }, [navigation]);
+
 
   // Extract climate scores from user food data (if needed)
   useEffect(() => {
@@ -121,6 +126,8 @@ export default function FinishPage() {
                     {userPreference === 'ECOSCORE' && <Text style={styles.valueCellText}>{ecoscoreScore ?? 'N/A'}</Text>}
                     {userPreference === 'PROTEIN' && <Text style={styles.valueCellText}>{proteins100g ?? 'N/A'}</Text>}
                   </View>
+
+
                 ))}
               </View>
             </ScrollView>
