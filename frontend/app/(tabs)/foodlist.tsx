@@ -23,6 +23,13 @@ interface Barcode {
   proteins100g?: string;
 }
 
+function shortenString(input: string, maxL: number) {
+    if (input.length <= maxL) return input;
+    return input.slice(0, maxL-3) + '...'; // 12 + 3 dots = 15 total
+}
+
+export { shortenString }
+
 export default function FoodListPage() {
   const preferences = ['Climate Score', 'Not Yet Ready'];
 
@@ -57,11 +64,6 @@ export default function FoodListPage() {
       console.error("Error removing barcode:", error);
     }
   };
-
-  function shortenString(input: string, maxL: number) {
-    if (input.length <= maxL) return input;
-    return input.slice(0, maxL-3) + '...'; // 12 + 3 dots = 15 total
-  }
 
   const getFoodName = (jsonString: string) => {
     try {

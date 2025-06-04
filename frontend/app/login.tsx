@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
@@ -13,6 +13,12 @@ export default function LogInPage() {
   const [password, setPassword] = useState('');
   const [createNew, setCreateNew] = useState(false);
 
+  useLayoutEffect(() => {
+      navigation.setOptions({
+        headerBackTitle: 'Back',       // ✅ This is the label
+        headerBackTitleVisible: true,  // Optional (shows the label)
+      });
+    }, [navigation]);
 
   useEffect(() => {
     const token = AsyncStorage.getItem('userToken');
