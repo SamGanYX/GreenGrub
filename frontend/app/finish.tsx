@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { useState, useEffect, useLayoutEffect } from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from '../components/styles';
 import { useFoodData } from './datashare';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useRouter } from 'expo-router';
+import { shortenString } from './(tabs)/foodlist';
+import { useNavigation } from 'expo-router';
 
 export default function FinishPage() {
   const { data } = useFoodData();
@@ -11,6 +14,15 @@ export default function FinishPage() {
   const [sortedBarcodes, setSortedBarcodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [userPreference, setUserPreference] = useState<string | null>(null);
+  const router = useRouter();
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitle: 'Back',       // ✅ This is the label
+      headerBackTitleVisible: true,  // Optional (shows the label)
+    });
+  }, [navigation]);
 
   // Extract climate scores from user food data (if needed)
   useEffect(() => {
@@ -85,21 +97,29 @@ export default function FinishPage() {
               <View style={styles.table}>
                 <View style={styles.tableHeader}>
                   <Text style={styles.tableHeaderText}>Product Name</Text>
-                  {userPreference === 'LOW_CALORIE' && <Text style={styles.tableHeaderText}>Calories (100g)</Text>}
-                  {userPreference === 'LOW_SUGAR' && <Text style={styles.tableHeaderText}>Sugars (100g)</Text>}
-                  {userPreference === 'NUTRISCORE' && <Text style={styles.tableHeaderText}>Nutriscore</Text>}
-                  {userPreference === 'ECOSCORE' && <Text style={styles.tableHeaderText}>Ecoscore</Text>}
-                  {userPreference === 'PROTEIN' && <Text style={styles.tableHeaderText}>Proteins (100g)</Text>}
+                  {userPreference === 'LOW_CALORIE' && <Text style={styles.tableValueHeaderText}>Calories (100g)</Text>}
+                  {userPreference === 'HIGH_CALORIE' && <Text style={styles.tableValueHeaderText}>Calories (100g)</Text>}
+                  {userPreference === 'LOW_SUGAR' && <Text style={styles.tableValueHeaderText}>Sugars (100g)</Text>}
+                  {userPreference === 'NUTRISCORE' && <Text style={styles.tableValueHeaderText}>Nutriscore</Text>}
+                  {userPreference === 'ECOSCORE' && <Text style={styles.tableValueHeaderText}>Ecoscore</Text>}
+                  {userPreference === 'PROTEIN' && <Text style={styles.tableValueHeaderText}>Proteins (100g)</Text>}
                 </View>
 
-                {sortedBarcodes.map(({ id, productName, ecoscoreScore, nutriscoreScore, energyKcal100g, sugars100g, proteins100g }) => (
-                  <View key={id} style={styles.tableRow}>
-                    <Text style={styles.tableCell}>{productName || 'Unknown'}</Text>
-                    {userPreference === 'LOW_CALORIE' && <Text style={styles.tableCell}>{energyKcal100g ?? 'N/A'}</Text>}
-                    {userPreference === 'LOW_SUGAR' && <Text style={styles.tableCell}>{sugars100g ?? 'N/A'}</Text>}
-                    {userPreference === 'NUTRISCORE' && <Text style={styles.tableCell}>{nutriscoreScore ?? 'N/A'}</Text>}
-                    {userPreference === 'ECOSCORE' && <Text style={styles.tableCell}>{ecoscoreScore ?? 'N/A'}</Text>}
-                    {userPreference === 'PROTEIN' && <Text style={styles.tableCell}>{proteins100g ?? 'N/A'}</Text>}
+                {sortedBarcodes.map(({ id, barcode, productName, ecoscoreScore, nutriscoreScore, energyKcal100g, sugars100g, proteins100g }, index) => (
+                  <View style = {styles.tableRow}>
+                    <TouchableOpacity
+                      key={id}
+                      style={styles.productNameButton}
+                      onPress={() => router.push(`/details/${barcode}`)}
+                    >
+                    <Text style={styles.productCellText}>{`${index + 1}. ${shortenString(productName, 30) || 'Unknown'}`}</Text>
+                    </TouchableOpacity>
+                    {userPreference === 'LOW_CALORIE' && <Text style={styles.valueCellText}>{energyKcal100g ?? 'N/A'}</Text>}
+                    {userPreference === 'HIGH_CALORIE' && <Text style={styles.valueCellText}>{energyKcal100g ?? 'N/A'}</Text>}
+                    {userPreference === 'LOW_SUGAR' && <Text style={styles.valueCellText}>{sugars100g ?? 'N/A'}</Text>}
+                    {userPreference === 'NUTRISCORE' && <Text style={styles.valueCellText}>{nutriscoreScore ?? 'N/A'}</Text>}
+                    {userPreference === 'ECOSCORE' && <Text style={styles.valueCellText}>{ecoscoreScore ?? 'N/A'}</Text>}
+                    {userPreference === 'PROTEIN' && <Text style={styles.valueCellText}>{proteins100g ?? 'N/A'}</Text>}
                   </View>
                 ))}
               </View>
