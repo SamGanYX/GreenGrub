@@ -124,16 +124,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   tableHeaderText: {
-    flex: 1,
+    // flex: 1,
     fontWeight: 'bold',
     textAlign: 'left',
+    width: 228,
     padding: 10
   },
   tableValueHeaderText: {
     flex: 1,
     fontWeight: 'bold',
-    textAlign: 'right',
-    padding: 10
+    // textAlign: 'right',
+    padding: 10,
+    textAlign: 'center',
   },
   tableRow: {
     flexDirection: 'row',
@@ -156,17 +158,29 @@ const styles = StyleSheet.create({
     width: 228
 
   },
+  productDetailsView: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    height: 40,
+    // backgroundColor: 'lightgreen',
+    // borderRadius: 10,
+    // width: 228
+
+  },
   productCellText: {
     padding: 5,
+    paddingLeft: 10,
     //flex: 1,
     //textAlign: 'center',
     minWidth: 100, 
   },
   valueCellText: {
-    flex: 1,
-    textAlign: 'right',
+    // flex: 1,
+    // textAlign: 'right',
+    padding: 5,
     minWidth: 100, 
-    justifyContent: 'center'
+    textAlign: 'center',
+    // justifyContent: 'center'
   }
   
 });

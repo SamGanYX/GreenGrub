@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useLayoutEffect } from 'react';
 
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
@@ -111,23 +110,22 @@ export default function FinishPage() {
                 </View>
 
                 {sortedBarcodes.map(({ id, barcode, productName, ecoscoreScore, nutriscoreScore, energyKcal100g, sugars100g, proteins100g }, index) => (
-                  <View style = {styles.tableRow}>
+                  <View key={id} style={styles.tableRow}>
                     <TouchableOpacity
-                      key={id}
                       style={styles.productNameButton}
                       onPress={() => router.push(`/details/${barcode}`)}
                     >
-                    <Text style={styles.productCellText}>{`${index + 1}. ${shortenString(productName, 30) || 'Unknown'}`}</Text>
+                      <Text style={styles.productCellText}>{`${index + 1}. ${shortenString(productName, 30) || 'Unknown'}`}</Text>
                     </TouchableOpacity>
+                    <View style={styles.productDetailsView}>
                     {userPreference === 'LOW_CALORIE' && <Text style={styles.valueCellText}>{energyKcal100g ?? 'N/A'}</Text>}
                     {userPreference === 'HIGH_CALORIE' && <Text style={styles.valueCellText}>{energyKcal100g ?? 'N/A'}</Text>}
                     {userPreference === 'LOW_SUGAR' && <Text style={styles.valueCellText}>{sugars100g ?? 'N/A'}</Text>}
                     {userPreference === 'NUTRISCORE' && <Text style={styles.valueCellText}>{nutriscoreScore ?? 'N/A'}</Text>}
                     {userPreference === 'ECOSCORE' && <Text style={styles.valueCellText}>{ecoscoreScore ?? 'N/A'}</Text>}
                     {userPreference === 'PROTEIN' && <Text style={styles.valueCellText}>{proteins100g ?? 'N/A'}</Text>}
+                    </View>
                   </View>
-
-
                 ))}
               </View>
             </ScrollView>
