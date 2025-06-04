@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: 'white',
     color: 'black',
+    minWidth: 250,
   },
   button: {
     backgroundColor: '#4CAF50',
@@ -125,7 +126,14 @@ const styles = StyleSheet.create({
   tableHeaderText: {
     flex: 1,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'left',
+    padding: 10
+  },
+  tableValueHeaderText: {
+    flex: 1,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    padding: 10
   },
   tableRow: {
     flexDirection: 'row',
@@ -139,6 +147,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     minWidth: 100, // Set a minimum width for cells
   },
+  productNameButton: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    height: 40,
+    backgroundColor: 'lightgreen',
+    borderRadius: 10,
+    width: 228
+
+  },
+  productCellText: {
+    padding: 5,
+    //flex: 1,
+    //textAlign: 'center',
+    minWidth: 100, 
+  },
+  valueCellText: {
+    flex: 1,
+    textAlign: 'right',
+    minWidth: 100, 
+    justifyContent: 'center'
+  }
+  
 });
 
 export default styles;
